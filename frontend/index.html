@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>NewsPhi Demo: An aide for contextual news consumption</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <!-- <link rel="stylesheet" href="main.css"> -->
+  </head>
+  <body>
+    <!-- Header -->
+    <div class="webname">
+      <span class="name">News Phi</span>
+    </div>
+
+
+    <!-- News Feed -->
+    <div id="container">
+      <el-card :body-style="{ padding: '0px' }" id = "news" v-for="n in news">
+          <!-- <img src="../../examples/assets/images/hamburger.png" class="image"> -->
+          <div id="news-header">
+              <!-- {{n.subtopic}} -->
+              <span class="fas fa-star-half-alt"></span>  
+              <!-- {{n.score}} From model  -->
+          </div>
+          <div style="padding: 14px;">
+            <span><a id="news-title" v-bind:href="n.url">{{ n.title }}</a></span>
+            <div class="bottom clearfix">
+              {{n.thread.site}}
+              <!-- {{ n.published}} <time class="time">{{ currentDate }}</time> -->
+              <!-- <el-button type="text" class="button">操作按钮</el-button> -->
+            </div>
+          </div>
+        </el-card>
+      </div> 
+
+
+    <!-- Dashboard -->
+      
+  </body>
+</html>
+
+<script type="application/javascript" src="code.js"></script>
