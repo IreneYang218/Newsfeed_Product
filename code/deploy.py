@@ -40,7 +40,6 @@ def git_clone(ssh):
         git_clone_command = "git clone https://dianewoodbridge@github.com/" \
                             "MSDS698/product-analytics-group-project-team1.git"
         stdin, stdout, stderr = ssh.exec_command(git_clone_command)
-        print(stderr.read())
         change_dir = "cd product-analytics-group-project-team1/; git pull"
         stdin, stdout, stderr = ssh.exec_command(change_dir)
 
