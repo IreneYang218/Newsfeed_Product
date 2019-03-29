@@ -24,11 +24,11 @@ def create_or_update_environment(ssh):
     If the environment already exists, it will just update the environment."""
     stdin, stdout, stderr = \
         ssh.exec_command("conda env create -f "
-                         "~/" + git_repo_name + "/venv/environment.yml")
+                         "~/product-analytics-group-project-team1/venv/environment.yml")
     if (b'already exists' in stderr.read()):
         stdin, stdout, stderr = \
             ssh.exec_command("conda env update -f "
-                             "~/" + git_repo_name + "/venv/environment.yml")
+                             "~/product-analytics-group-project-team1/venv/environment.yml")
 
 
 def git_clone(ssh):
@@ -38,9 +38,10 @@ def git_clone(ssh):
     if (b"" is stderr.read()):
         # ---- HOMEWORK ----- #
         git_clone_command = "git clone https://dianewoodbridge@github.com/" \
-                            "MSDS698/" + git_repo_name + ".git"
+                            "MSDS698/product-analytics-group-project-team1.git"
         stdin, stdout, stderr = ssh.exec_command(git_clone_command)
-        change_dir = "cd " + git_repo_name + "/; git pull"
+        print(stderr.read())
+        change_dir = "cd product-analytics-group-project-team1/; git pull"
         stdin, stdout, stderr = ssh.exec_command(change_dir)
 
 
