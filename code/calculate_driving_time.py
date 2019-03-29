@@ -6,7 +6,7 @@ from user_definition import *
 
 output_file = open(output_file_name, "a")
 # https://developers.google.com/maps/documentation/javascript/get-api-key
-apikey = 'AIzaSyCi_nEPATYzq5LeeSJQ8eDOkHfQHdUT9Zo'
+apikey = 'AIzaSyDBtx4OsC4Mu0-8ADOoYGDMW8vleuPuaRU'
 url = "https://maps.googleapis.com/maps/api/distancematrix/" +\
       "json?key=" + str(apikey) +\
       "&origins=" + str(orig_coord) + "&destinations=" + str(dest_coord) +\

@@ -25,7 +25,6 @@ def create_or_update_environment(ssh):
     stdin, stdout, stderr = \
         ssh.exec_command("conda env create -f "
                          "~/" + git_repo_name + "/venv/environment.yml")
-    print(stderr.read())
     if (b'already exists' in stderr.read()):
         stdin, stdout, stderr = \
             ssh.exec_command("conda env update -f "
@@ -38,9 +37,10 @@ def git_clone(ssh):
     stdin, stdout, stderr = ssh.exec_command("git --version")
     if (b"" is stderr.read()):
         # ---- HOMEWORK ----- #
-        git_clone_command = "git clone https://ypk22@github.com/MSDS698/" \
+        git_clone_command = "git clone https://dianewoodbridge@github.com/MSDS698/" \
                             + git_repo_name + ".git"
         stdin, stdout, stderr = ssh.exec_command(git_clone_command)
+        print(stderr.read())
         change_dir = "cd " + git_repo_name + "/; git pull"
         stdin, stdout, stderr = ssh.exec_command(change_dir)
 
@@ -53,7 +53,10 @@ def main():
     git_clone(ssh)
     create_or_update_environment(ssh)
     stdin, stdout, stderr = \
-        ssh.exec_command("echo '* * * * * python calculate driving time.py'"
+        ssh.exec_command("echo '* * * * * ~/.conda/envs/MSDS603/bin/python "
+                         "/home/ec2-user/product-analytics-group-project-team1"
+                         "/code/calculate_driving_time.py'"
+                         # "python calculate_driving_time.py'"
                          " > order.cron")
     stdin, stdout, stderr = \
         ssh.exec_command("crontab order.cron")
