@@ -46,7 +46,7 @@ def git_clone(ssh):
 
 def main():
     """The command to run in bash. Connects to EC2, clones the git repo,
-    creates the environment, activates the environment, and runs crontab."""
+    creates the environment, and runs crontab."""
     ssh = ssh_client()
     ssh_connection(ssh, ec2_address, user, key_file)
     git_clone(ssh)
