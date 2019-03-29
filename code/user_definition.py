@@ -1,4 +1,4 @@
-ec2_address = "ec2-54-244-4-64.us-west-2.compute.amazonaws.com"
+ec2_address = "ec2-54-201-25-136.us-west-2.compute.amazonaws.com"
 user = "ec2-user"
 key_file = "/Documents/paulkim.pem"
 git_repo_owner = "MSDS698"
