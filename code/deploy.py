@@ -37,10 +37,9 @@ def git_clone(ssh):
     stdin, stdout, stderr = ssh.exec_command("git --version")
     if (b"" is stderr.read()):
         # ---- HOMEWORK ----- #
-        git_clone_command = "git clone https://dianewoodbridge@github.com/MSDS698/" \
-                            + git_repo_name + ".git"
+        git_clone_command = "git clone https://dianewoodbridge@github.com/" \
+                            "MSDS698/" + git_repo_name + ".git"
         stdin, stdout, stderr = ssh.exec_command(git_clone_command)
-        print(stderr.read())
         change_dir = "cd " + git_repo_name + "/; git pull"
         stdin, stdout, stderr = ssh.exec_command(change_dir)
 
@@ -56,7 +55,6 @@ def main():
         ssh.exec_command("echo '* * * * * ~/.conda/envs/MSDS603/bin/python "
                          "/home/ec2-user/product-analytics-group-project-team1"
                          "/code/calculate_driving_time.py'"
-                         # "python calculate_driving_time.py'"
                          " > order.cron")
     stdin, stdout, stderr = \
         ssh.exec_command("crontab order.cron")
