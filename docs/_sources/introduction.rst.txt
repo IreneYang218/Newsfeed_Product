@@ -1,0 +1,7 @@
+Introduction
+============
+
+This is a project for MSDS603 at the University of San Francisco.
+Our project is a web application that combines a news-feed with critical analysis tools.
+The goal of this project is to provide news readers with contextual information regarding the news they consume.
+In this light, the critical analysis tools we provide are a controversy score of the topic of the article, as well as a reputation score of the writer.
