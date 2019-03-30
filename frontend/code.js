@@ -1,4 +1,6 @@
 'use strict';
+// import MdButton from '../node_modules/vue-material/dist/components'
+// import 'node_modules/vue-material/dist/vue-material.min.css'
 
 // some important global variables.
 // the data source
@@ -33,26 +35,27 @@ async function initialPrep() {
 async function getNews() {
   let data_url = API_SERVER + FORMAT + QUERY;
   let resp = await fetch(data_url);
-  let jsonData = await resp.json();
 
   app_news.news = jsonData['posts'];
 }
 
-var app_news = new Vue({
-  el: '#container',
-  data: {
-    todos: [
-      { text: "What is our app's name?" },
-      { text: 'Do you like this layout?' },
-      { text: 'Get news from api' },
-      { text: 'Link news to their origin website.' },
-      { text: 'User login entrance.' },
-      { text: 'Todo' },
-      { text: 'Todo' },
-      { text: 'Todo' },
-    ],
-    news: []
-  }
-})
 
-initialPrep();
+// const colors = ["indigo","blue","cyan","light-blue","teal","light-green","blue-grey"];
+let app_news = new Vue({ 
+	el: '#feed',
+	data:{
+		news:sample.posts,
+		clicked:sample.posts[0]
+	},
+
+	computed: {
+	},
+
+	methods:{
+		renderArticle: function(idx){
+			this.clicked = sample.posts[idx]
+		}
+	}
+})
+// initialPrep()
+console.log('sample', sample.posts)
