@@ -45,7 +45,7 @@ let app_news = new Vue({
 	el: '#feed',
 	data:{
 		news:sample.posts,
-		clicked:sample.posts[0]
+		hovered:sample.posts[0]
 	},
 
 	computed: {
@@ -53,7 +53,7 @@ let app_news = new Vue({
 
 	methods:{
 		renderArticle: function(idx){
-			this.clicked = sample.posts[idx]
+			this.hovered = sample.posts[idx]
 		}
 	}
 })
