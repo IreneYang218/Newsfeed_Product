@@ -10,8 +10,8 @@ def tokenizer(texts):
     only keep meaningfull words based on pos['NOUN', 'ADJ', 'VERB', 'ADV','INTJ'], lemmatization
     """
     words = []
+    nlp = spacy.load('en', disable=['parser', 'ner'])
     for text in texts:
-        nlp = spacy.load('en', disable=['parser', 'ner'])
         doc = nlp(text)
         ws = [token.lemma_ for token in doc if (
                 token.pos_ in ['NOUN', 'ADJ', 'VERB', 'ADV', 'INTJ']) & (token.is_alpha) & (~token.is_stop)]
