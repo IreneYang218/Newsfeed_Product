@@ -4,7 +4,7 @@
 
 CREATE OR REPLACE VIEW api.news AS
     SELECT *
-    FROM news.news;
+    FROM news.sample;
 
 create role web_anon nologin;
 
