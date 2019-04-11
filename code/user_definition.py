@@ -1,9 +1,0 @@
-ec2_address = "ec2-54-201-25-136.us-west-2.compute.amazonaws.com"
-user = "ec2-user"
-key_file = "/Documents/paulkim.pem"
-git_repo_owner = "MSDS698"
-git_repo_name = "product-analytics-group-project-team1"
-git_user_id = "dianewoodbridge"
-orig_coord = '37.7909,-122.3925'
-dest_coord = '37.7765,-122.4506'
-output_file_name = 'output.txt'

@@ -3,8 +3,6 @@ from os.path import expanduser
 from user_definition import *
 
 
-# ## Assumption : Anaconda, Git (configured)
-
 def ssh_client():
     """Return ssh client object"""
     return paramiko.SSHClient()
@@ -24,11 +22,13 @@ def create_or_update_environment(ssh):
     If the environment already exists, it will just update the environment."""
     stdin, stdout, stderr = \
         ssh.exec_command("conda env create -f "
-                         "~/product-analytics-group-project-team1/venv/environment.yml")
+                         "~/" + git_repo_name +
+                         "/environment.yml")
     if (b'already exists' in stderr.read()):
         stdin, stdout, stderr = \
             ssh.exec_command("conda env update -f "
-                             "~/product-analytics-group-project-team1/venv/environment.yml")
+                             "~/" + git_repo_name +
+                             "/environment.yml")
 
 
 def git_clone(ssh):
@@ -36,12 +36,14 @@ def git_clone(ssh):
     if already exists."""
     stdin, stdout, stderr = ssh.exec_command("git --version")
     if (b"" is stderr.read()):
-        # ---- HOMEWORK ----- #
-        git_clone_command = "git clone https://dianewoodbridge@github.com/" \
-                            "MSDS698/product-analytics-group-project-team1.git"
+        git_clone_command = "git clone https://" + git_user + ":" +\
+                            git_user_password + "@github.com/MSDS689/" +\
+                            git_repo_name + ".git"
         stdin, stdout, stderr = ssh.exec_command(git_clone_command)
-        change_dir = "cd product-analytics-group-project-team1/; git pull"
+        print(stderr.read())
+        change_dir = "cd " + git_repo_name + "/; git pull"
         stdin, stdout, stderr = ssh.exec_command(change_dir)
+        print(stderr.read())
 
 
 def main():
@@ -49,15 +51,15 @@ def main():
     creates the environment, and runs crontab."""
     ssh = ssh_client()
     ssh_connection(ssh, ec2_address, user, key_file)
-    git_clone(ssh)
+    # git_clone(ssh)
     create_or_update_environment(ssh)
-    stdin, stdout, stderr = \
-        ssh.exec_command("echo '* * * * * ~/.conda/envs/MSDS603/bin/python "
-                         "/home/ec2-user/product-analytics-group-project-team1"
-                         "/code/calculate_driving_time.py'"
-                         " > order.cron")
-    stdin, stdout, stderr = \
-        ssh.exec_command("crontab order.cron")
+    # stdin, stdout, stderr = \
+    #     ssh.exec_command("echo '* * * * * ~/.conda/envs/MSDS603/bin/python "
+    #                      "/home/ec2-user/" + git_repo_name +
+    #                      "/code/backend/calculate_driving_time.py'"
+    #                      " > order.cron")
+    # stdin, stdout, stderr = \
+    #     ssh.exec_command("crontab order.cron")
     ssh.exec_command("exit")
 
 
