@@ -11,8 +11,6 @@
 
 	<div id="feed" v-cloak>
 		<v-app dark>
-
-
 			<v-toolbar app fixed clipped-left>
 				<!-- <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon> -->
 				<v-toolbar-title>NewsPhi</v-toolbar-title>
@@ -46,9 +44,9 @@
 								Hovered over:
 							</div>
 						</v-card-title>
-            <v-card-text>
-              {{ hovered.title }}
-            </v-card-text>
+						<v-card-text>
+							{{ hovered.title }}
+						</v-card-text>
 					</v-card>
 				</v-container>
 			</v-navigation-drawer>
@@ -60,16 +58,21 @@
 							<v-layout row wrap>
 								<v-flex xs12 v-for="(n, index) in news">
 									<v-card @mouseover="renderArticle(index)">
+										<!-- <v-card-text> -->
+											<!-- <img :src="n.main_image"> -->
+										<!-- </v-card-text> -->
+										<v-card-text>
+											<i>[SUBTOPIC]&[SCORE]</i>
+											<i>{{ n.thread.site }}</i>
+										</v-card-text>				
 										<v-card-title primary-title>
 											<div class="headline">
-												<a :href="n.url" >{{ n.title!=''?n.title:"No title. Link to article." }}
-												</a>
+												<a :href="n.url" >{{ n.title!=''?n.title:"No title. Link to article." }}</a>
 											</div>
 										</v-card-title>
 										<v-card-text>
-											<i>{{ n.thread.site }}</i>
-											<br>
 											<i>{{ n.th!=''?n.author:"No author" }}</i>
+											<i>[time] ago</i>
 										</v-card-text>
 										<!-- <v-btn @mouseover="renderArticle(index)" color="info">Run</v-btn> -->
 									</v-card>
