@@ -1,0 +1,27 @@
+<html>
+  <head>
+    <title>Flask Intro - login page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
+  </head>
+  <body>
+    <div class="container">
+      <h2>Please login or register your account!</h2>
+      <br>
+      <form action="login_page" method="get">
+        <input class="btn btn-default" type="submit" value="Login">
+      </form>
+      <form action="signup_page" method="get">
+        <input class="btn btn-default" type="submit" value="Sign Up">
+      </form>
+
+      <!-- <div id="button"><a href="./signup">Log In</a></div> -->
+      {% if error %}
+        <p class="error"><strong>Error:</strong> {{ error }}
+      {% endif %}
+      {% for message in get_flashed_messages() %}
+        {{ message }}
+      {% endfor %}
+    </div>
+  </body>
+</html>

@@ -18,10 +18,10 @@ async function initialPrep() {
 
   console.log('2... ');
   console.log("data", app_news.news);
-  
+
   console.log('3... ');
-  
-  
+
+
   console.log('4... ');
   // await fetchAddLayers();
 
@@ -41,7 +41,7 @@ async function getNews() {
 
 
 // const colors = ["indigo","blue","cyan","light-blue","teal","light-green","blue-grey"];
-let app_news = new Vue({ 
+let app_news = new Vue({
 	el: '#feed',
 	data:{
     news:sample.posts,
@@ -59,5 +59,8 @@ let app_news = new Vue({
 		}
 	}
 })
+
+
+
 // initialPrep()
 console.log('sample', sample.posts)

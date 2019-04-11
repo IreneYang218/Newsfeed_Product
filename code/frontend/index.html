@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!HERE>
 <html>
 <head>
 	<link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
@@ -14,6 +15,26 @@
 			<v-toolbar app fixed clipped-left>
 				<!-- <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon> -->
 				<v-toolbar-title>NewsPhi</v-toolbar-title>
+				<v-spacer></v-spacer>
+				<!-- app -->
+				<div>
+					<v-toolbar-item>
+					  <!-- <v-btn  flat right to='/register'>Sign Up</v-btn>
+						<v-btn  flat right to='/login'>Log In</v-btn> -->
+						<router-link
+							to="/signup_page"
+							tag="v-btn"
+						>
+							<v-btn
+								color="white"
+								flat
+								value="Sign Up"
+							>
+								<span>Sign Up</span>
+							</v-btn>
+						</router-link>
+					</v-toolbar-item>
+				</div>
 			</v-toolbar>
 
 			<v-navigation-drawer right clipped fixed v-model="drawer" width="600px" app>
@@ -54,7 +75,7 @@
 										<v-card-text>
 											<i>[SUBTOPIC]&[SCORE]</i>
 											<i>{{ n.thread.site }}</i>
-										</v-card-text>				
+										</v-card-text>
 										<v-card-title primary-title>
 											<div class="headline">
 												<a :href="n.url" >{{ n.title!=''?n.title:"No title. Link to article." }}</a>
@@ -82,7 +103,9 @@
 
 	<script src="https://unpkg.com/vue/dist/vue.js"></script>
 	<script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
-	
+
+
+
 	<script src="./code.js"></script>
 
 </body>

@@ -85,7 +85,7 @@
 }
 
 h1,h3,h4,h5,p {
-  color: #fff; 
+  color: #fff;
   margin: 1% auto;
 }
 .ui h2 {
@@ -114,7 +114,7 @@ hr {margin: 1% 0px; }
   background-color: #f56e71!important;
 }
 
-table#citywide tbody th, td {   
+table#citywide tbody th, td {
   background-color: #444;
   color: #fff;
   border: 0px;
@@ -185,6 +185,9 @@ p.legend-row {
     transition: visibility 0s 0.5s, opacity 0.5s linear;
 }
 
+
+
+
 /*Help*/
 #helpbar {
   text-align:center;
@@ -198,4 +201,4 @@ p.legend-row {
      width: 500px;
      z-index:20;
      box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
-}  
+}
