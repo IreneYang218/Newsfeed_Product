@@ -1,6 +1,6 @@
 from app import application, classes, db
 from flask import render_template, redirect, url_for  # need for Week3 Homework
-from flask import request # handle form
+from flask import request  # handle form
 from flask_login import current_user, login_user, login_required, logout_user
 
 
@@ -12,15 +12,18 @@ def index():
     # return("<h1> WELCOME TO NEWSPHI </h1>")
     return render_template('index_dynamic.html')
 
+
 @application.route('/login_page', methods=['GET', 'POST'])
 def login_page():
     if request.method == 'GET':
         return render_template('login.html')
 
+
 @application.route('/signup_page', methods=['GET', 'POST'])
 def signup_page():
     if request.method == 'GET':
         return render_template('signup.html')
+
 
 @application.route('/register', methods=['GET', 'POST'])
 def register():
@@ -57,12 +60,14 @@ def login():
             # return '<h1> Invalid username and password combination! </h1>'
     return redirect(url_for('index'))
 
+
 @application.route('/secret_page', methods=['GET', 'POST'])
 @login_required
 def secret_page():
     return render_template('secret.html',
                            name=current_user.username,
                            email=current_user.email)
+
 
 @application.route('/logout')
 @login_required
@@ -75,8 +80,3 @@ def logout():
     after_logout = '<h1> After logout - is_autheticated : ' \
                    + str(current_user.is_authenticated) + '</h1>'
     return before_logout + after_logout
-
-
-#################################################
-#   Update This!!                               #
-#################################################
