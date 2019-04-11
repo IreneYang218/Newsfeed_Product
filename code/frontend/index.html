@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!HERE>
 <html>
 <head>
 	<link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
@@ -18,10 +19,20 @@
 				<!-- app -->
 				<div>
 					<v-toolbar-item>
-						<input v-model="Email" placeholder="email">
-						<input :type="passwordFieldType" v-model="Password" placeholder="password">
-					  <v-btn  flat right>Sign Up</v-btn>
-						<v-btn  flat right>Log In</v-btn>
+					  <!-- <v-btn  flat right to='/register'>Sign Up</v-btn>
+						<v-btn  flat right to='/login'>Log In</v-btn> -->
+						<router-link
+							to="/signup_page"
+							tag="v-btn"
+						>
+							<v-btn
+								color="white"
+								flat
+								value="feed"
+							>
+								<span>Sign Up</span>
+							</v-btn>
+						</router-link>
 					</v-toolbar-item>
 				</div>
 			</v-toolbar>
@@ -64,7 +75,7 @@
 										<v-card-text>
 											<i>[SUBTOPIC]&[SCORE]</i>
 											<i>{{ n.thread.site }}</i>
-										</v-card-text>				
+										</v-card-text>
 										<v-card-title primary-title>
 											<div class="headline">
 												<a :href="n.url" >{{ n.title!=''?n.title:"No title. Link to article." }}</a>
