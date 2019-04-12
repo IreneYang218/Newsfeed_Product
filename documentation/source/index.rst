@@ -7,14 +7,15 @@ Welcome to NewsPhi's documentation!
 ===================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 
    introduction
    authors
    requirements
    tutorial
-   code
+   deploy
+   pipeline
 
 
 

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Auto Generated Code Documentation &#8212; NewsPhi 0 documentation</title>
+    <title>Deploy Auto Generated Code Documentation &#8212; NewsPhi 0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -16,6 +16,7 @@
     <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Server Auto Generated Code Documentation" href="server.html" />
     <link rel="prev" title="Code Tutorial" href="tutorial.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -34,7 +35,7 @@
           <div class="body" role="main">
             
   <div class="section" id="module-deploy">
-<span id="auto-generated-code-documentation"></span><h1>Auto Generated Code Documentation<a class="headerlink" href="#module-deploy" title="Permalink to this headline">¶</a></h1>
+<span id="deploy-auto-generated-code-documentation"></span><h1>Deploy Auto Generated Code Documentation<a class="headerlink" href="#module-deploy" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="deploy.create_or_update_environment">
 <code class="descclassname">deploy.</code><code class="descname">create_or_update_environment</code><span class="sig-paren">(</span><em>ssh</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deploy.html#create_or_update_environment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#deploy.create_or_update_environment" title="Permalink to this definition">¶</a></dt>
@@ -69,70 +70,6 @@ creates the environment, and runs crontab.</p>
 username, and the key file (.pem).</p>
 </dd></dl>
 
-<span class="target" id="module-api_to_df"></span><dl class="function">
-<dt id="api_to_df.api_df">
-<code class="descclassname">api_to_df.</code><code class="descname">api_df</code><span class="sig-paren">(</span><em>token</em>, <em>site_lists</em>, <em>time_delta</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api_to_df.html#api_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api_to_df.api_df" title="Permalink to this definition">¶</a></dt>
-<dd><p>A pipeline from api to csv
-:param token: api token for webhose
-:param site_lists: list of sites we need to crawl
-:param time_delta: time window, -3 means recent 3 days.</p>
-<blockquote>
-<div>Can only be from -1 to -30</div></blockquote>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> – filename of csv</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="api_to_df.get_query">
-<code class="descclassname">api_to_df.</code><code class="descname">get_query</code><span class="sig-paren">(</span><em>site_lists</em>, <em>time_delta</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api_to_df.html#get_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api_to_df.get_query" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get query for webhose api given a site_lists and time window
-:param site_lists: list of sites we need to crawl
-:param time_delta: time window, -3 means recent 3 days.</p>
-<blockquote>
-<div>Can only be from -1 to -30</div></blockquote>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a string of query for webhose api</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="api_to_df.output_to_df">
-<code class="descclassname">api_to_df.</code><code class="descname">output_to_df</code><span class="sig-paren">(</span><em>output</em>, <em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api_to_df.html#output_to_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api_to_df.output_to_df" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert a single output (100 news) from webhose to pandas data frame
-and concat to previous data frame
-:param output: a json output from single webhose query
-:param df: previous pandas data frame from previous query,</p>
-<blockquote>
-<div>each row represent one news</div></blockquote>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">pandas data frame, each row represent one news</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="api_to_df.write_s3">
-<code class="descclassname">api_to_df.</code><code class="descname">write_s3</code><span class="sig-paren">(</span><em>df</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api_to_df.html#write_s3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api_to_df.write_s3" title="Permalink to this definition">¶</a></dt>
-<dd><p>Write data to s3 bucket</p>
-</dd></dl>
-
 </div>
 
 
@@ -158,7 +95,10 @@ and concat to previous data frame
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Code Tutorial</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Auto Generated Code Documentation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Deploy Auto Generated Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server.html">Server Auto Generated Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline Auto Generated Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">Model Auto Generated Code Documentation</a></li>
 </ul>
 
 <div class="relations">
@@ -166,6 +106,7 @@ and concat to previous data frame
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="tutorial.html" title="previous chapter">Code Tutorial</a></li>
+      <li>Next: <a href="server.html" title="next chapter">Server Auto Generated Code Documentation</a></li>
   </ul></li>
 </ul>
 </div>
@@ -201,7 +142,7 @@ and concat to previous data frame
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
-      <a href="_sources/code.rst.txt"
+      <a href="_sources/deploy.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

@@ -14,7 +14,12 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../../code/'))
+sys.path.insert(0, os.path.abspath('../../code/deploy/'))
+sys.path.insert(0, os.path.abspath('../../code/data/'))
+sys.path.insert(0, os.path.abspath('../../code/datascience/'))
+sys.path.insert(0, os.path.abspath('../../code/backend/postgresql'))
+sys.path.insert(0, os.path.abspath('../../code/backend/server'))
+sys.path.insert(0, os.path.abspath('../../code/backend/server/app'))
 
 
 # -- Project information -----------------------------------------------------
