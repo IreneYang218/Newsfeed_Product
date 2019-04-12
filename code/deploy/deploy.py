@@ -41,7 +41,8 @@ def git_clone(ssh):
                             "@github.com/" + git_repo_owner + "/" +\
                             git_repo_name + ".git"
         stdin, stdout, stderr = ssh.exec_command(git_clone_command)
-        change_dir = "cd " + git_repo_name + "/; git pull"
+        change_dir = "cd " + git_repo_name +\
+                     "/; git reset --hard origin; git pull"
         stdin, stdout, stderr = ssh.exec_command(change_dir)
         print("ERROR in update git repo: ", stdout.read())
 

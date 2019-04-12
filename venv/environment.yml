@@ -11,6 +11,7 @@ dependencies:
   - bzip2=1.0.6
   - ca-certificates=2019.1.23
   - certifi=2019.3.9
+  - cffi=1.12.2
   - chardet=3.0.4
   - click=7.0
   - docutils=0.14
@@ -22,6 +23,10 @@ dependencies:
   - jmespath=0.9.4
   - libedit=3.1.20181209
   - libffi=3.2.1
+  - libsodium=1.0.16
+  - markupsafe=1.1.1
+  - ncurses=6.1
+  - openssl=1.1.1b
   - packaging=19.0
   - pip=19.0.3
   - pygments=2.3.1
@@ -29,44 +34,41 @@ dependencies:
   - pyopenssl=19.0.0
   - pyparsing=2.3.1
   - pysocks=1.6.8
+  - python=3.7.1
   - python-dateutil=2.8.0
   - python-dotenv=0.10.1
   - pytz=2018.9
+  - readline=7.0
   - requests=2.21.0
   - s3transfer=0.2.0
+  - selenium=3.141.0
   - setuptools=40.8.0
+  - simplejson=3.16.0
   - snowballstemmer=1.2.1
   - sphinx=1.8.5
   - sphinxcontrib=1.0
   - sphinxcontrib-websupport=1.1.0
+  - sqlite=3.27.2
+  - tk=8.6.8
   - urllib3=1.24.1
   - werkzeug=0.14.1
   - wheel=0.33.1
   - wtforms=2.2.1
   - xlrd=1.2.0
+  - xz=5.2.4
+  - zlib=1.2.11
   - pip:
-    - ncurses=6.1
-    - tk=8.6.8
-    - sqlite=3.27.2
-    - libsodium=1.0.16
-    - readline=7.0
-    - openssl=1.1.1b
-    - cffi=1.12.2
-    - python=3.7.1
-    - zlib=1.2.11
-    - xz=5.2.4
-    - simplejson=3.16.0
-    - selenium=3.141.0
-    - markupsafe=1.1.1
     - appnope==0.1.0
     - asn1crypto==0.24.0
     - atomicwrites==1.3.0
     - attrs==19.1.0
     - backcall==0.1.0
+    - bcrypt==3.1.6
     - bleach==3.1.0
     - blis==0.2.4
     - boto==2.49.0
     - bz2file==0.98
+    - cryptography==2.4.2
     - cymem==2.0.2
     - decorator==4.4.0
     - defusedxml==0.5.0
@@ -110,6 +112,7 @@ dependencies:
     - prompt-toolkit==2.0.9
     - ptyprocess==0.6.0
     - py==1.8.0
+    - pyasn1==0.4.5
     - pycodestyle==2.5.0
     - pycparser==2.19
     - pyldavis==2.1.2
@@ -122,6 +125,7 @@ dependencies:
     - six==1.12.0
     - smart-open==1.8.0
     - spacy==2.1.3
+    - sqlalchemy==1.3.2
     - srsly==0.0.5
     - terminado==0.8.1
     - testpath==0.4.2
