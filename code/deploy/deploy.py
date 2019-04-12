@@ -29,7 +29,14 @@ def create_or_update_environment(ssh):
             ssh.exec_command("conda env update -f "
                              "~/" + git_repo_name +
                              "/venv/environment.yml")
-        print("ERROR in update environment: ", stdout.read())
+        if (stderr.read() is not b""):
+            print("ERROR in update environment: ", stderr.read())
+        else:
+            print("UPDATE ENVIRONMENT SUCCESS")
+    elif (stderr.read() is not b''):
+        print("ERROR in create environment: ", stderr.read())
+    else:
+        print("CREATE ENVIRONMENT SUCCESS")
 
 
 def git_clone(ssh):
@@ -41,10 +48,21 @@ def git_clone(ssh):
                             "@github.com/" + git_repo_owner + "/" +\
                             git_repo_name + ".git"
         stdin, stdout, stderr = ssh.exec_command(git_clone_command)
-        change_dir = "cd " + git_repo_name +\
+        print(stderr.read())
+        print(stdout.read())
+        if (b'already exists' in stderr.read()):
+            change_dir = "cd " + git_repo_name +\
                      "/; git reset --hard origin; git pull"
-        stdin, stdout, stderr = ssh.exec_command(change_dir)
-        print("ERROR in update git repo: ", stdout.read())
+            stdin, stdout, stderr = ssh.exec_command(change_dir)
+            if (stderr.read() is not b""):
+                print("ERROR in update git repo: ", stderr.read())
+            else:
+                print("UPDATE GIT REPO SUCCESS")
+        elif (b'fatal' in stderr.read()):
+            print("ERROR in clone git repo: ", stdout.read())
+        else:
+            print("CLONE GIT REPO SUCCESS")
+        
 
 
 def main():
@@ -56,10 +74,10 @@ def main():
     create_or_update_environment(ssh)
 
     # Launch the application
-    # change_dir = "cd " + git_repo_name +\
-    #              "/code/backend/server/; flask run"
-    # stdin, stdout, stderr = ssh.exec_command(change_dir)
-    # print(stdout.read())
+    change_dir = "cd " + git_repo_name +\
+                 "/code/backend/server/; pwd"
+    stdin, stdout, stderr = ssh.exec_command(change_dir)
+    print(stdout.read())
 
     # set crontab
     stdin, stdout, stderr = \
@@ -69,7 +87,10 @@ def main():
                          " > order.cron")
     stdin, stdout, stderr = \
         ssh.exec_command("crontab order.cron")
-    print("ERROR in crontab: ", stdout.read())
+    if (stderr.read() is not b""):
+        print("ERROR in crontab: ", stdout.read())
+    else:
+        print("SET UP CRONTAB SUCCESS")
     ssh.exec_command("exit")
 
 
