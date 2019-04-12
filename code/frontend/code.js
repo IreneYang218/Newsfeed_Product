@@ -47,8 +47,7 @@ let app_news = new Vue({
     news: sample.posts,
     time: new Date(),
     my_articles: [],
-    clicked_urls: new Set()
-		// clicked: sample.posts[0]
+    clicked_links: new Set()
 	},
 
 	computed: {
@@ -61,17 +60,19 @@ let app_news = new Vue({
       var click_id = this.my_articles.length
       clicked['click_id'] = click_id
 
-      if( !this.clicked_urls.has(clicked.url) ){
+      if( !this.clicked_links.has(clicked.url) ){
         this.my_articles.push(clicked)
-        this.clicked_urls.add(clicked.url)
+        this.clicked_links.add(clicked.url)
       }     
 		},
-    
-    removeArticle: function(index){
+
+    removeArticle: function(index, clicked){
         if (this.my_articles.length == 1){
           this.my_articles = []
+          this.clicked_links = new Set()
         }else{
           this.my_articles.splice(index, index+1)
+          this.clicked_links.delete(clicked.url)
         }    
       }
 	 }
