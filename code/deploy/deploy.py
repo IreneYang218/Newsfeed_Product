@@ -29,6 +29,7 @@ def create_or_update_environment(ssh):
             ssh.exec_command("conda env update -f "
                              "~/" + git_repo_name +
                              "/environment.yml")
+        print("ERROR in update environment: ", stdout.read())
 
 
 def git_clone(ssh):
@@ -40,10 +41,9 @@ def git_clone(ssh):
                             git_user_password + "@github.com/MSDS689/" +\
                             git_repo_name + ".git"
         stdin, stdout, stderr = ssh.exec_command(git_clone_command)
-        print(stderr.read())
         change_dir = "cd " + git_repo_name + "/; git pull"
         stdin, stdout, stderr = ssh.exec_command(change_dir)
-        print(stderr.read())
+        print("ERROR in update git repo: ", stdout.read())
 
 
 def main():
@@ -51,13 +51,14 @@ def main():
     creates the environment, and runs crontab."""
     ssh = ssh_client()
     ssh_connection(ssh, ec2_address, user, key_file)
-    # git_clone(ssh)
+    git_clone(ssh)
     create_or_update_environment(ssh)
-    # stdin, stdout, stderr = \
-    #     ssh.exec_command("echo '* * * * * ~/.conda/envs/MSDS603/bin/python "
-    #                      "/home/ec2-user/" + git_repo_name +
-    #                      "/code/backend/calculate_driving_time.py'"
-    #                      " > order.cron")
+    change_dir = "cd " + git_repo_name +\
+                 "/code/backend/server/; flask run"
+    stdin, stdout, stderr = ssh.exec_command(change_dir)
+    # stdin, stdout, stderr = ssh.exec_command("pwd")
+    print(stdout.read())
+    # stdin, stdout, stderr = ssh.exec_command("flask run")
     # stdin, stdout, stderr = \
     #     ssh.exec_command("crontab order.cron")
     ssh.exec_command("exit")
