@@ -23,12 +23,12 @@ def create_or_update_environment(ssh):
     stdin, stdout, stderr = \
         ssh.exec_command("conda env create -f "
                          "~/" + git_repo_name +
-                         "/environment.yml")
+                         "/venv/environment.yml")
     if (b'already exists' in stderr.read()):
         stdin, stdout, stderr = \
             ssh.exec_command("conda env update -f "
                              "~/" + git_repo_name +
-                             "/environment.yml")
+                             "/venv/environment.yml")
         print("ERROR in update environment: ", stdout.read())
 
 
@@ -53,14 +53,22 @@ def main():
     ssh_connection(ssh, ec2_address, user, key_file)
     git_clone(ssh)
     create_or_update_environment(ssh)
-    change_dir = "cd " + git_repo_name +\
-                 "/code/backend/server/; flask run"
-    stdin, stdout, stderr = ssh.exec_command(change_dir)
-    # stdin, stdout, stderr = ssh.exec_command("pwd")
-    print(stdout.read())
-    # stdin, stdout, stderr = ssh.exec_command("flask run")
-    # stdin, stdout, stderr = \
-    #     ssh.exec_command("crontab order.cron")
+
+    # Launch the application
+    # change_dir = "cd " + git_repo_name +\
+    #              "/code/backend/server/; flask run"
+    # stdin, stdout, stderr = ssh.exec_command(change_dir)
+    # print(stdout.read())
+
+    # set crontab
+    stdin, stdout, stderr = \
+        ssh.exec_command("echo '0 0 * * * ~/.conda/envs/MSDS603/bin/python "
+                         "/home/ec2-user/" + git_repo_name +
+                         "/code/backend/postgresql/import.py'"
+                         " > order.cron")
+    stdin, stdout, stderr = \
+        ssh.exec_command("crontab order.cron")
+
     ssh.exec_command("exit")
 
 
