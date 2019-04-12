@@ -66,13 +66,21 @@
 					<v-card>
 						<v-card-title>
 							<div class="headline">
-								Clicked On:
+								<a :href="clicked.url">
+								{{ clicked.title }}
+								</a>
 							</div>
-							{{ clicked.title }}
 						</v-card-title>
-						<!-- <v-card-text>
-							
-						</v-card-text> -->
+						<v-card-text>
+							<i>{{clicked.thread.site}}</i>
+							<i>{{ clicked.th!=''?clicked.author:"No author" }} [time] ago</i>
+						</v-card-text>												
+						<v-card-text>
+							<i>[SUBTOPIC]&[SCORE]</i>
+						</v-card-text>
+						<v-card-text>
+							<i>[REPUTATION SCORE]</i>														
+						</v-card-text>
 					</v-card>
 				</v-container>
 			</v-navigation-drawer>
@@ -83,25 +91,26 @@
 						<v-container fluid grid-list-md>
 							<v-layout row wrap>
 								<v-flex xs12 v-for="(n, index) in news">
-									<v-card>
+									<v-card @click="renderArticle(index)">
 										<!-- <v-card-text> -->
 											<!-- <img :src="n.main_image"> -->
 										<!-- </v-card-text> -->
 										<v-card-text>
-											<i>[SUBTOPIC]&[SCORE]</i>
 											<i>{{ n.thread.site }}</i>
 										</v-card-text>
 										<v-card-title primary-title>
 											<div class="headline">
-												<a :href="n.url" >{{ n.title!=''?n.title:"No title. Link to article." }}</a>
+												<h2>{{ n.title!=''?n.title:"No title. Link to article." }}</h2>
 											</div>
 										</v-card-title>
 										<v-card-text>
 											<i>{{ n.th!=''?n.author:"No author" }}</i>
 											<i>[time] ago</i>
 										</v-card-text>
-										<v-btn @click="renderArticle(index)" color="info">Run</v-btn>
+
+ <!-- 										<v-btn @click="renderArticle(index)" color="info">Run</v-btn>
 										<v-btn @mouseover="renderArticle(index)" color="info">Run</v-btn>
+ -->									
 									</v-card>
 								</v-flex>
 							</v-layout>
