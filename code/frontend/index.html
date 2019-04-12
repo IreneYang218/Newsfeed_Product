@@ -62,12 +62,13 @@
 						</v-list-tile-content>
 					</v-list-tile>
 				</v-list>
-				<v-container>
+				<v-container v-for="(clicked, index) in my_articles">
 					<v-card>
 						<v-card-title>
 							<div class="headline">
 								<a :href="clicked.url">
 								{{ clicked.title }}
+								{{index}}
 								</a>
 							</div>
 						</v-card-title>
@@ -81,6 +82,7 @@
 						<v-card-text>
 							<i>[REPUTATION SCORE]</i>														
 						</v-card-text>
+ 						<v-btn @click="removeArticle(index)" color="info">rm</v-btn>
 					</v-card>
 				</v-container>
 			</v-navigation-drawer>
@@ -92,7 +94,7 @@
 							<v-layout row wrap>
 								<v-flex xs12 v-for="(n, index) in news">
 									<v-card @click="renderArticle(index)">
-										<!-- <v-card-text> -->
+										<!-- <v-card-text>
 											<!-- <img :src="n.main_image"> -->
 										<!-- </v-card-text> -->
 										<v-card-text>
