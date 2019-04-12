@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<!HERE>
 <html>
 <head>
 	<link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
 	<link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
-	 <script type="text/javascript" src="sample.json"></script>
+	<script src="https://unpkg.com/vue/dist/vue.js"></script>
+	<script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
+	<script type="text/javascript" src="sample.json"></script>
+
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
 	<style>[v-cloak] {display: none}</style>
 </head>
@@ -64,12 +66,13 @@
 					<v-card>
 						<v-card-title>
 							<div class="headline">
-								Hovered over:
+								Clicked On:
 							</div>
+							{{ clicked.title }}
 						</v-card-title>
-						<v-card-text>
-							{{ hovered.title }}
-						</v-card-text>
+						<!-- <v-card-text>
+							
+						</v-card-text> -->
 					</v-card>
 				</v-container>
 			</v-navigation-drawer>
@@ -80,7 +83,7 @@
 						<v-container fluid grid-list-md>
 							<v-layout row wrap>
 								<v-flex xs12 v-for="(n, index) in news">
-									<v-card @mouseover="renderArticle(index)">
+									<v-card>
 										<!-- <v-card-text> -->
 											<!-- <img :src="n.main_image"> -->
 										<!-- </v-card-text> -->
@@ -97,7 +100,8 @@
 											<i>{{ n.th!=''?n.author:"No author" }}</i>
 											<i>[time] ago</i>
 										</v-card-text>
-										<!-- <v-btn @mouseover="renderArticle(index)" color="info">Run</v-btn> -->
+										<v-btn @click="renderArticle(index)" color="info">Run</v-btn>
+										<v-btn @mouseover="renderArticle(index)" color="info">Run</v-btn>
 									</v-card>
 								</v-flex>
 							</v-layout>
@@ -112,13 +116,6 @@
 
 		</v-app>
 	</div>
-
-	<script src="https://unpkg.com/vue/dist/vue.js"></script>
-	<script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
-
-
-
 	<script src="./code.js"></script>
-
 </body>
 </html>

@@ -1,0 +1,6 @@
+ec2_address = "ec2-34-219-58-27.us-west-2.compute.amazonaws.com"
+user = "ec2-user"
+key_file = "/AWS/CrystalOregon.pem"
+git_repo_name = "product-analytics-group-project-team1"
+git_user = "crystalxs"
+git_repo_owner = "MSDS698"

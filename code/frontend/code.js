@@ -44,9 +44,9 @@ async function getNews() {
 let app_news = new Vue({
 	el: '#feed',
 	data:{
-    news:sample.posts,
+    news: sample.posts,
     time: new Date(),
-		hovered:sample.posts[0]
+		clicked: sample.posts[0]
 	},
 
 	computed: {
@@ -55,7 +55,7 @@ let app_news = new Vue({
 	methods:{
     
 		renderArticle: function(idx){
-			this.hovered = sample.posts[idx]
+			this.clicked = sample.posts[idx]
 		}
 	}
 })

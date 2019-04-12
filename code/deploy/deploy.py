@@ -37,8 +37,8 @@ def git_clone(ssh):
     if already exists."""
     stdin, stdout, stderr = ssh.exec_command("git --version")
     if (b"" is stderr.read()):
-        git_clone_command = "git clone https://" + git_user + ":" +\
-                            git_user_password + "@github.com/MSDS689/" +\
+        git_clone_command = "git clone https:/" + git_user +\
+                            "@github.com/" + git_repo_owner + "/" +\
                             git_repo_name + ".git"
         stdin, stdout, stderr = ssh.exec_command(git_clone_command)
         change_dir = "cd " + git_repo_name + "/; git pull"
