@@ -35,40 +35,6 @@
             
   <div class="section" id="module-deploy">
 <span id="auto-generated-code-documentation"></span><h1>Auto Generated Code Documentation<a class="headerlink" href="#module-deploy" title="Permalink to this headline">¶</a></h1>
-<dl class="function">
-<dt id="deploy.create_or_update_environment">
-<code class="descclassname">deploy.</code><code class="descname">create_or_update_environment</code><span class="sig-paren">(</span><em>ssh</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deploy.html#create_or_update_environment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#deploy.create_or_update_environment" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates the environment from the environment.yml file.
-If the environment already exists, it will just update the environment.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="deploy.git_clone">
-<code class="descclassname">deploy.</code><code class="descname">git_clone</code><span class="sig-paren">(</span><em>ssh</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deploy.html#git_clone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#deploy.git_clone" title="Permalink to this definition">¶</a></dt>
-<dd><p>Clones the git repository, otherwise pulls
-if already exists.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="deploy.main">
-<code class="descclassname">deploy.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/deploy.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#deploy.main" title="Permalink to this definition">¶</a></dt>
-<dd><p>The command to run in bash. Connects to EC2, clones the git repo,
-creates the environment, activates the environment, and runs crontab.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="deploy.ssh_client">
-<code class="descclassname">deploy.</code><code class="descname">ssh_client</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/deploy.html#ssh_client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#deploy.ssh_client" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return ssh client object</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="deploy.ssh_connection">
-<code class="descclassname">deploy.</code><code class="descname">ssh_connection</code><span class="sig-paren">(</span><em>ssh</em>, <em>ec2_address</em>, <em>user</em>, <em>key_file</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deploy.html#ssh_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#deploy.ssh_connection" title="Permalink to this definition">¶</a></dt>
-<dd><p>Makes SSH connection using the ec2 address,
-username, and the key file (.pem).</p>
-</dd></dl>
-
 </div>
 
 

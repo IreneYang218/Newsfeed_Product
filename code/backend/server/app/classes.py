@@ -6,6 +6,9 @@ from app import db, login_manager
 
 
 class User(db.Model, UserMixin):
+    """
+    Class for users
+    """
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(80), unique=True, nullable=False)
@@ -25,10 +28,10 @@ class User(db.Model, UserMixin):
 
 db.create_all()
 db.session.commit()
-
-# user_loader :
-# This callback is used to reload the user object
-# from the user ID stored in the session.
 @login_manager.user_loader
 def load_user(id):
+    """
+    This callback is used to reload the user object
+    from the user ID stored in the session.
+    """
     return User.query.get(int(id))

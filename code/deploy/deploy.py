@@ -68,7 +68,7 @@ def main():
                          " > order.cron")
     stdin, stdout, stderr = \
         ssh.exec_command("crontab order.cron")
-
+    print("ERROR in crontab: ", stdout.read())
     ssh.exec_command("exit")
 
 

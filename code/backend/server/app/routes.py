@@ -7,6 +7,7 @@ from flask_login import current_user, login_user, login_required, logout_user
 @application.route('/index')
 @application.route('/')
 def index():
+    """Render main page"""
     # button for signup
     # button for login
     # return("<h1> WELCOME TO NEWSPHI </h1>")
@@ -15,18 +16,21 @@ def index():
 
 @application.route('/login_page', methods=['GET', 'POST'])
 def login_page():
+    """Render the user log in page"""
     if request.method == 'GET':
         return render_template('login.html')
 
 
 @application.route('/signup_page', methods=['GET', 'POST'])
 def signup_page():
+    """render the user sign up page"""
     if request.method == 'GET':
         return render_template('signup.html')
 
 
 @application.route('/register', methods=['GET', 'POST'])
 def register():
+    """User register"""
     error = None
     if request.method == 'POST':
         username = request.form['username']
@@ -44,6 +48,7 @@ def register():
 
 @application.route('/login', methods=['GET', 'POST'])
 def login():
+    """Log user in"""
     error = None
     if request.method == 'POST':
         email = request.form['email']
@@ -64,6 +69,7 @@ def login():
 @application.route('/secret_page', methods=['GET', 'POST'])
 @login_required
 def secret_page():
+    """Render the page for login user"""
     return render_template('secret.html',
                            name=current_user.username,
                            email=current_user.email)
@@ -72,6 +78,7 @@ def secret_page():
 @application.route('/logout')
 @login_required
 def logout():
+    """Log user out"""
     before_logout = '<h1> Before logout - is_autheticated : ' \
                     + str(current_user.is_authenticated) + '</h1>'
 
