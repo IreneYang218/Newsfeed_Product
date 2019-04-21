@@ -58,8 +58,8 @@ def import_data(f):
 
 
 if __name__ == '__main__':
-    TABLE_NAME = 'articles'
-    SCHEMA_NAME = 'news'
+    TABLE_NAME = 'news_articles'
+    SCHEMA_NAME = 'newsphi'
     f = read_file_and_process('../sample_data/sample_data_topics.csv',
                               TABLE_NAME, SCHEMA_NAME)
     import_data(f)
