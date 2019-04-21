@@ -39,7 +39,6 @@ async function getNews() {
   app_news.news = jsonData['posts'];
 }
 
-
 // const colors = ["indigo","blue","cyan","light-blue","teal","light-green","blue-grey"];
 let app_news = new Vue({
 	el: '#feed',
@@ -63,9 +62,18 @@ let app_news = new Vue({
       if( !this.clicked_links.has(clicked.url) ){
         this.my_articles.push(clicked)
         this.clicked_links.add(clicked.url)
-      }     
+      }
 		},
-
+    handleSignUp: function(idx) {
+      axios.post('http://127.0.0.1:5000/register', {
+        username: 'foo',
+        password: 'foo',
+        email: 'foo'
+      })
+      .then(function (response) {
+        console.log(response);
+      });
+    },
     removeArticle: function(index, clicked){
         if (this.my_articles.length == 1){
           this.my_articles = []
@@ -73,7 +81,7 @@ let app_news = new Vue({
         }else{
           this.my_articles.splice(index, index+1)
           this.clicked_links.delete(clicked.url)
-        }    
+        }
       }
 	 }
 })
