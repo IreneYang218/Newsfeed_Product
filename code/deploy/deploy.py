@@ -80,10 +80,11 @@ def main():
     print(stdout.read())
 
     # set crontab
+    # get streaming data everyday
     stdin, stdout, stderr = \
         ssh.exec_command("echo '0 0 * * * ~/.conda/envs/MSDS603/bin/python "
                          "/home/ec2-user/" + git_repo_name +
-                         "/code/backend/postgresql/import.py'"
+                         "/code/data/api_to_df.py'"
                          " > order.cron")
     stdin, stdout, stderr = \
         ssh.exec_command("crontab order.cron")
@@ -91,6 +92,10 @@ def main():
         print("ERROR in crontab: ", stdout.read())
     else:
         print("SET UP CRONTAB SUCCESS")
+
+    # running model
+    # upload output to rds
+    # running server
     ssh.exec_command("exit")
 
 

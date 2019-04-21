@@ -4,10 +4,6 @@ import datetime as dt
 import boto3
 from pandas.io.json import json_normalize
 from urllib.error import HTTPError
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
 from user_definition_api import *
 from info import *
 
@@ -83,29 +79,22 @@ def api_df(token, site_lists, time_delta, filename):
             df.to_csv(filename, index=False)
         if len(df) % 1000 == 0:
             print(str(len(df)) + ' has finished')
-    # df.to_csv(filename, index=False)
-    return df
+    df.to_csv(filename, index=False)
 
 
-def write_s3(df, filename):
+def write_s3(filename):
     """
     Write data to s3 bucket
     """
     # write DF to string stream
-    csv_buffer = StringIO()
-    df.to_csv(csv_buffer, index=False)
+    s3 = boto3.client('s3',
+                          aws_access_key_id=key_id,
+                          aws_secret_access_key=secret_key)
 
-    # reset stream position
-    csv_buffer.seek(0)
-    # create binary stream
-    gz_buffer = BytesIO()
-
-    session = boto3.Session(aws_accaws_access_key_id=key_id,
-                            aws_secret_access_key=secret_key)
-    s3 = session.resource("s3")
-    bucket = s3.Bucket('newsphi')
-    s3.upload_file(gz_buffer, bucket, filename)
+    with open(filename, "rb") as f:
+        s3.upload_fileobj(f, "newsphi", filename)
 
 
 if __name__ == '__main__':
     api_df(token, site_lists, time_delta, filename)
+    write_s3(filename)
