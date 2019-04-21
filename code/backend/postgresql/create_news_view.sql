@@ -4,6 +4,6 @@
 
 CREATE OR REPLACE VIEW api.articles AS
     SELECT *
-    FROM news.articles;
+    FROM newsphi.news_articles;
 
 grant select on api.articles to web_anon;
