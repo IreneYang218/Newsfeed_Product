@@ -1,16 +1,19 @@
--- Table: news.articles
+-- Table: newsphi.news_articles
 
--- DROP TABLE news.articles;
+-- DROP TABLE newsphi.news_articles;
 
-CREATE TABLE news.articles
+CREATE TABLE newsphi.news_articles
 (
-    title text NOT NULL,
-    author text,
-    published TIMESTAMP NOT NULL,
-    site_full text NOT NULL,
-    main_image text NOT NULL,
-    post_link text NOT NULL,
-    dominat_topic NUMERIC,
-    keywords text,
-    controversy_score NUMERIC
+    article_id SERIAL PRIMARY KEY,
+    author_id integer REFERENCES newsphi.authors (author_id),
+    title varchar(256) NOT NULL,
+    author varchar(256),
+    published_time TIMESTAMP NOT NULL,
+    site_full varchar(256) NOT NULL,
+    main_image varchar(256),
+    post_link varchar(256) NOT NULL,
+    news_topic varchar(256),
+    controversy_score double precision
 );
+
+ALTER TABLE newsphi.news_articles OWNER to newsphi;
