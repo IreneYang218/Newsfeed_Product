@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+	<link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
+	<script src="https://unpkg.com/vue/dist/vue.js"></script>
+	<script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='sample.json') }}"></script>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+	<style>[v-cloak] {display: none}</style>
+</head>
+<body>
+
+	<div id="feed" v-cloak>
+		<v-app dark>
+			<v-toolbar app fixed clipped-left>
+				<!-- <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon> -->
+				<v-toolbar-title>NewsPhi</v-toolbar-title>
+				<v-spacer></v-spacer>
+				<!-- app -->
+				<div>
+					<v-toolbar-item>
+					  <!-- <v-btn  flat right to='/register'>Sign Up</v-btn>
+						<v-btn  flat right to='/login'>Log In</v-btn> -->
+						<input v-model="input_email" placeholder="email">
+						<input v-model="input_pwd" placeholder="password">
+						<v-btn color="white" flat value="Sign Up" @click="handleSignUp">
+							<span>Sign Up</span>
+						</v-btn>
+						<v-btn color="white" flat value="Log In" @click="handleLogIn">
+							<span>Log In</span>
+						</v-btn>
+					</v-toolbar-item>
+				</div>
+			</v-toolbar>
+
+			<v-navigation-drawer right clipped fixed v-model="drawer" width="600px" app>
+				<v-list dense>
+					<v-list-tile>
+						<v-list-tile-action>
+							<v-icon>dashboard</v-icon>
+						</v-list-tile-action>
+						<v-list-tile-content>
+							<v-list-tile-title>Article Dashboard</v-list-tile-title>
+						</v-list-tile-content>
+					</v-list-tile>
+				</v-list>
+				<v-container v-for="(clicked, index) in my_articles">
+					<v-card>
+						<v-card-title>
+							<div class="headline">
+								<a :href="clicked.url" target="_blank">
+								[[ clicked.title ]]
+								[[index]]
+								</a>
+							</div>
+						</v-card-title>
+						<v-card-text>
+							<i>[[clicked.thread.site]]</i>
+							<i>[[ clicked.th!=''?clicked.author:"No author" ]] [time] ago</i>
+						</v-card-text>
+						<v-card-text>
+							<i>[SUBTOPIC]&[SCORE]</i>
+						</v-card-text>
+						<v-card-text>
+							<i>[REPUTATION SCORE]</i>
+						</v-card-text>
+						<v-btn fab dark small color="primary" @click="removeArticle(index)">
+							<v-icon dark>remove</v-icon>
+						</v-btn>
+					</v-card>
+				</v-container>
+			</v-navigation-drawer>
+
+			<v-content>
+				<v-container>
+					<div>
+						<v-container fluid grid-list-md>
+							<v-layout row wrap>
+								<v-flex xs12 v-for="(n, index) in news">
+									<v-card @click="renderArticle(index)">
+										<!-- <v-card-text>
+											<!-- <img :src="n.main_image"> -->
+										<!-- </v-card-text> -->
+										<v-card-text>
+											<i>[[ n.thread.site ]]</i>
+										</v-card-text>
+										<v-card-title primary-title>
+											<div class="headline">
+												<h2>[[ n.title!=''?n.title:"No title. Link to article." ]]</h2>
+											</div>
+										</v-card-title>
+										<v-card-text>
+											<i>[[ n.th!=''?n.author:"No author" ]]</i>
+											<i>[time] ago</i>
+										</v-card-text>
+
+ <!-- 										<v-btn @click="renderArticle(index)" color="info">Run</v-btn>
+										<v-btn @mouseover="renderArticle(index)" color="info">Run</v-btn>
+ -->
+									</v-card>
+								</v-flex>
+							</v-layout>
+						</v-container>
+					</div>
+				</v-container>
+			</v-content>
+
+			<v-footer app fixed>
+				<span>Hello we are team 1</span>
+			</v-footer>
+
+		</v-app>
+	</div>
+	<script src="{{ url_for('static', filename='code.js')}}"></script>
+</body>
+</html>
