@@ -25,7 +25,7 @@
 					  <!-- <v-btn  flat right to='/register'>Sign Up</v-btn>
 						<v-btn  flat right to='/login'>Log In</v-btn> -->
 						<input v-model="input_email" placeholder="email">
-						<input v-model="input_pwd" placeholder="password">
+						<input v-model="input_pwd" type="password" placeholder="password">
 						<v-btn color="white" flat value="Sign Up" @click="handleSignUp">
 							<span>Sign Up</span>
 						</v-btn>
@@ -35,7 +35,7 @@
 					</v-toolbar-item>
 				</div>
 			</v-toolbar>
-
+			<!-- Article dashboard -->
 			<v-navigation-drawer right clipped fixed v-model="drawer" width="600px" app>
 				<v-list dense>
 					<v-list-tile>
@@ -76,6 +76,37 @@
 
 			<v-content>
 				<v-container>
+					<!-- Topic navigation dropdown -->
+				    <div class="text-xs">
+				      <v-menu
+				        :close-on-content-click="false"
+				        :nudge-width="200"
+				        offset-x
+				      >
+				        <template v-slot:activator="{ on }">
+				          <v-btn
+				            color="indigo"
+				            dark
+				            v-on="on"
+				          >
+				            Topic Navigation
+				          </v-btn>
+				        </template>
+				        <v-card>  
+				          <v-divider></v-divider>
+				          <v-list v-for="(topic, index) in topics">
+				            <v-list-tile>
+				              <v-list-tile-action>
+				                <v-switch @change="chooseTopic(index)" color="purple"></v-switch>
+				              </v-list-tile-action>
+				              <v-list-tile-title>[[ topic ]]</v-list-tile-title>
+				            </v-list-tile>
+				  		  </v-list>
+				        </v-card>
+				      </v-menu>
+				    </div>
+
+					<!-- News Feed -->
 					<div>
 						<v-container fluid grid-list-md>
 							<v-layout row wrap>

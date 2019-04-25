@@ -45,8 +45,11 @@ let app_news = new Vue({
 	el: '#feed',
 	data:{
     news: sample.posts,
+    drawer: true,
     time: new Date(),
     my_articles: [],
+    topics: ['topic a', 'topic b', 'topic c', 'topic d'],
+    topic_on: [false, false, false, false], 
     clicked_links: new Set(),
     input_email: '',
     input_pwd: ''
@@ -88,18 +91,23 @@ let app_news = new Vue({
       });
     },
     removeArticle: function(index, clicked){
-        if (this.my_articles.length == 1){
-          this.my_articles = []
-          this.clicked_links = new Set()
-        }else{
-          this.my_articles.splice(index, index+1)
-          this.clicked_links.delete(clicked.url)
-        }
+      if (this.my_articles.length == 1){
+        this.my_articles = []
+        this.clicked_links = new Set()
+      }else{
+        this.my_articles.splice(index, index+1)
+        this.clicked_links.delete(clicked.url)
       }
-	 }
+    },
+    chooseTopic: function(index){
+      console.log('topics', this.topics)
+      this.topic_on[index] = !this.topic_on[index]
+    }
+	}
 })
 
 
 
 // initialPrep()
+console.log('hello')
 console.log('sample', sample.posts)

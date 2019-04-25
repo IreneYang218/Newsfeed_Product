@@ -13,19 +13,19 @@ def index():
     # return("<h1> WELCOME TO NEWSPHI </h1>")
     return render_template('index.html')
 
-
-@application.route('/login_page', methods=['GET', 'POST'])
-def login_page():
-    """Render the user log in page"""
-    if request.method == 'GET':
-        return render_template('login.html')
-
-
-@application.route('/signup_page', methods=['GET', 'POST'])
-def signup_page():
-    """render the user sign up page"""
-    if request.method == 'GET':
-        return render_template('signup.html')
+#
+# @application.route('/login_page', methods=['GET', 'POST'])
+# def login_page():
+#     """Render the user log in page"""
+#     if request.method == 'GET':
+#         return render_template('login.html')
+#
+#
+# @application.route('/signup_page', methods=['GET', 'POST'])
+# def signup_page():
+#     """render the user sign up page"""
+#     if request.method == 'GET':
+#         return render_template('signup.html')
 
 
 @application.route('/register', methods=['GET', 'POST'])
@@ -52,7 +52,6 @@ def login():
     """Log user in"""
     error = None
     if request.method == 'POST':
-        print(request.json)
         email = request.json['email']
         password = request.json['password']
         username = email.split('@')[0]
