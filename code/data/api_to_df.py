@@ -11,6 +11,7 @@ from info import *
 def get_query(site_lists, time_delta):
     """
     Get query for webhose api given a site_lists and time window
+
     :param site_lists: list of sites we need to crawl
     :param time_delta: time window, -3 means recent 3 days.
                        Can only be from -1 to -30
@@ -33,10 +34,13 @@ def output_to_df(output, df):
     """
     Convert a single output (100 news) from webhose to pandas data frame
     and concat to previous data frame
-    :param output: a json output from single webhose query
-    :param df: previous pandas data frame from previous query,
-               each row represent one news
-    :return: pandas data frame, each row represent one news
+
+    :param output:
+        a json output from single webhose query
+    :param df:
+        previous pandas data frame from previous query, each row represent one news
+    :return:
+        pandas data frame, each row represent one news
     """
     output_flat = pd.io.json.json_normalize(output['posts'])
     df_tmp = output_flat[['thread.uuid', 'author', 'external_links',
@@ -53,12 +57,17 @@ def output_to_df(output, df):
 def api_df(token, site_lists, time_delta, filename):
     """
     A pipeline from api to csv
-    :param token: api token for webhose
-    :param site_lists: list of sites we need to crawl
-    :param time_delta: time window, -3 means recent 3 days.
-                       Can only be from -1 to -30
-    :param filename: filename of csv
-    :return: None
+
+    :param token:
+        api token for webhose
+    :param site_lists:
+        list of sites we need to crawl
+    :param time_delta:
+        time window, -3 means recent 3 days.  Can only be from -1 to -30
+    :param filename:
+        filename of csv
+    :return:
+        None
     """
     webhoseio.config(token=token)
     query_params = get_query(site_lists, time_delta)

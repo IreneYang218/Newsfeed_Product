@@ -16,6 +16,8 @@ Welcome to NewsPhi's documentation!
    tutorial
    deploy
    pipeline
+   server
+   model
 
 
 

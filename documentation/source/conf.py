@@ -18,8 +18,7 @@ sys.path.insert(0, os.path.abspath('../../code/deploy/'))
 sys.path.insert(0, os.path.abspath('../../code/data/'))
 sys.path.insert(0, os.path.abspath('../../code/datascience/'))
 sys.path.insert(0, os.path.abspath('../../code/backend/postgresql'))
-sys.path.insert(0, os.path.abspath('../../code/backend/server'))
-sys.path.insert(0, os.path.abspath('../../code/backend/server/app'))
+sys.path.insert(0, os.path.abspath('../../code/server'))
 
 
 # -- Project information -----------------------------------------------------

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Authors &#8212; NewsPhi 0 documentation</title>
+    <title>Model Auto Generated Code Documentation &#8212; NewsPhi 0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -16,8 +16,6 @@
     <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Requirements" href="requirements.html" />
-    <link rel="prev" title="Introduction" href="introduction.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -34,16 +32,35 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="authors">
-<h1>Authors<a class="headerlink" href="#authors" title="Permalink to this headline">¶</a></h1>
-<p>Lead Data Scientist: Xi Yang</p>
-<p>Data Scientist: Ziyu Fan</p>
-<p>Data Scientist: Brian Wright</p>
-<p>Lead Engineer: Crystal Sun</p>
-<p>Front-End Engineer: Lance Fernando</p>
-<p>Back-End Engineer: Yixin Sun</p>
-<p>DevOps Engineer/Project Manager: Jacques Sham</p>
-<p>DevOps Engineer/Project Manager: Paul Kim</p>
+  <div class="section" id="model-auto-generated-code-documentation">
+<h1>Model Auto Generated Code Documentation<a class="headerlink" href="#model-auto-generated-code-documentation" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-texts2id_corpus"></span><dl class="function">
+<dt id="texts2id_corpus.make_gram">
+<code class="descclassname">texts2id_corpus.</code><code class="descname">make_gram</code><span class="sig-paren">(</span><em>words</em>, <em>num_gram=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/texts2id_corpus.html#make_gram"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#texts2id_corpus.make_gram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make unigram, bigram or trigram into account, the default is unigram</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="texts2id_corpus.make_id_corpus">
+<code class="descclassname">texts2id_corpus.</code><code class="descname">make_id_corpus</code><span class="sig-paren">(</span><em>grams</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/texts2id_corpus.html#make_id_corpus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#texts2id_corpus.make_id_corpus" title="Permalink to this definition">¶</a></dt>
+<dd><p>According to gram, get id2word dictionary
+and get corpus with format (id, freq) in each doc</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="texts2id_corpus.text2corpus">
+<code class="descclassname">texts2id_corpus.</code><code class="descname">text2corpus</code><span class="sig-paren">(</span><em>texts</em>, <em>num_gram</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/texts2id_corpus.html#text2corpus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#texts2id_corpus.text2corpus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="texts2id_corpus.tokenizer">
+<code class="descclassname">texts2id_corpus.</code><code class="descname">tokenizer</code><span class="sig-paren">(</span><em>texts</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/texts2id_corpus.html#tokenizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#texts2id_corpus.tokenizer" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://spacy.io/api/annotation">https://spacy.io/api/annotation</a>
+remove stopwords, punchtuation, wired word,
+only keep meaningfull words based on
+pos[‘NOUN’, ‘ADJ’, ‘VERB’, ‘ADV’,’INTJ’], lemmatization</p>
+</dd></dl>
+
 </div>
 
 
@@ -64,21 +81,20 @@
 
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Code Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="deploy.html">Deploy Auto Generated Code Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline Auto Generated Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server.html">Server Auto Generated Code Documentation</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="introduction.html" title="previous chapter">Introduction</a></li>
-      <li>Next: <a href="requirements.html" title="next chapter">Requirements</a></li>
   </ul></li>
 </ul>
 </div>
@@ -114,7 +130,7 @@
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
-      <a href="_sources/authors.rst.txt"
+      <a href="_sources/model.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 
