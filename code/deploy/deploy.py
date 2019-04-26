@@ -46,12 +46,12 @@ def create_or_update_environment(ssh):
 
 def git_clone(ssh):
     """
-    Clones the git repository, 
+    Clones the git repository,
     Otherwise pulls if already exists.
     """
     stdin, stdout, stderr = ssh.exec_command("git --version")
     if (b"" is stderr.read()):
-        git_clone_command = "git clone https://" + git_user +\
+        git_clone_command = "git clone https://" + git_user_id +\
                             "@github.com/" + git_repo_owner + "/" +\
                             git_repo_name + ".git"
         stdin, stdout, stderr = ssh.exec_command(git_clone_command)
@@ -69,7 +69,6 @@ def git_clone(ssh):
             print("ERROR in clone git repo: ", stdout.read())
         else:
             print("CLONE GIT REPO SUCCESS")
-        
 
 
 def main():
@@ -86,55 +85,69 @@ def main():
 
     ssh = ssh_client()
     ssh_connection(ssh, ec2_address, user, key_file)
-    git_clone(ssh)
-    create_or_update_environment(ssh)
+    # git_clone(ssh)
+    # create_or_update_environment(ssh)
 
     # Launch the application
-    change_dir = "cd " + git_repo_name +\
-                 "/code/backend/server/; pwd"
-    stdin, stdout, stderr = ssh.exec_command(change_dir)
-    print(stdout.read())
+    # run_server = "cd " + git_repo_name +\
+    #              "/code/server/; nohup flask run > /dev/null 2>&1 &"
+    # stdin, stdout, stderr = ssh.exec_command(run_server)
+    # if (stderr.read() is not b""):
+    #     print("ERROR in running server: ", stderr.read())
+    # else:
+    #     print("SERVER RUN SUCCESS")
+    # transport = client.get_transport()
+    # channel = transport.open_session()
+    # channel.exec_command('python script.py > /dev/null 2>&1 &')
 
     # set crontab
     # get streaming data everyday
-    stdin, stdout, stderr = \
-        ssh.exec_command("echo '0 0 * * * ~/.conda/envs/MSDS603/bin/python "
-                         "/home/ec2-user/" + git_repo_name +
-                         "/code/data/api_to_df.py'"
-                         " > order.cron")
-    stdin, stdout, stderr = \
-        ssh.exec_command("crontab order.cron")
-    if (stderr.read() is not b""):
-        print("ERROR in crontab: ", stdout.read())
-    else:
-        print("SET UP CRONTAB SUCCESS")
-    
+    # stdin, stdout, stderr = \
+    #     ssh.exec_command("echo '0 0 * * * ~/.conda/envs/MSDS603/bin/python "
+    #                      "/home/ec2-user/" + git_repo_name +
+    #                      "/code/data/api_to_df.py'"
+    #                      " > order.cron")
+    # stdin, stdout, stderr = \
+    #     ssh.exec_command("crontab order.cron")
+    # if (stderr.read() is not b""):
+    #     print("ERROR in crontab: ", stdout.read())
+    # else:
+    #     print("SET UP CRONTAB SUCCESS")
+
     # running model
 
     # get output data from s3
+    change_dir = "cd ~/" + git_repo_name + "/code/data/; pwd"
+    stdin, stdout, stderr = ssh.exec_command(change_dir)
+    if stderr.read():
+        print("ERROR in change directory: ", stderr.read())
+    else:
+        print(stdout.read())
+
+    download_data = " python download.py" + \
+                    " model_output_data/result_sorted.csv model_output/"
+    stdin, stdout, stderr = ssh.exec_command(download_data)
+    if stderr.read():
+        print("ERROR in download data: ", stderr.read())
+    else:
+        print("DOWNLOAD DATA SUCCESS")
+        print(stdout.read())
 
     # load output data to RDS
-    change_dir = "cd " + git_repo_name + \
-            "/code/backend/postgresql/;" + \
-            " python preprocess.py 'result_sorted.csv' 'sample_data.csv'" + \
-            " python import.py sample_data.csv newsphi.news_articles"
-    stdin, stdout, stderr = ssh.exec_command(change_dir)
+    load_output = "cd " + git_repo_name + \
+                  "/code/backend/postgresql/;" + \
+                  " python preprocess.py" + \
+                  " ../data/model_output/result_sorted.csv" + \
+                  " ../data/cleaned/sample_data.csv" + \
+                  " python import.py" + \
+                  " ../data/cleaned/sample_data.csv" + \
+                  " newsphi.news_articles"
+    stdin, stdout, stderr = ssh.exec_command(load_output)
     if (stderr.read() is not b""):
         print("ERROR in import data: ", stderr.read())
     else:
         print("IMPORT DATA SUCCESS")
 
-    # running server
-    change_dir = "cd " + git_repo_name +\
-            "/code/server/; nohup flask run > /dev/null 2>&1 &"
-    stdin, stdout, stderr = ssh.exec_command(change_dir)
-    if (stderr.read() is not b""):
-        print("ERROR in running server: ", stderr.read())
-    else:
-        print("SERVER RUN SUCCESS")
-    # transport = client.get_transport()
-    # channel = transport.open_session()
-    # channel.exec_command('python script.py > /dev/null 2>&1 &')
     # exit
     ssh.exec_command("exit")
 

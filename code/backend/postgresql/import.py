@@ -36,7 +36,7 @@ def read_file_and_process(filepath, TABLE_NAME, SCHEMA_NAME):
             df.loc[df[col] == 'nan', col] = 'NULL'
         elif col in TIME_COLS:
             df.loc[df[col] == 'nan', col] = ''
-    
+
     columns = df.columns
 
     f = StringIO()

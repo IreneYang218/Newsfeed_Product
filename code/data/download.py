@@ -1,21 +1,25 @@
 import boto3
 from info import *
 import pandas as pd
+import sys
+import os
 
-# Declare S3 as the destination
-s3 = boto3.resource('s3')
-bucket = s3.Bucket('newsphi')
 
-# Reading a single file
-obj = s3.meta.client.get_object(Bucket='newsphi',
-                                Key='testing/news_clean_march.csv')
-df = pd.read_csv(obj['Body'])
-# print(sales)
+def downloaded_from_s3(filepath, output_path):
+    """Download data from s3 bucket"""
+    # Declare S3 as the destination
+    s3 = boto3.client('s3',
+                      aws_access_key_id=key_id,
+                      aws_secret_access_key=secret_key)
 
-# for obj in bucket.objects.all():
-#     key = obj.key
-#     body = obj.get()['Body'].read()
-#     print('The current directory is: ', key)
-#     print(body)
+    filename = filepath.split("/")[-1]
+    if output_path:
+        if not os.path.exists(output_path):
+            os.mkdir(output_path)
+    s3.download_file('newsphi', filepath, output_path+filename)
 
-df.to_csv('downloaded_data.csv')
+
+if __name__ == '__main__':
+    filepath = sys.argv[1]
+    output_path = sys.argv[2]
+    downloaded_from_s3(filepath, output_path)

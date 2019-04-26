@@ -88,11 +88,11 @@ def write_s3(filename):
     """
     # write DF to string stream
     s3 = boto3.client('s3',
-                          aws_access_key_id=key_id,
-                          aws_secret_access_key=secret_key)
+                      aws_access_key_id=key_id,
+                      aws_secret_access_key=secret_key)
 
     with open(filename, "rb") as f:
-        s3.upload_fileobj(f, "newsphi", filename)
+        s3.upload_fileobj(f, "newsphi", "news_articles"+filename)
 
 
 if __name__ == '__main__':
