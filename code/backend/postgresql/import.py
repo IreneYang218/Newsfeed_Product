@@ -2,6 +2,7 @@ import psycopg2
 import config
 import pandas as pd
 import numpy as np
+import sys
 try:
     from StringIO import StringIO
 except ImportError:
@@ -46,7 +47,7 @@ def read_file_and_process(filepath, TABLE_NAME, SCHEMA_NAME):
 
 
 def import_data(f, columns):
-    """Connect RDS database"""
+    """Connect RDS database and copy data into database"""
     conn = config.connect(config.dbconfig())
     dbcursor = conn.cursor()
 
@@ -62,8 +63,9 @@ def import_data(f, columns):
 
 
 if __name__ == '__main__':
-    TABLE_NAME = 'news_articles'
-    SCHEMA_NAME = 'newsphi'
-    f, columns = read_file_and_process('../sample_data/sample_data_topics.csv',
-                              TABLE_NAME, SCHEMA_NAME)
+    SCHEMA_NAME = sys.argv[2].split('.')[0]
+    TABLE_NAME = sys.argv[2].split('.')[1]
+    filepath = sys.argv[1]
+    f, columns = \
+        read_file_and_process(filepath, TABLE_NAME, SCHEMA_NAME)
     import_data(f, columns)
