@@ -1,15 +1,16 @@
 from flask import Flask
-from config import Config
+import psycopg2
+import config
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 
 # Initialization
-# Create an application instance (an object of class Flask)  which handles all requests.
-# template_dir = '../../../frontend'
+# Create an application instance (an object of class Flask)
+# which handles all requests.
 
 # application = Flask(__name__, template_folder=template_dir)
 application = Flask(__name__)
-application.config.from_object(Config)
+application.config.from_object(config.Config)
 db = SQLAlchemy(application)
 db.create_all()
 db.session.commit()
@@ -18,6 +19,7 @@ db.session.commit()
 login_manager = LoginManager()
 login_manager.init_app(application)
 
-# Added at the bottom to avoid circular dependencies. (Altough it violates PEP8 standards)
+# Added at the bottom to avoid circular dependencies.
+# (Altough it violates PEP8 standards)
 from app import classes
 from app import routes
