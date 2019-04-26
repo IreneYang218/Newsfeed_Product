@@ -29,6 +29,8 @@ def create_or_update_environment(ssh):
         ssh.exec_command("conda env create -f "
                          "~/" + git_repo_name +
                          "/venv/environment.yml")
+    print(stderr.read())
+    print(stdout.read())
     if (b'already exists' in stderr.read()):
         stdin, stdout, stderr = \
             ssh.exec_command("conda env update -f "
@@ -83,16 +85,16 @@ def main():
     create_or_update_environment(ssh)
 
     # Launch the application
-    run_server = "cd " + git_repo_name +\
-                 "/code/server/; nohup flask run > /dev/null 2>&1 &"
-    stdin, stdout, stderr = ssh.exec_command(run_server)
-    if (stderr.read() is not b""):
-        print("ERROR in running server: ", stderr.read())
-    else:
-        print("SERVER RUN SUCCESS")
-    transport = client.get_transport()
-    channel = transport.open_session()
-    channel.exec_command('python script.py > /dev/null 2>&1 &')
+    # run_server = "cd " + git_repo_name +\
+    #              "/code/server/; nohup flask run > /dev/null 2>&1 &"
+    # stdin, stdout, stderr = ssh.exec_command(run_server)
+    # if (stderr.read() is not b""):
+    #     print("ERROR in running server: ", stderr.read())
+    # else:
+    #     print("SERVER RUN SUCCESS")
+    # transport = client.get_transport()
+    # channel = transport.open_session()
+    # channel.exec_command('python script.py > /dev/null 2>&1 &')
 
     # # set crontab
     # # get streaming data everyday
