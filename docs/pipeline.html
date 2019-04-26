@@ -1,0 +1,218 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Pipeline Auto Generated Code Documentation &#8212; NewsPhi 0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Server Auto Generated Code Documentation" href="server.html" />
+    <link rel="prev" title="Model Auto Generated Code Documentation" href="model.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="pipeline-auto-generated-code-documentation">
+<h1>Pipeline Auto Generated Code Documentation<a class="headerlink" href="#pipeline-auto-generated-code-documentation" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-api_to_df"></span><dl class="function">
+<dt id="api_to_df.api_df">
+<code class="descclassname">api_to_df.</code><code class="descname">api_df</code><span class="sig-paren">(</span><em>token</em>, <em>site_lists</em>, <em>time_delta</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api_to_df.html#api_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api_to_df.api_df" title="Permalink to this definition">¶</a></dt>
+<dd><p>A pipeline from api to csv</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>token</strong> – api token for webhose</li>
+<li><strong>site_lists</strong> – list of sites we need to crawl</li>
+<li><strong>time_delta</strong> – time window, -3 means recent 3 days.  Can only be from -1 to -30</li>
+<li><strong>filename</strong> – filename of csv</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="api_to_df.get_query">
+<code class="descclassname">api_to_df.</code><code class="descname">get_query</code><span class="sig-paren">(</span><em>site_lists</em>, <em>time_delta</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api_to_df.html#get_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api_to_df.get_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get query for webhose api given a site_lists and time window</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>site_lists</strong> – list of sites we need to crawl</li>
+<li><strong>time_delta</strong> – time window, -3 means recent 3 days.
+Can only be from -1 to -30</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a string of query for webhose api</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="api_to_df.output_to_df">
+<code class="descclassname">api_to_df.</code><code class="descname">output_to_df</code><span class="sig-paren">(</span><em>output</em>, <em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api_to_df.html#output_to_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api_to_df.output_to_df" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a single output (100 news) from webhose to pandas data frame
+and concat to previous data frame</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>output</strong> – a json output from single webhose query</li>
+<li><strong>df</strong> – previous pandas data frame from previous query, each row represent one news</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">pandas data frame, each row represent one news</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="api_to_df.write_s3">
+<code class="descclassname">api_to_df.</code><code class="descname">write_s3</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api_to_df.html#write_s3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api_to_df.write_s3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write data to s3 bucket</p>
+</dd></dl>
+
+<span class="target" id="module-download"></span><dl class="function">
+<dt id="download.downloaded_from_s3">
+<code class="descclassname">download.</code><code class="descname">downloaded_from_s3</code><span class="sig-paren">(</span><em>filepath</em>, <em>output_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/download.html#downloaded_from_s3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#download.downloaded_from_s3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download data from s3 bucket</p>
+</dd></dl>
+
+<span class="target" id="module-preprocess"></span><dl class="function">
+<dt id="preprocess.pre_process_output">
+<code class="descclassname">preprocess.</code><code class="descname">pre_process_output</code><span class="sig-paren">(</span><em>input_path</em>, <em>output_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocess.html#pre_process_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocess.pre_process_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pre-process models’ output:
+Only keep website used columns
+Remove unquantified ariticles under restrictions</p>
+</dd></dl>
+
+<span class="target" id="module-import"></span><dl class="function">
+<dt id="import.import_data">
+<code class="descclassname">import.</code><code class="descname">import_data</code><span class="sig-paren">(</span><em>f</em>, <em>columns</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/import.html#import_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#import.import_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect RDS database and copy data into database</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="import.read_file_and_process">
+<code class="descclassname">import.</code><code class="descname">read_file_and_process</code><span class="sig-paren">(</span><em>filepath</em>, <em>TABLE_NAME</em>, <em>SCHEMA_NAME</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/import.html#read_file_and_process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#import.read_file_and_process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read files and process to the format for database</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">NewsPhi</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Code Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deploy.html">Deploy Auto Generated Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">Model Auto Generated Code Documentation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Pipeline Auto Generated Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server.html">Server Auto Generated Code Documentation</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="model.html" title="previous chapter">Model Auto Generated Code Documentation</a></li>
+      <li>Next: <a href="server.html" title="next chapter">Server Auto Generated Code Documentation</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, NewsPhi.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/pipeline.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
