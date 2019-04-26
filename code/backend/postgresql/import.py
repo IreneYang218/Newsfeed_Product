@@ -22,8 +22,8 @@ def read_file_and_process(filepath, TABLE_NAME, SCHEMA_NAME):
                        'published': 'published_time'},
               inplace=True)
     OBJ_COLS = ['title', 'author', 'site_full', 'main_image',
-                'post_link']
-    INT_COLS = ['news_topic']
+                'post_link', 'news_topic']
+    INT_COLS = []
     TIME_COLS = ['published_time']
     df = df.replace([np.inf, -np.inf], np.nan)
 

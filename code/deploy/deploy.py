@@ -102,7 +102,7 @@ def main():
     download_data = "source activate msds603;" + \
                     " cd ~/" + git_repo_name + "/code/data/;" + \
                     " python download.py" + \
-                    " model_output_data/result_sorted.csv model_output/"
+                    " model_output_data/topic_name_num_sentiment.csv model_output/"
     stdin, stdout, stderr = ssh.exec_command(download_data)
     if stderr.read():
         print("ERROR in download data: ", stdout.read())
@@ -113,12 +113,14 @@ def main():
     load_output = "cd " + git_repo_name + \
                   "/code/backend/postgresql/;" + \
                   " python preprocess.py" + \
-                  " ../../data/model_output/result_sorted.csv" + \
-                  " sample_data.csv" + \
+                  " ../../data/model_output/topic_name_num_sentiment.csv" + \
+                  " sample_data.csv;" + \
                   " python import.py" + \
                   " sample_data.csv" + \
                   " newsphi.news_articles"
     stdin, stdout, stderr = ssh.exec_command(load_output)
+    print(stderr.read())
+    print(stdout.read())
     if (stderr.read() is not b""):
         print("ERROR in import data: ", stdout.read())
     else:
