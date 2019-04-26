@@ -79,8 +79,8 @@ def main():
 
     ssh = ssh_client()
     ssh_connection(ssh, ec2_address, user, key_file)
-    # git_clone(ssh)
-    # create_or_update_environment(ssh)
+    git_clone(ssh)
+    create_or_update_environment(ssh)
 
     # set crontab
     # get streaming data everyday
@@ -124,17 +124,24 @@ def main():
     else:
         print("IMPORT DATA SUCCESS")
 
-    # Launch the RESTful API
-
-    # Launch the application
     transport = ssh.get_transport()
     channel = transport.open_session()
+
+    # Launch the RESTful API
+    set_api = "cd " + git_repo_name + \
+              "/code/backend/postgrest/;" + \
+              " ./postgrest postgrest.conf >> log 2>&1 &"
+    stdin, stdout, stderr = ssh.exec_command(set_api)
+    if (stderr.read() is not b""):
+        print("ERROR in run RESTful api: ", stdout.read())
+    else:
+        print("API SET SUCCESS")
+
+    # Launch the application
     run_server = "source activate msds603;" + \
                  " cd " + git_repo_name +\
-                 "/code/server/; flask run"
+                 "/code/server/; flask run >> log 2>&1 &"
     stdin, stdout, stderr = ssh.exec_command(run_server)
-    print(stderr.read())
-    print(stdout.read())
     if (stderr.read() is not b""):
         print("ERROR in running server: ", stderr.read())
     else:

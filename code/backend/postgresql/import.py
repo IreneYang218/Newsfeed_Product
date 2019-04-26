@@ -18,7 +18,7 @@ def read_file_and_process(filepath, TABLE_NAME, SCHEMA_NAME):
     df.rename(columns={'thread.site_full': 'site_full',
                        'thread.main_image': 'main_image',
                        'url': 'post_link',
-                       'Dominant_Topic': 'news_topic',
+                       'topic': 'news_topic',
                        'published': 'published_time'},
               inplace=True)
     OBJ_COLS = ['title', 'author', 'site_full', 'main_image',

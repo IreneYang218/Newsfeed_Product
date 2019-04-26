@@ -11,7 +11,7 @@ def pre_process_output(input_path, output_path):
     """
     data = pd.read_csv(input_path)
     used_columns = ["title", "author", "published", "thread.site_full",
-                    "thread.main_image", "url", "Dominant_Topic"]
+                    "thread.main_image", "url", "topic"]
     OBJ_COLS = ['title', 'author', 'thread.site_full', 'thread.main_image',
                 'url']
 
