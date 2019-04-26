@@ -16,7 +16,7 @@
     <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Server Auto Generated Code Documentation" href="server.html" />
+    <link rel="next" title="Model Auto Generated Code Documentation" href="model.html" />
     <link rel="prev" title="Code Tutorial" href="tutorial.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -40,21 +40,28 @@
 <dt id="deploy.create_or_update_environment">
 <code class="descclassname">deploy.</code><code class="descname">create_or_update_environment</code><span class="sig-paren">(</span><em>ssh</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deploy.html#create_or_update_environment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#deploy.create_or_update_environment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates the environment from the environment.yml file.
-If the environment already exists, it will just update the environment.</p>
+If the environment already exists,
+it will just update the environment.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="deploy.git_clone">
 <code class="descclassname">deploy.</code><code class="descname">git_clone</code><span class="sig-paren">(</span><em>ssh</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deploy.html#git_clone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#deploy.git_clone" title="Permalink to this definition">¶</a></dt>
-<dd><p>Clones the git repository, otherwise pulls
-if already exists.</p>
+<dd><p>Clones the git repository,
+Otherwise pulls if already exists.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="deploy.main">
 <code class="descclassname">deploy.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/deploy.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#deploy.main" title="Permalink to this definition">¶</a></dt>
-<dd><p>The command to run in bash. Connects to EC2, clones the git repo,
-creates the environment, and runs crontab.</p>
+<dd><p>The command to run in bash.
+Connects to EC2;
+Clones the git repo;
+Creates the environment;
+Set crontab for getting streaming data daily;
+Run the model;
+Import new model output to RDS;
+Run the server.</p>
 </dd></dl>
 
 <dl class="function">
@@ -96,9 +103,9 @@ username, and the key file (.pem).</p>
 <li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Code Tutorial</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Deploy Auto Generated Code Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="server.html">Server Auto Generated Code Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline Auto Generated Code Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model.html">Model Auto Generated Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline Auto Generated Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server.html">Server Auto Generated Code Documentation</a></li>
 </ul>
 
 <div class="relations">
@@ -106,7 +113,7 @@ username, and the key file (.pem).</p>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="tutorial.html" title="previous chapter">Code Tutorial</a></li>
-      <li>Next: <a href="server.html" title="next chapter">Server Auto Generated Code Documentation</a></li>
+      <li>Next: <a href="model.html" title="next chapter">Model Auto Generated Code Documentation</a></li>
   </ul></li>
 </ul>
 </div>

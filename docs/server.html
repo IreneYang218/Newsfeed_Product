@@ -16,6 +16,7 @@
     <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Pipeline Auto Generated Code Documentation" href="pipeline.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -34,6 +35,79 @@
             
   <div class="section" id="server-auto-generated-code-documentation">
 <h1>Server Auto Generated Code Documentation<a class="headerlink" href="#server-auto-generated-code-documentation" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-app.classes"></span><dl class="class">
+<dt id="app.classes.User">
+<em class="property">class </em><code class="descclassname">app.classes.</code><code class="descname">User</code><span class="sig-paren">(</span><em>username</em>, <em>email</em>, <em>password</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/classes.html#User"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.classes.User" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for users</p>
+<dl class="method">
+<dt id="app.classes.User.check_password">
+<code class="descname">check_password</code><span class="sig-paren">(</span><em>password</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/classes.html#User.check_password"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.classes.User.check_password" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="app.classes.User.email">
+<code class="descname">email</code><a class="headerlink" href="#app.classes.User.email" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="app.classes.User.id">
+<code class="descname">id</code><a class="headerlink" href="#app.classes.User.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="app.classes.User.password_hash">
+<code class="descname">password_hash</code><a class="headerlink" href="#app.classes.User.password_hash" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="app.classes.User.set_password">
+<code class="descname">set_password</code><span class="sig-paren">(</span><em>password</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/classes.html#User.set_password"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.classes.User.set_password" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="app.classes.User.username">
+<code class="descname">username</code><a class="headerlink" href="#app.classes.User.username" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="app.classes.load_user">
+<code class="descclassname">app.classes.</code><code class="descname">load_user</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/classes.html#load_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.classes.load_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>This callback is used to reload the user object
+from the user ID stored in the session.</p>
+</dd></dl>
+
+<span class="target" id="module-app.routes"></span><dl class="function">
+<dt id="app.routes.index">
+<code class="descclassname">app.routes.</code><code class="descname">index</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/routes.html#index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.routes.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render main page</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.routes.login">
+<code class="descclassname">app.routes.</code><code class="descname">login</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/routes.html#login"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.routes.login" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log user in</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.routes.logout">
+<code class="descclassname">app.routes.</code><code class="descname">logout</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/routes.html#logout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.routes.logout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log user out</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.routes.register">
+<code class="descclassname">app.routes.</code><code class="descname">register</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/routes.html#register"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.routes.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>User register</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.routes.secret_page">
+<code class="descclassname">app.routes.</code><code class="descname">secret_page</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/routes.html#secret_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#app.routes.secret_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render the page for login user</p>
+</dd></dl>
+
 </div>
 
 
@@ -54,19 +128,22 @@
 
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Code Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="deploy.html">Deploy Auto Generated Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">Model Auto Generated Code Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline Auto Generated Code Documentation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Server Auto Generated Code Documentation</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="pipeline.html" title="previous chapter">Pipeline Auto Generated Code Documentation</a></li>
   </ul></li>
 </ul>
 </div>
