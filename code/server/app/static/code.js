@@ -51,8 +51,8 @@ let app_news = new Vue({
     drawer: true,
     time: new Date(),
     my_articles: [],
-    topics: ['topic a', 'topic b', 'topic c', 'topic d'],
-    topic_on: [false, false, false, false], 
+    topics: ['Politics', 'Sports', 'Business', 'Current Events'],
+    topic_on: [false, false, false, false],
     clicked_ids: new Set(),
     input_email: '',
     input_pwd: ''
