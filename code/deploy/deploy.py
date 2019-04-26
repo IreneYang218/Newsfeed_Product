@@ -38,8 +38,6 @@ def create_or_update_environment(ssh):
             print("ERROR in update environment: ", stderr.read())
         else:
             print("UPDATE ENVIRONMENT SUCCESS")
-    elif (stderr.read() is not b''):
-        print("ERROR in create environment: ", stderr.read())
     else:
         print("CREATE ENVIRONMENT SUCCESS")
 
@@ -55,8 +53,6 @@ def git_clone(ssh):
                             "@github.com/" + git_repo_owner + "/" +\
                             git_repo_name + ".git"
         stdin, stdout, stderr = ssh.exec_command(git_clone_command)
-        print(stderr.read())
-        print(stdout.read())
         if (b'already exists' in stderr.read()):
             change_dir = "cd " + git_repo_name +\
                      "/; git reset --hard origin; git pull"
@@ -65,8 +61,6 @@ def git_clone(ssh):
                 print("ERROR in update git repo: ", stderr.read())
             else:
                 print("UPDATE GIT REPO SUCCESS")
-        elif (b'fatal' in stderr.read()):
-            print("ERROR in clone git repo: ", stdout.read())
         else:
             print("CLONE GIT REPO SUCCESS")
 
@@ -117,16 +111,13 @@ def main():
     # running model
 
     # get output data from s3
-    change_dir = "cd ~/" + git_repo_name + "/code/data/; pwd"
-    stdin, stdout, stderr = ssh.exec_command(change_dir)
-    if stderr.read():
-        print("ERROR in change directory: ", stderr.read())
-    else:
-        print(stdout.read())
-
-    download_data = " python download.py" + \
+    download_data = "source activate msds603;" + \
+                    " cd ~/" + git_repo_name + "/code/data/;" + \
+                    " python download.py" + \
                     " model_output_data/result_sorted.csv model_output/"
     stdin, stdout, stderr = ssh.exec_command(download_data)
+    print(stdout.read())
+    print(stderr.read())
     if stderr.read():
         print("ERROR in download data: ", stderr.read())
     else:
