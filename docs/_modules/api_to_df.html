@@ -39,10 +39,6 @@
 <span class="kn">import</span> <span class="nn">boto3</span>
 <span class="kn">from</span> <span class="nn">pandas.io.json</span> <span class="k">import</span> <span class="n">json_normalize</span>
 <span class="kn">from</span> <span class="nn">urllib.error</span> <span class="k">import</span> <span class="n">HTTPError</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">StringIO</span> <span class="k">import</span> <span class="n">StringIO</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">io</span> <span class="k">import</span> <span class="n">StringIO</span>
 <span class="kn">from</span> <span class="nn">user_definition_api</span> <span class="k">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">info</span> <span class="k">import</span> <span class="o">*</span>
 
@@ -50,6 +46,7 @@
 <div class="viewcode-block" id="get_query"><a class="viewcode-back" href="../pipeline.html#api_to_df.get_query">[docs]</a><span class="k">def</span> <span class="nf">get_query</span><span class="p">(</span><span class="n">site_lists</span><span class="p">,</span> <span class="n">time_delta</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get query for webhose api given a site_lists and time window</span>
+
 <span class="sd">    :param site_lists: list of sites we need to crawl</span>
 <span class="sd">    :param time_delta: time window, -3 means recent 3 days.</span>
 <span class="sd">                       Can only be from -1 to -30</span>
@@ -72,10 +69,13 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert a single output (100 news) from webhose to pandas data frame</span>
 <span class="sd">    and concat to previous data frame</span>
-<span class="sd">    :param output: a json output from single webhose query</span>
-<span class="sd">    :param df: previous pandas data frame from previous query,</span>
-<span class="sd">               each row represent one news</span>
-<span class="sd">    :return: pandas data frame, each row represent one news</span>
+
+<span class="sd">    :param output:</span>
+<span class="sd">        a json output from single webhose query</span>
+<span class="sd">    :param df:</span>
+<span class="sd">        previous pandas data frame from previous query, each row represent one news</span>
+<span class="sd">    :return:</span>
+<span class="sd">        pandas data frame, each row represent one news</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">output_flat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">json</span><span class="o">.</span><span class="n">json_normalize</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="s1">&#39;posts&#39;</span><span class="p">])</span>
     <span class="n">df_tmp</span> <span class="o">=</span> <span class="n">output_flat</span><span class="p">[[</span><span class="s1">&#39;thread.uuid&#39;</span><span class="p">,</span> <span class="s1">&#39;author&#39;</span><span class="p">,</span> <span class="s1">&#39;external_links&#39;</span><span class="p">,</span>
@@ -92,12 +92,17 @@
 <div class="viewcode-block" id="api_df"><a class="viewcode-back" href="../pipeline.html#api_to_df.api_df">[docs]</a><span class="k">def</span> <span class="nf">api_df</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">site_lists</span><span class="p">,</span> <span class="n">time_delta</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A pipeline from api to csv</span>
-<span class="sd">    :param token: api token for webhose</span>
-<span class="sd">    :param site_lists: list of sites we need to crawl</span>
-<span class="sd">    :param time_delta: time window, -3 means recent 3 days.</span>
-<span class="sd">                       Can only be from -1 to -30</span>
-<span class="sd">    :param filename: filename of csv</span>
-<span class="sd">    :return: None</span>
+
+<span class="sd">    :param token:</span>
+<span class="sd">        api token for webhose</span>
+<span class="sd">    :param site_lists:</span>
+<span class="sd">        list of sites we need to crawl</span>
+<span class="sd">    :param time_delta:</span>
+<span class="sd">        time window, -3 means recent 3 days.  Can only be from -1 to -30</span>
+<span class="sd">    :param filename:</span>
+<span class="sd">        filename of csv</span>
+<span class="sd">    :return:</span>
+<span class="sd">        None</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">webhoseio</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
     <span class="n">query_params</span> <span class="o">=</span> <span class="n">get_query</span><span class="p">(</span><span class="n">site_lists</span><span class="p">,</span> <span class="n">time_delta</span><span class="p">)</span>
@@ -118,32 +123,25 @@
             <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="o">%</span> <span class="mi">1000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39; has finished&#39;</span><span class="p">)</span>
-    <span class="c1"># df.to_csv(filename, index=False)</span>
-    <span class="k">return</span> <span class="n">df</span></div>
+    <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="write_s3"><a class="viewcode-back" href="../pipeline.html#api_to_df.write_s3">[docs]</a><span class="k">def</span> <span class="nf">write_s3</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="write_s3"><a class="viewcode-back" href="../pipeline.html#api_to_df.write_s3">[docs]</a><span class="k">def</span> <span class="nf">write_s3</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Write data to s3 bucket</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># write DF to string stream</span>
-    <span class="n">csv_buffer</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
-    <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">csv_buffer</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">s3</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">&#39;s3&#39;</span><span class="p">,</span>
+                      <span class="n">aws_access_key_id</span><span class="o">=</span><span class="n">key_id</span><span class="p">,</span>
+                      <span class="n">aws_secret_access_key</span><span class="o">=</span><span class="n">secret_key</span><span class="p">)</span>
 
-    <span class="c1"># reset stream position</span>
-    <span class="n">csv_buffer</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="c1"># create binary stream</span>
-    <span class="n">gz_buffer</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">()</span>
-
-    <span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">aws_accaws_access_key_id</span><span class="o">=</span><span class="n">key_id</span><span class="p">,</span>
-                            <span class="n">aws_secret_access_key</span><span class="o">=</span><span class="n">secret_key</span><span class="p">)</span>
-    <span class="n">s3</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s2">&quot;s3&quot;</span><span class="p">)</span>
-    <span class="n">bucket</span> <span class="o">=</span> <span class="n">s3</span><span class="o">.</span><span class="n">Bucket</span><span class="p">(</span><span class="s1">&#39;newsphi&#39;</span><span class="p">)</span>
-    <span class="n">s3</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="n">gz_buffer</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span></div>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">s3</span><span class="o">.</span><span class="n">upload_fileobj</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;newsphi&quot;</span><span class="p">,</span> <span class="s2">&quot;news_articles&quot;</span><span class="o">+</span><span class="n">filename</span><span class="p">)</span></div>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">api_df</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">site_lists</span><span class="p">,</span> <span class="n">time_delta</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+    <span class="n">write_s3</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 </pre></div>
 
           </div>
@@ -169,7 +167,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../requirements.html">Requirements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Code Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../deploy.html">Deploy Auto Generated Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model.html">Model Auto Generated Code Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pipeline.html">Pipeline Auto Generated Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../server.html">Server Auto Generated Code Documentation</a></li>
 </ul>
 
 <div class="relations">

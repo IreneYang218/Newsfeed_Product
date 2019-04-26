@@ -1,9 +1,9 @@
 Server Auto Generated Code Documentation
 =================================
-.. automodule:: classes
+.. automodule:: app.classes
     :members:
     :undoc-members:
 
-.. automodule:: routes
+.. automodule:: app.routes
     :members:
     :undoc-members:

@@ -16,7 +16,8 @@
     <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Deploy Auto Generated Code Documentation" href="deploy.html" />
+    <link rel="next" title="Server Auto Generated Code Documentation" href="server.html" />
+    <link rel="prev" title="Model Auto Generated Code Documentation" href="model.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -38,19 +39,21 @@
 <span class="target" id="module-api_to_df"></span><dl class="function">
 <dt id="api_to_df.api_df">
 <code class="descclassname">api_to_df.</code><code class="descname">api_df</code><span class="sig-paren">(</span><em>token</em>, <em>site_lists</em>, <em>time_delta</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api_to_df.html#api_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api_to_df.api_df" title="Permalink to this definition">¶</a></dt>
-<dd><p>A pipeline from api to csv
-:param token: api token for webhose
-:param site_lists: list of sites we need to crawl
-:param time_delta: time window, -3 means recent 3 days.</p>
-<blockquote>
-<div>Can only be from -1 to -30</div></blockquote>
+<dd><p>A pipeline from api to csv</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> – filename of csv</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>token</strong> – api token for webhose</li>
+<li><strong>site_lists</strong> – list of sites we need to crawl</li>
+<li><strong>time_delta</strong> – time window, -3 means recent 3 days.  Can only be from -1 to -30</li>
+<li><strong>filename</strong> – filename of csv</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -59,16 +62,20 @@
 <dl class="function">
 <dt id="api_to_df.get_query">
 <code class="descclassname">api_to_df.</code><code class="descname">get_query</code><span class="sig-paren">(</span><em>site_lists</em>, <em>time_delta</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api_to_df.html#get_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api_to_df.get_query" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get query for webhose api given a site_lists and time window
-:param site_lists: list of sites we need to crawl
-:param time_delta: time window, -3 means recent 3 days.</p>
-<blockquote>
-<div>Can only be from -1 to -30</div></blockquote>
+<dd><p>Get query for webhose api given a site_lists and time window</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a string of query for webhose api</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>site_lists</strong> – list of sites we need to crawl</li>
+<li><strong>time_delta</strong> – time window, -3 means recent 3 days.
+Can only be from -1 to -30</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a string of query for webhose api</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -78,16 +85,19 @@
 <dt id="api_to_df.output_to_df">
 <code class="descclassname">api_to_df.</code><code class="descname">output_to_df</code><span class="sig-paren">(</span><em>output</em>, <em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api_to_df.html#output_to_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api_to_df.output_to_df" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert a single output (100 news) from webhose to pandas data frame
-and concat to previous data frame
-:param output: a json output from single webhose query
-:param df: previous pandas data frame from previous query,</p>
-<blockquote>
-<div>each row represent one news</div></blockquote>
+and concat to previous data frame</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">pandas data frame, each row represent one news</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>output</strong> – a json output from single webhose query</li>
+<li><strong>df</strong> – previous pandas data frame from previous query, each row represent one news</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">pandas data frame, each row represent one news</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -95,22 +105,28 @@ and concat to previous data frame
 
 <dl class="function">
 <dt id="api_to_df.write_s3">
-<code class="descclassname">api_to_df.</code><code class="descname">write_s3</code><span class="sig-paren">(</span><em>df</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api_to_df.html#write_s3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api_to_df.write_s3" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">api_to_df.</code><code class="descname">write_s3</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api_to_df.html#write_s3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api_to_df.write_s3" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write data to s3 bucket</p>
+</dd></dl>
+
+<span class="target" id="module-download"></span><dl class="function">
+<dt id="download.downloaded_from_s3">
+<code class="descclassname">download.</code><code class="descname">downloaded_from_s3</code><span class="sig-paren">(</span><em>filepath</em>, <em>output_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/download.html#downloaded_from_s3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#download.downloaded_from_s3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download data from s3 bucket</p>
 </dd></dl>
 
 <span class="target" id="module-preprocess"></span><dl class="function">
 <dt id="preprocess.pre_process_output">
-<code class="descclassname">preprocess.</code><code class="descname">pre_process_output</code><span class="sig-paren">(</span><em>output_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocess.html#pre_process_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocess.pre_process_output" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pre-process models’ output
+<code class="descclassname">preprocess.</code><code class="descname">pre_process_output</code><span class="sig-paren">(</span><em>input_path</em>, <em>output_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocess.html#pre_process_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocess.pre_process_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pre-process models’ output:
 Only keep website used columns
 Remove unquantified ariticles under restrictions</p>
 </dd></dl>
 
 <span class="target" id="module-import"></span><dl class="function">
 <dt id="import.import_data">
-<code class="descclassname">import.</code><code class="descname">import_data</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/import.html#import_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#import.import_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Connect RDS database</p>
+<code class="descclassname">import.</code><code class="descname">import_data</code><span class="sig-paren">(</span><em>f</em>, <em>columns</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/import.html#import_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#import.import_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect RDS database and copy data into database</p>
 </dd></dl>
 
 <dl class="function">
@@ -145,14 +161,17 @@ Remove unquantified ariticles under restrictions</p>
 <li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Code Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="deploy.html">Deploy Auto Generated Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">Model Auto Generated Code Documentation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Pipeline Auto Generated Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server.html">Server Auto Generated Code Documentation</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="deploy.html" title="previous chapter">Deploy Auto Generated Code Documentation</a></li>
+      <li>Previous: <a href="model.html" title="previous chapter">Model Auto Generated Code Documentation</a></li>
+      <li>Next: <a href="server.html" title="next chapter">Server Auto Generated Code Documentation</a></li>
   </ul></li>
 </ul>
 </div>

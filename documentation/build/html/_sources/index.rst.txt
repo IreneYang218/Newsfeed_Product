@@ -15,9 +15,9 @@ Welcome to NewsPhi's documentation!
    requirements
    tutorial
    deploy
+   model
    pipeline
    server
-   model
 
 
 
