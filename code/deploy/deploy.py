@@ -102,7 +102,8 @@ def main():
     download_data = "source activate msds603;" + \
                     " cd ~/" + git_repo_name + "/code/data/;" + \
                     " python download.py" + \
-                    " model_output_data/topic_name_num_sentiment.csv model_output/"
+                    " model_output_data/topic_name_num_sentiment.csv" + \
+                    " model_output/"
     stdin, stdout, stderr = ssh.exec_command(download_data)
     if stderr.read():
         print("ERROR in download data: ", stdout.read())
