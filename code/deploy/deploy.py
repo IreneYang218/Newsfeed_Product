@@ -79,23 +79,23 @@ def main():
 
     ssh = ssh_client()
     ssh_connection(ssh, ec2_address, user, key_file)
-    # git_clone(ssh)
-    # create_or_update_environment(ssh)
+    git_clone(ssh)
+    create_or_update_environment(ssh)
 
     # Launch the application
-    # run_server = "cd " + git_repo_name +\
-    #              "/code/server/; nohup flask run > /dev/null 2>&1 &"
-    # stdin, stdout, stderr = ssh.exec_command(run_server)
-    # if (stderr.read() is not b""):
-    #     print("ERROR in running server: ", stderr.read())
-    # else:
-    #     print("SERVER RUN SUCCESS")
-    # transport = client.get_transport()
-    # channel = transport.open_session()
-    # channel.exec_command('python script.py > /dev/null 2>&1 &')
+    run_server = "cd " + git_repo_name +\
+                 "/code/server/; nohup flask run > /dev/null 2>&1 &"
+    stdin, stdout, stderr = ssh.exec_command(run_server)
+    if (stderr.read() is not b""):
+        print("ERROR in running server: ", stderr.read())
+    else:
+        print("SERVER RUN SUCCESS")
+    transport = client.get_transport()
+    channel = transport.open_session()
+    channel.exec_command('python script.py > /dev/null 2>&1 &')
 
-    # set crontab
-    # get streaming data everyday
+    # # set crontab
+    # # get streaming data everyday
     # stdin, stdout, stderr = \
     #     ssh.exec_command("echo '0 0 * * * ~/.conda/envs/MSDS603/bin/python "
     #                      "/home/ec2-user/" + git_repo_name +
@@ -108,36 +108,34 @@ def main():
     # else:
     #     print("SET UP CRONTAB SUCCESS")
 
-    # running model
+    # # running model
 
-    # get output data from s3
-    download_data = "source activate msds603;" + \
-                    " cd ~/" + git_repo_name + "/code/data/;" + \
-                    " python download.py" + \
-                    " model_output_data/result_sorted.csv model_output/"
-    stdin, stdout, stderr = ssh.exec_command(download_data)
-    print(stdout.read())
-    print(stderr.read())
-    if stderr.read():
-        print("ERROR in download data: ", stderr.read())
-    else:
-        print("DOWNLOAD DATA SUCCESS")
-        print(stdout.read())
+    # # get output data from s3
+    # download_data = "source activate msds603;" + \
+    #                 " cd ~/" + git_repo_name + "/code/data/;" + \
+    #                 " python download.py" + \
+    #                 " model_output_data/result_sorted.csv model_output/"
+    # stdin, stdout, stderr = ssh.exec_command(download_data)
+    # if stderr.read():
+    #     print("ERROR in download data: ", stderr.read())
+    # else:
+    #     print("DOWNLOAD DATA SUCCESS")
+    #     print(stdout.read())
 
-    # load output data to RDS
-    load_output = "cd " + git_repo_name + \
-                  "/code/backend/postgresql/;" + \
-                  " python preprocess.py" + \
-                  " ../data/model_output/result_sorted.csv" + \
-                  " ../data/cleaned/sample_data.csv" + \
-                  " python import.py" + \
-                  " ../data/cleaned/sample_data.csv" + \
-                  " newsphi.news_articles"
-    stdin, stdout, stderr = ssh.exec_command(load_output)
-    if (stderr.read() is not b""):
-        print("ERROR in import data: ", stderr.read())
-    else:
-        print("IMPORT DATA SUCCESS")
+    # # load output data to RDS
+    # load_output = "cd " + git_repo_name + \
+    #               "/code/backend/postgresql/;" + \
+    #               " python preprocess.py" + \
+    #               " ../../data/model_output/result_sorted.csv" + \
+    #               " sample_data.csv" + \
+    #               " python import.py" + \
+    #               " sample_data.csv" + \
+    #               " newsphi.news_articles"
+    # stdin, stdout, stderr = ssh.exec_command(load_output)
+    # if (stderr.read() is not b""):
+    #     print("ERROR in import data: ", stderr.read())
+    # else:
+    #     print("IMPORT DATA SUCCESS")
 
     # exit
     ssh.exec_command("exit")
