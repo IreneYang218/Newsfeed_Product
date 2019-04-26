@@ -23,7 +23,7 @@ def read_file_and_process(filepath, TABLE_NAME, SCHEMA_NAME):
               inplace=True)
     OBJ_COLS = ['title', 'author', 'site_full', 'main_image',
                 'post_link', 'news_topic']
-    INT_COLS = []
+    INT_COLS = ['controversy_score']
     TIME_COLS = ['published_time']
     df = df.replace([np.inf, -np.inf], np.nan)
 
