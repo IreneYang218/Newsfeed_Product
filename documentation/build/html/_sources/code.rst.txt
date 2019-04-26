@@ -1,0 +1,9 @@
+Auto Generated Code Documentation
+=================================
+.. automodule:: deploy
+    :members:
+    :undoc-members:
+
+.. automodule:: api_to_df
+    :members:
+    :undoc-members:

@@ -12,6 +12,7 @@ Welcome to NewsPhi's documentation!
 
    introduction
    authors
+   url_to_application
    requirements
    tutorial
    deploy
