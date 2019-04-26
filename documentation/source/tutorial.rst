@@ -2,4 +2,4 @@ Code Tutorial
 =============
 
 Run $python deploy.py on your terminal for data pipeline deploy.
-Go to /code/frontend/ double click on index.html for launching website.
+Go to "your-ec2-pulic-ip:8080" for website.
