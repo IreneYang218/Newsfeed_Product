@@ -36,7 +36,7 @@
 				</div>
 			</v-toolbar>
 			<!-- Article dashboard -->
-			<v-navigation-drawer disable-resize-watcher right clipped fixed v-model="drawer" width="600px" app>
+			<v-navigation-drawer disable-resize-watcher right clipped fixed v-model="drawer" width="500px" app>
 				<v-list dense>
 					<v-list-tile>
 						<v-list-tile-action>
@@ -111,9 +111,9 @@
 
 					<!-- News Feed -->
 					<div>
-						<v-container fluid grid-list-md>
-							<v-layout row wrap>
-								<v-flex xs12 v-for="(n, index) in news">
+						<v-container grid-list-md>
+							<v-layout row left wrap>
+								<v-flex xs12 v-for="(n, index) in displayed_news">
 									<v-card @click="renderArticle(index)">
 										<!-- <v-card-text>
 											<!-- <img :src="n.main_image"> -->
@@ -139,6 +139,14 @@
 							</v-layout>
 						</v-container>
 					</div>
+				    <div class="text-xs-center">
+				      <v-pagination
+				        v-model="page"
+				        :length=page_length
+				        @input="nextPage"
+				      ></v-pagination>
+				    </div>
+
 				</v-container>
 			</v-content>
 

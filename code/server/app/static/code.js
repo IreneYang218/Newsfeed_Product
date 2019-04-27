@@ -39,15 +39,18 @@ async function getNews() {
   app_news.news = jsonData['posts'];
 }
 
-var news = fetch(api)
-console.log('news', news)
+// var displayed = sample.posts.slice(0,10)
+// var news = fetch(api)
+// console.log('news', news)
+// console.log("")
 
-// const colors = ["indigo","blue","cyan","light-blue","teal","light-green","blue-grey"];
 let app_news = new Vue({
   delimiters:['[[', ']]'], // resolve confilt with jinja2
 	el: '#feed',
 	data:{
     news: sample.posts,
+    displayed_news: sample.posts.slice(0,10),
+    filtered_news: [],
     drawer: true,
     time: new Date(),
     my_articles: [],
@@ -55,7 +58,11 @@ let app_news = new Vue({
     topic_on: [false, false, false, false],
     clicked_ids: new Set(),
     input_email: '',
-    input_pwd: ''
+    input_pwd: '',
+    page_length: Math.ceil(sample.posts.length/10),
+    page: 1,
+    first_idx: 0,
+    last_idx: 10
 	},
 
 	computed: {
@@ -64,7 +71,7 @@ let app_news = new Vue({
 	methods:{
 
 		renderArticle: function(idx){
-			var clicked = sample.posts[idx]
+			var clicked = this.displayed_news[idx]
       var click_id = this.my_articles.length
       clicked['click_id'] = click_id
 
@@ -106,11 +113,20 @@ let app_news = new Vue({
     chooseTopic: function(index){
       console.log('topics', this.topics)
       this.topic_on[index] = !this.topic_on[index]
+    },
+    nextPage: function(page){
+      // Using incremements of 10, extract the start/end index articles 
+      this.first_idx = (page - 1)*10
+      if (this.news.length < page*10){
+        this.last_idx = this.news.length
+      }else{
+        this.last_idx = page*10
+      }
+      this.displayed_news = this.news.slice(this.first_idx, this.last_idx)
     }
+
 	}
 })
-
-
 
 // initialPrep()
 console.log('hello')
