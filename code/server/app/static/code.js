@@ -8,7 +8,7 @@ const API_SERVER = 'https://webhose.io/filterWebContent?token=6caf20d8-8bad-49fb
 const QUERY = '&sort=crawled&q=site_type%3Anews%20thread.country%3AUS%20language%3Aenglish';
 const FORMAT = '&format=json';
 const COMMENT_VIEW = 'connectsf_comment';
-const api = 'http://ec2-35-167-124-232.us-west-2.compute.amazonaws.com:3000/articles'
+const OUR_API = 'http://ec2-35-167-124-232.us-west-2.compute.amazonaws.com:3000/articles'
 // main function
 let _featJson;
 async function initialPrep() {
@@ -30,6 +30,9 @@ async function initialPrep() {
 
   console.log('6 !!!');
 }
+var posts = []
+
+console.log("posts", posts);
 
 // get data from RESTapi
 async function getNews() {
@@ -48,8 +51,8 @@ let app_news = new Vue({
   delimiters:['[[', ']]'], // resolve confilt with jinja2
 	el: '#feed',
 	data:{
-    news: sample.posts,
-    displayed_news: sample.posts.slice(0,10),
+    news: [],
+    displayed_news: [],
     filtered_news: [],
     drawer: true,
     time: new Date(),
@@ -59,7 +62,7 @@ let app_news = new Vue({
     clicked_ids: new Set(),
     input_email: '',
     input_pwd: '',
-    page_length: Math.ceil(sample.posts.length/10),
+    page_length: 0,
     page: 1,
     first_idx: 0,
     last_idx: 10
@@ -67,6 +70,17 @@ let app_news = new Vue({
 
 	computed: {
 	},
+
+  //Used to grab data from rest-api
+  mounted:function(){
+      axios.get(OUR_API)
+        .then(function (response) {
+          console.log("data", response.data)
+          app_news.news = response.data
+          app_news.displayed_news = response.data.slice(0,10)
+          app_news.page_length = Math.ceil(response.data.length/10)
+        })
+  },
 
 	methods:{
 
