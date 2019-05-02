@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+	<link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
+	<script src="https://unpkg.com/vue/dist/vue.js"></script>
+	<script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+	<style>[v-cloak] {display: none}</style>
+</head>
+<body>
+
+	<div id="feed" v-cloak>
+		<v-app>
+			<v-toolbar app fixed clipped-left>
+				<!-- <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon> -->
+				<v-toolbar-title>
+					<a href="/" style="text-decoration: none">
+						<v-btn flat>NewsPhi</v-btn>
+					</a>
+				</v-toolbar-title>
+				<v-spacer></v-spacer>
+				<!-- app -->
+				<div>
+					<v-toolbar-item>
+					  <!-- <v-btn  flat right to='/register'>Sign Up</v-btn>
+						<v-btn  flat right to='/login'>Log In</v-btn> -->
+						<input v-model="input_email" placeholder="email">
+						<input v-model="input_pwd" type="password" placeholder="password">
+						<v-btn color="black" flat value="Sign Up" @click="handleSignUp">
+							<span>Sign Up</span>
+						</v-btn>
+						<v-btn color="black" flat value="Log In" @click="handleLogIn">
+							<span>Log In</span>
+						</v-btn>
+					</v-toolbar-item>
+				</div>
+			</v-toolbar>
+			<!-- Article dashboard -->
+			<v-navigation-drawer disable-resize-watcher right clipped fixed v-model="drawer" width="500px" app>
+				<v-list dense>
+					<v-list-tile>
+						<v-list-tile-action>
+							<v-icon>dashboard</v-icon>
+						</v-list-tile-action>
+						<v-list-tile-content>
+							<v-list-tile-title>Article Dashboard</v-list-tile-title>
+						</v-list-tile-content>
+					</v-list-tile>
+				</v-list>
+				<v-container v-for="(clicked, index) in my_articles">
+					<v-card>
+						<v-card-title>
+							<div class="headline">
+								<a :href="clicked.post_link" target="_blank">
+								[[ clicked.title ]]
+								</a>
+							</div>
+						</v-card-title>
+						<v-card-text>
+							<i>[[clicked.site_full]]</i>
+							<i>[[ clicked.th!=''?clicked.author:"No author" ]] [time] ago</i>
+						</v-card-text>
+						<v-card-text>
+							<i><strong>Topic: </strong>[[clicked.news_topic]]</i>
+						</v-card-text>
+						<v-card-text>			
+							<i><strong>Controversy Score: </strong>[[clicked.controversy_score]]</i>
+						</v-card-text>							
+
+<!-- 						<v-card-text>
+							<i>[REPUTATION SCORE]</i>
+						</v-card-text>
+ -->						<v-btn fab dark small color="primary" @click="removeArticle(index, clicked)">
+							<v-icon dark>remove</v-icon>
+						</v-btn>
+					</v-card>
+				</v-container>
+			</v-navigation-drawer>
+
+			<v-content>
+				<v-container>
+					<!-- Topic navigation dropdown -->
+				    <div class="text-xs">
+				      <v-menu
+				        :close-on-content-click="false"
+				        :nudge-width="200"
+				        offset-x
+				      >
+				        <template v-slot:activator="{ on }">
+				          <v-btn
+				            color="indigo"
+				            dark
+				            v-on="on"
+				          >
+				            Topic Navigation
+				          </v-btn>
+				        </template>
+				        <v-card>  
+				          <v-divider></v-divider>
+				          <v-list v-for="(topic, index) in topics">
+				            <v-list-tile>
+				              <v-list-tile-action>
+				                <v-switch @change="chooseTopic(topic)" color="purple"></v-switch>
+				              </v-list-tile-action>
+				              <v-list-tile-title>[[ topic ]]</v-list-tile-title>
+				            </v-list-tile>
+				  		  </v-list>
+				        </v-card>
+				      </v-menu>
+				    </div>
+
+					<!-- News Feed -->
+					<div>
+						<v-container grid-list-md>
+							<v-layout row left wrap>
+								<v-flex xs12 v-for="(n, index) in displayed_news">
+									<v-card @click="renderArticle(index)">
+										<!-- <v-card-text>
+											<!-- <img :src="n.main_image"> -->
+										<!-- </v-card-text> -->
+										<v-card-text>
+											<i>[[ n.site_full ]]</i>
+										</v-card-text>
+										<v-card-title primary-title>
+											<div class="headline">
+												<h2>[[ n.title!=''?n.title:"No title. Link to article." ]]</h2>
+											</div>
+										</v-card-title>
+										<v-card-text>
+											<i>[[ n.th!=''?n.author:"No author" ]]</i>
+											<i>[time] ago</i>
+										</v-card-text>
+
+ <!-- 										<v-btn @click="renderArticle(index)" color="info">Run</v-btn>
+										<v-btn @mouseover="renderArticle(index)" color="info">Run</v-btn>
+ -->
+									</v-card>
+								</v-flex>
+							</v-layout>
+						</v-container>
+					</div>
+				    <div class="text-xs-center">
+				      <v-pagination
+				        v-model="page"
+				        :length=page_length
+				        @input="nextPage"
+				      ></v-pagination>
+				    </div>
+
+				</v-container>
+			</v-content>
+
+			<v-footer app fixed>
+				<span>Hello we are team 1</span>
+			</v-footer>
+
+		</v-app>
+	</div>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script src="{{ url_for('static', filename='code.js')}}"></script>
+</body>
+</html>

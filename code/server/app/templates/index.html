@@ -1,162 +1,270 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
-	<link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
-	<script src="https://unpkg.com/vue/dist/vue.js"></script>
-	<script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
-	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='sample.json') }}"></script>
-
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-	<style>[v-cloak] {display: none}</style>
+  <title>NewsPhi</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+  <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
 </head>
 <body>
+ <div id="app">
+   <v-app light>
+    <v-toolbar class="white">
+      <v-toolbar-title v-text="title"></v-toolbar-title>
+    </v-toolbar>
+    <v-content>
+      <section>
+        <v-parallax src="/static/assets/hero.jpeg" height="600">
+          <v-layout
+            column
+            align-center
+            justify-center
+            class="white--text"
+          >
+            <h1 class="white--text mb-2 display-1 text-xs-center">NewsPhi</h1>
+            <div class="subheading mb-3 text-xs-center">An Aid For Contextual News Consumption</div>
+            <v-btn
+              class="blue lighten-2 mt-5"
+              dark
+              large
+              href="/NewsPhi"
+            >
+              Run App
+            </v-btn>
+          </v-layout>
+        </v-parallax>
+      </section>
 
-	<div id="feed" v-cloak>
-		<v-app>
-			<v-toolbar app fixed clipped-left>
-				<!-- <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon> -->
-				<v-toolbar-title>NewsPhi</v-toolbar-title>
-				<v-spacer></v-spacer>
-				<!-- app -->
-				<div>
-					<v-toolbar-item>
-					  <!-- <v-btn  flat right to='/register'>Sign Up</v-btn>
-						<v-btn  flat right to='/login'>Log In</v-btn> -->
-						<input v-model="input_email" placeholder="email">
-						<input v-model="input_pwd" type="password" placeholder="password">
-						<v-btn color="black" flat value="Sign Up" @click="handleSignUp">
-							<span>Sign Up</span>
-						</v-btn>
-						<v-btn color="black" flat value="Log In" @click="handleLogIn">
-							<span>Log In</span>
-						</v-btn>
-					</v-toolbar-item>
-				</div>
-			</v-toolbar>
-			<!-- Article dashboard -->
-			<v-navigation-drawer disable-resize-watcher right clipped fixed v-model="drawer" width="500px" app>
-				<v-list dense>
-					<v-list-tile>
-						<v-list-tile-action>
-							<v-icon>dashboard</v-icon>
-						</v-list-tile-action>
-						<v-list-tile-content>
-							<v-list-tile-title>Article Dashboard</v-list-tile-title>
-						</v-list-tile-content>
-					</v-list-tile>
-				</v-list>
-				<v-container v-for="(clicked, index) in my_articles">
-					<v-card>
-						<v-card-title>
-							<div class="headline">
-								<a :href="clicked.post_link" target="_blank">
-								[[ clicked.title ]]
-								</a>
-							</div>
-						</v-card-title>
-						<v-card-text>
-							<i>[[clicked.site_full]]</i>
-							<i>[[ clicked.th!=''?clicked.author:"No author" ]] [time] ago</i>
-						</v-card-text>
-						<v-card-text>
-							<i><strong>Topic: </strong>[[clicked.news_topic]]</i>
-						</v-card-text>
-						<v-card-text>			
-							<i><strong>Controversy Score: </strong>[[clicked.controversy_score]]</i>
-						</v-card-text>							
+      <section>
+        <v-layout
+          column
+          wrap
+          class="my-5"
+          align-center
+        >
+          <v-flex xs12 sm4 class="my-3">
+            <div class="text-xs-center">
+              <h1 class="headline">Our Mission</h1>
+	        </div>
+          </v-flex>
+          <v-flex xs12>
+            <v-container grid-list-xl>
+              <v-layout column wrap align-center justify-center>
+              	<div class="text-xs-center">
+              			What is it? Why use it? How does it work? What is our goal? ablsdkfjalskj
+              	</div>
+              </v-layout>
+            </v-container>
+          </v-flex>
+        </v-layout>
+      </section>
 
-<!-- 						<v-card-text>
-							<i>[REPUTATION SCORE]</i>
-						</v-card-text>
- -->						<v-btn fab dark small color="primary" @click="removeArticle(index, clicked)">
-							<v-icon dark>remove</v-icon>
-						</v-btn>
-					</v-card>
-				</v-container>
-			</v-navigation-drawer>
+	<section>
+        <v-layout
+          column
+          wrap
+          class="my-5"
+          align-center
+        >
+          <v-flex xs12 sm4 class="my-3">
+            <div class="text-xs-center">
+              <h1 class="headline">Our Team</h1>
+            </div>
+          </v-flex>
+          <v-flex xs12>
+            <v-container grid-list-xl>
+              <v-layout row wrap align-center>
+                <v-flex xs12 md3>
+                  <v-card class="elevation-0 transparent">
+                    <v-card-text class="text-xs-center">
+                      	<v-img src="/static/assets/us/paul.png"></v-img>
+                    </v-card-text>
+                    <v-card-title primary-title class="layout justify-center">
+                    	<div class="text-xs-center">
+                      		<h2 class="headline">Paul Kim</h2>
+                      		<span class="subheading">Project Manager</span>
+						</div>                      	
+                    </v-card-title>
+                 </v-card>
+                </v-flex>
+                <v-flex xs12 md3>
+                  <v-card class="elevation-0 transparent">
+                    <v-card-text class="text-xs-center">
+                      	<v-img src="/static/assets/us/jacques.png"></v-img>
+                    </v-card-text>
+                    <v-card-title primary-title class="layout justify-center">
+                    	<div class="text-xs-center">
+                      		<h2 class="headline">Jacques Sham</h2>
+                      		<span class="subheading">DevOps Engineer</span>
+						</div>                      	
+                    </v-card-title>
+                 </v-card>
+                </v-flex>
+                <v-flex xs12 md3>
+                  <v-card class="elevation-0 transparent">
+                    <v-card-text class="text-xs-center">
+                      	<v-img src="/static/assets/us/crystal.png"></v-img>
+                    </v-card-text>
+                    <v-card-title primary-title class="layout justify-center">
+                    	<div class="text-xs-center">
+                      		<h2 class="headline">Crystal Sun</h2>
+                      		<span class="subheading">Lead Engineer</span>
+						</div>                      	
+                    </v-card-title>
+                  </v-card>
+                </v-flex>
+                <v-flex xs12 md3>
+                  <v-card class="elevation-0 transparent">
+                    <v-card-text class="text-xs-center">
+                      	<v-img src="/static/assets/us/xi.png"></v-img>
+                    </v-card-text>
+                    <v-card-title primary-title class="layout justify-center">
+                    	<div class="text-xs-center">
+                      		<h2 class="headline">Xi Yang</h2>
+                      		<span class="subheading">Lead Data Scientist</span>
+						</div>                      	
+                    </v-card-title>
+                  </v-card>
+                </v-flex>         
+                <v-flex xs12 md3>
+                  <v-card class="elevation-0 transparent">
+                    <v-card-text class="text-xs-center">
+                      	<v-img src="/static/assets/us/ziyu.png"></v-img>
+                    </v-card-text>
+                    <v-card-title primary-title class="layout justify-center">
+                    	<div class="text-xs-center">
+                      		<h2 class="headline">Ziyu Fan</h2>
+                      		<span class="subheading">Data Scientist</span>
+						</div>                      	
+                    </v-card-title>
+                  </v-card>
+                </v-flex>
+                <v-flex xs12 md3>
+                  <v-card class="elevation-0 transparent">
+                    <v-card-text class="text-xs-center">
+                      	<v-img src="/static/assets/us/brian.png"></v-img>
+                    </v-card-text>
+                    <v-card-title primary-title class="layout justify-center">
+                    	<div class="text-xs-center">
+                      		<h2 class="headline">Brian Wright</h2>
+                      		<span class="subheading">Data Scientist</span>
+						</div>                      	
+                    </v-card-title>
+                  </v-card>
+                </v-flex>
+                <v-flex xs12 md3>
+                  <v-card class="elevation-0 transparent">
+                    <v-card-text class="text-xs-center">
+                      	<v-img src="/static/assets/us/yixin.png"></v-img>
+                    </v-card-text>
+                    <v-card-title primary-title class="layout justify-center">
+                    	<div class="text-xs-center">
+                      		<h2 class="headline">Yixin Sun</h2>
+                      		<span class="subheading">Backend Engineer</span>
+						</div>                      	
+                    </v-card-title>
+                  </v-card>
+                </v-flex>                
+                <v-flex xs12 md3>
+                  <v-card class="elevation-0 transparent">
+                    <v-card-text class="text-xs-center">
+                      	<v-img src="/static/assets/us/lance.png"></v-img>
+                    </v-card-text>
+                    <v-card-title primary-title class="layout justify-center">
+                    	<div class="text-xs-center">
+                      		<h2 class="headline">Lance Fernando</h2>
+                      		<span class="subheading">Frontend Engineer</span>
+						</div>                      	
+                    </v-card-title>
+                 </v-card>
+                </v-flex>                
 
-			<v-content>
-				<v-container>
-					<!-- Topic navigation dropdown -->
-				    <div class="text-xs">
-				      <v-menu
-				        :close-on-content-click="false"
-				        :nudge-width="200"
-				        offset-x
-				      >
-				        <template v-slot:activator="{ on }">
-				          <v-btn
-				            color="indigo"
-				            dark
-				            v-on="on"
-				          >
-				            Topic Navigation
-				          </v-btn>
-				        </template>
-				        <v-card>  
-				          <v-divider></v-divider>
-				          <v-list v-for="(topic, index) in topics">
-				            <v-list-tile>
-				              <v-list-tile-action>
-				                <v-switch @change="chooseTopic(index)" color="purple"></v-switch>
-				              </v-list-tile-action>
-				              <v-list-tile-title>[[ topic ]]</v-list-tile-title>
-				            </v-list-tile>
-				  		  </v-list>
-				        </v-card>
-				      </v-menu>
-				    </div>
+              </v-layout>
+            </v-container>
+          </v-flex>
+        </v-layout>
+      </section>
 
-					<!-- News Feed -->
-					<div>
-						<v-container grid-list-md>
-							<v-layout row left wrap>
-								<v-flex xs12 v-for="(n, index) in displayed_news">
-									<v-card @click="renderArticle(index)">
-										<!-- <v-card-text>
-											<!-- <img :src="n.main_image"> -->
-										<!-- </v-card-text> -->
-										<v-card-text>
-											<i>[[ n.site_full ]]</i>
-										</v-card-text>
-										<v-card-title primary-title>
-											<div class="headline">
-												<h2>[[ n.title!=''?n.title:"No title. Link to article." ]]</h2>
-											</div>
-										</v-card-title>
-										<v-card-text>
-											<i>[[ n.th!=''?n.author:"No author" ]]</i>
-											<i>[time] ago</i>
-										</v-card-text>
+      <section>
+        <v-container grid-list-xl>
+          <v-layout row wrap justify-center class="my-5">
+            <v-flex xs12 sm4>
+              <v-card class="elevation-0 transparent">
+                <v-card-title primary-title class="layout justify-center">
+                  <div class="headline">About us</div>
+                </v-card-title>
+                <v-card-text>
+                  We are MSDS Cohort 7 students. adlkfjalsdkfjal
+                </v-card-text>
+              </v-card>
+            </v-flex>
+            <v-flex xs12 sm4 offset-sm1>
+              <v-card class="elevation-0 transparent">
+                <v-card-title primary-title class="layout justify-center">
+                  <div class="headline">Contact Us</div>
+                </v-card-title>
+                <v-card-text>
+                  Feel free to reach our if you have any questions!
+                </v-card-text>
+                <v-list class="transparent">
+                  <v-list-tile>
+                    <v-list-tile-action>
+                      <v-icon class="blue--text text--lighten-2">phone</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                      <v-list-tile-title>XXX-XXX-XXXX</v-list-tile-title>
+                    </v-list-tile-content>
+                  </v-list-tile>
+                  <v-list-tile>
+                    <v-list-tile-action>
+                      <v-icon class="blue--text text--lighten-2">place</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                      <v-list-tile-title>San Francisco, US</v-list-tile-title>
+                    </v-list-tile-content>
+                  </v-list-tile>
+                  <v-list-tile>
+                    <v-list-tile-action>
+                      <v-icon class="blue--text text--lighten-2">email</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                      <v-list-tile-title>john@something.com</v-list-tile-title>
+                    </v-list-tile-content>
+                  </v-list-tile>
+                </v-list>
+              </v-card>
+            </v-flex>
+          </v-layout>
+        </v-container>
+      </section>
 
- <!-- 										<v-btn @click="renderArticle(index)" color="info">Run</v-btn>
-										<v-btn @mouseover="renderArticle(index)" color="info">Run</v-btn>
- -->
-									</v-card>
-								</v-flex>
-							</v-layout>
-						</v-container>
-					</div>
-				    <div class="text-xs-center">
-				      <v-pagination
-				        v-model="page"
-				        :length=page_length
-				        @input="nextPage"
-				      ></v-pagination>
-				    </div>
-
-				</v-container>
-			</v-content>
-
-			<v-footer app fixed>
-				<span>Hello we are team 1</span>
-			</v-footer>
-
-		</v-app>
-	</div>
-	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-	<script src="{{ url_for('static', filename='code.js')}}"></script>
+      <v-footer class="blue darken-2">
+        <v-layout row wrap align-center>
+          <v-flex xs12>
+<!--             <div class="white--text ml-3">
+              Made with
+              <v-icon class="red--text">favorite</v-icon>
+              by <a class="white--text" href="https://vuetifyjs.com" target="_blank">Vuetify</a>
+              and <a class="white--text" href="https://github.com/vwxyzjn">Costa Huang</a>
+            </div>
+ -->          </v-flex>
+        </v-layout>
+      </v-footer>
+    </v-content>
+  </v-app>
+ </div>
+ <script src="https://unpkg.com/vue/dist/vue.js"></script>
+ <script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
+ <script>
+   new Vue({
+    el: '#app',
+    data () {
+      return {
+        title: 'NewsPhi'
+      }
+    }
+  })
+ </script>
 </body>
 </html>

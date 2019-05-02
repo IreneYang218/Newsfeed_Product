@@ -13,6 +13,10 @@ def index():
     # return("<h1> WELCOME TO NEWSPHI </h1>")
     return render_template('index.html')
 
+@application.route('/NewsPhi')
+def newsPhi():
+    return render_template('main_app.html')
+
 #
 # @application.route('/login_page', methods=['GET', 'POST'])
 # def login_page():

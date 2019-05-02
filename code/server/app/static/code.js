@@ -9,43 +9,6 @@ const QUERY = '&sort=crawled&q=site_type%3Anews%20thread.country%3AUS%20language
 const FORMAT = '&format=json';
 const COMMENT_VIEW = 'connectsf_comment';
 const OUR_API = 'http://ec2-35-167-124-232.us-west-2.compute.amazonaws.com:3000/articles'
-// main function
-let _featJson;
-async function initialPrep() {
-
-  console.log('1...');
-  _featJson = await getNews();
-
-  console.log('2... ');
-  console.log("data", app_news.news);
-
-  console.log('3... ');
-
-
-  console.log('4... ');
-  // await fetchAddLayers();
-
-  console.log('5... ');
-  // await checkCookie();
-
-  console.log('6 !!!');
-}
-var posts = []
-
-console.log("posts", posts);
-
-// get data from RESTapi
-async function getNews() {
-  let data_url = API_SERVER + FORMAT + QUERY;
-  let resp = await fetch(data_url);
-
-  app_news.news = jsonData['posts'];
-}
-
-// var displayed = sample.posts.slice(0,10)
-// var news = fetch(api)
-// console.log('news', news)
-// console.log("")
 
 let app_news = new Vue({
   delimiters:['[[', ']]'], // resolve confilt with jinja2
@@ -54,11 +17,16 @@ let app_news = new Vue({
     news: [],
     displayed_news: [],
     filtered_news: [],
+    politics_news: [],
+    sports_news: [],
+    business_news: [],
+    current_news: [],
     drawer: true,
     time: new Date(),
     my_articles: [],
     topics: ['Politics', 'Sports', 'Business', 'Current Events'],
     topic_on: [false, false, false, false],
+    chosen_topics: new Set(),
     clicked_ids: new Set(),
     input_email: '',
     input_pwd: '',
@@ -77,8 +45,27 @@ let app_news = new Vue({
         .then(function (response) {
           console.log("data", response.data)
           app_news.news = response.data
+          app_news.filtered_news = response.data
           app_news.displayed_news = response.data.slice(0,10)
           app_news.page_length = Math.ceil(response.data.length/10)
+
+          // Hardcoding the general topic
+          app_news.news.forEach(function(article){
+            var rand_int = Math.floor(Math.random() * (+4 - +0)) + +0            
+            article.general_topic = app_news.topics[rand_int]
+          })
+          app_news.news.forEach(function(article){
+            var topic = article.general_topic
+            if(topic=='Politics'){
+              app_news.politics_news.push(article)
+            }else if(topic=='Sports'){
+              app_news.sports_news.push(article)
+            }else if(topic=='Business'){
+              app_news.business_news.push(article)
+            }else{
+              app_news.current_news.push(article)
+            }
+          })
         })
   },
 
@@ -124,21 +111,49 @@ let app_news = new Vue({
         this.clicked_ids.delete(clicked.article_id)
       }
     },
-    chooseTopic: function(index){
-      console.log('topics', this.topics)
-      this.topic_on[index] = !this.topic_on[index]
+    chooseTopic: function(topic){
+      if(this.chosen_topics.has(topic)){
+          this.chosen_topics.delete(topic)
+      }else{
+        this.chosen_topics.add(topic)
+      }
+      if(this.chosen_topics.size == 0){
+        console.log("None")
+        this.filtered_news = this.news
+      }else{
+        this.filtered_news = []
+        if(this.chosen_topics.has('Politics')){
+          this.filtered_news = this.filtered_news.concat(this.politics_news)
+        }
+        if(this.chosen_topics.has('Sports')){
+          this.filtered_news = this.filtered_news.concat(this.sports_news)
+        }
+        if(this.chosen_topics.has('Business')){
+          this.filtered_news = this.filtered_news.concat(this.business_news)
+        }
+        if(this.chosen_topics.has('Current')){
+          this.filtered_news = this.filtered_news.concat(this.current_news)
+        }
+      }
+      if(this.filtered_news.length <= 10){
+        this.displayed_news = this.filtered_news
+        this.page_length = 1
+      }else{
+        this.displayed_news = this.filtered_news.slice(0,10)
+        this.page_length = Math.ceil(this.filtered_news.length/10)
+      }
+
     },
     nextPage: function(page){
       // Using incremements of 10, extract the start/end index articles 
       this.first_idx = (page - 1)*10
-      if (this.news.length < page*10){
-        this.last_idx = this.news.length
+      if (this.filtered_news.length < page*10){
+        this.last_idx = this.filtered_news.length
       }else{
         this.last_idx = page*10
       }
-      this.displayed_news = this.news.slice(this.first_idx, this.last_idx)
-    }
-
+      this.displayed_news = this.filtered_news.slice(this.first_idx, this.last_idx)
+    },
 	}
 })
 
