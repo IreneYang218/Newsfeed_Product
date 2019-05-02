@@ -103,11 +103,13 @@ let app_news = new Vue({
       });
     },
     removeArticle: function(index, clicked){
+      console.log("index", index)
       if (this.my_articles.length == 1){
         this.my_articles = []
         this.clicked_ids = new Set()
       }else{
-        this.my_articles.splice(index, index+1)
+
+        this.my_articles.splice(index, 1)
         this.clicked_ids.delete(clicked.article_id)
       }
     },
@@ -118,7 +120,6 @@ let app_news = new Vue({
         this.chosen_topics.add(topic)
       }
       if(this.chosen_topics.size == 0){
-        console.log("None")
         this.filtered_news = this.news
       }else{
         this.filtered_news = []
@@ -156,7 +157,3 @@ let app_news = new Vue({
     },
 	}
 })
-
-// initialPrep()
-console.log('hello')
-console.log('sample', sample.posts)
