@@ -24,7 +24,7 @@
 				<v-spacer></v-spacer>
 				<!-- app -->
 				<div>
-					<v-toolbar-item>
+					<v-toolbar-item v-if="!logged_in">
 					  <!-- <v-btn  flat right to='/register'>Sign Up</v-btn>
 						<v-btn  flat right to='/login'>Log In</v-btn> -->
 						<input v-model="input_email" placeholder="email">
@@ -34,6 +34,12 @@
 						</v-btn>
 						<v-btn color="black" flat value="Log In" @click="handleLogIn">
 							<span>Log In</span>
+						</v-btn>
+					</v-toolbar-item>
+					<v-toolbar-item v-if="logged_in">
+					  Welcome [[ logged_in_user ]]
+						<v-btn color="black" flat value="Log Out" @click="handleLogOut">
+							<span>Log Out</span>
 						</v-btn>
 					</v-toolbar-item>
 				</div>
@@ -66,9 +72,9 @@
 						<v-card-text>
 							<i><strong>Topic: </strong>[[clicked.news_topic]]</i>
 						</v-card-text>
-						<v-card-text>			
+						<v-card-text>
 							<i><strong>Controversy Score: </strong>[[clicked.controversy_score]]</i>
-						</v-card-text>							
+						</v-card-text>
 
 <!-- 						<v-card-text>
 							<i>[REPUTATION SCORE]</i>
@@ -98,7 +104,7 @@
 				            Topic Navigation
 				          </v-btn>
 				        </template>
-				        <v-card>  
+				        <v-card>
 				          <v-divider></v-divider>
 				          <v-list v-for="(topic, index) in topics">
 				            <v-list-tile>
