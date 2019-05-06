@@ -101,9 +101,9 @@ let app_news = new Vue({
           console.log(error);
         });
       axios.get(OUR_API+"?select=news_topic")
-        .then(function (response)) {
+        .then(function (response) {
           console.log("topic", response.data);
-        }
+        })
         .catch(error => {
           console.log(error);
         });

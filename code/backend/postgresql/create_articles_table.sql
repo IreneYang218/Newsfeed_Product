@@ -16,7 +16,6 @@ CREATE TABLE newsphi.news_articles
     general_topic varchar(256),
     controversy_score double precision,
     sentiment_score double PRECISION,
-    UNIQUE (site_full)
 );
 
 ALTER TABLE newsphi.news_articles OWNER to newsphi;
