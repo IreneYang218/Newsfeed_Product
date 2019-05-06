@@ -10,6 +10,29 @@ const FORMAT = '&format=json';
 const COMMENT_VIEW = 'connectsf_comment';
 const OUR_API = 'http://ec2-35-167-124-232.us-west-2.compute.amazonaws.com:3000/articles'
 
+function updateChart() {
+  let chart = document.getElementById("chart");
+  if (!chart) return;
+
+  let trips = Math.round(
+    tripTotals[chosenTaz][day]['pickups'] + tripTotals[chosenTaz][day]['dropoffs'] );
+  let title = buildPopupTitle(trips);
+
+  let element = document.getElementById("popup-title");
+  element.innerHTML = title;
+
+  // fetch the details
+  let finalUrl = api_server + 'tnc_trip_stats?taz=eq.' + chosenTaz
+                            + '&day_of_week=eq.' + day
+
+  fetch(finalUrl).then((resp) => resp.json()).then(function(jsonData) {
+      let data = buildChartDataFromJson(jsonData);
+      if (currentChart) currentChart.setData(data);
+  }).catch(function(error) {
+      console.log("err: "+error);
+  });
+}
+
 let app_news = new Vue({
   delimiters:['[[', ']]'], // resolve confilt with jinja2
 	el: '#feed',
@@ -80,7 +103,8 @@ let app_news = new Vue({
         this.my_articles.push(clicked)
         this.clicked_ids.add(clicked.article_id)
       }
-      console.log("my articles", this.my_articles)
+      console.log("my articles", this.my_articles);
+      updateChart();
 		},
     handleSignUp: function(idx) {
       console.log(this.input_email + ' ' + this.input_pwd);
@@ -143,7 +167,7 @@ let app_news = new Vue({
         this.displayed_news = this.filtered_news.slice(0,10)
         this.page_length = Math.ceil(this.filtered_news.length/10)
       }
-
+      updateChart();
     },
     nextPage: function(page){
       // Using incremements of 10, extract the start/end index articles 
