@@ -53,6 +53,8 @@ let app_news = new Vue({
     clicked_ids: new Set(),
     input_email: '',
     input_pwd: '',
+    logged_in: false,
+    logged_in_user: '',
     page_length: 0,
     page: 1,
     first_idx: 0,
@@ -64,6 +66,15 @@ let app_news = new Vue({
 
   //Used to grab data from rest-api
   mounted:function(){
+      axios.get('/userinfo')
+      .then(response => {
+        console.log(response);
+        this.logged_in = true;
+        this.logged_in_user = response.data.email;
+      })
+      .catch(error => {
+        console.log(error);
+      });
       axios.get(OUR_API)
         .then(function (response) {
           console.log("data", response.data)
@@ -74,7 +85,7 @@ let app_news = new Vue({
 
           // Hardcoding the general topic
           app_news.news.forEach(function(article){
-            var rand_int = Math.floor(Math.random() * (+4 - +0)) + +0            
+            var rand_int = Math.floor(Math.random() * (+4 - +0)) + +0
             article.general_topic = app_news.topics[rand_int]
           })
           app_news.news.forEach(function(article){
@@ -93,7 +104,6 @@ let app_news = new Vue({
   },
 
 	methods:{
-
 		renderArticle: function(idx){
 			var clicked = this.displayed_news[idx]
       var click_id = this.my_articles.length
@@ -108,7 +118,7 @@ let app_news = new Vue({
 		},
     handleSignUp: function(idx) {
       console.log(this.input_email + ' ' + this.input_pwd);
-      axios.post('http://127.0.0.1:5000/register', {
+      axios.post('/register', {
         password: this.input_pwd,
         email: this.input_email
       })
@@ -118,13 +128,33 @@ let app_news = new Vue({
     },
     handleLogIn: function(idx) {
       console.log(this.input_email + ' ' + this.input_pwd);
-      axios.post('http://127.0.0.1:5000/login', {
+      axios.post('/login', {
         password: this.input_pwd,
         email: this.input_email
       })
-      .then(function (response) {
-        console.log(response);
-      });
+      .then(response => {
+        if (response.data.status === 'ok') {
+          this.logged_in_user = response.data.user;
+          this.logged_in = true;
+          console.log(this.logged_in);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      })
+    },
+    handleLogOut: function(idx) {
+      axios.post('/logout')
+      .then(response => {
+        if (response.data.status === 'ok') {
+          this.logged_in_user = '';
+          this.logged_in = false;
+          console.log(this.logged_in);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      })
     },
     removeArticle: function(index, clicked){
       console.log("index", index)
@@ -170,7 +200,7 @@ let app_news = new Vue({
       updateChart();
     },
     nextPage: function(page){
-      // Using incremements of 10, extract the start/end index articles 
+      // Using incremements of 10, extract the start/end index articles
       this.first_idx = (page - 1)*10
       if (this.filtered_news.length < page*10){
         this.last_idx = this.filtered_news.length
