@@ -19,11 +19,14 @@ def read_file_and_process(filepath, TABLE_NAME, SCHEMA_NAME):
                        'thread.main_image': 'main_image',
                        'url': 'post_link',
                        'topic': 'news_topic',
-                       'published': 'published_time'},
+                       'published': 'published_time',
+                       'sentiment': 'sentiment_score',
+                       'thread.uuid': 'article_id',
+                       'General_Topic': 'general_topic'},
               inplace=True)
     OBJ_COLS = ['title', 'author', 'site_full', 'main_image',
-                'post_link', 'news_topic']
-    INT_COLS = ['controversy_score']
+                'post_link', 'news_topic', 'article_id', 'general_topic']
+    INT_COLS = ['controversy_score', 'sentiment_score']
     TIME_COLS = ['published_time']
     df = df.replace([np.inf, -np.inf], np.nan)
 

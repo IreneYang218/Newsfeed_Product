@@ -1,6 +1,7 @@
 import paramiko
 from os.path import expanduser
 from user_definition import *
+import sys
 
 
 def ssh_client():
@@ -65,24 +66,7 @@ def git_clone(ssh):
             print("CLONE GIT REPO SUCCESS")
 
 
-def main():
-    """
-    The command to run in bash.
-    Connects to EC2;
-    Clones the git repo;
-    Creates the environment;
-    Set crontab for getting streaming data daily;
-    Run the model;
-    Import new model output to RDS;
-    Run the server.
-    """
-
-    ssh = ssh_client()
-    ssh_connection(ssh, ec2_address, user, key_file)
-    git_clone(ssh)
-    create_or_update_environment(ssh)
-
-    # set crontab
+def streaming_data(ssh):
     # get streaming data everyday
     stdin, stdout, stderr = \
         ssh.exec_command("echo '0 0 * * * ~/.conda/envs/MSDS603/bin/python "
@@ -96,9 +80,8 @@ def main():
     else:
         print("SET UP CRONTAB SUCCESS")
 
-    # running model
 
-    # get output data from s3
+def download_data_from_s3(ssh):
     download_data = "source activate msds603;" + \
                     " cd ~/" + git_repo_name + "/code/data/;" + \
                     " python download.py" + \
@@ -110,7 +93,8 @@ def main():
     else:
         print("DOWNLOAD DATA SUCCESS")
 
-    # load output data to RDS
+
+def load_data_to_rds(ssh):
     load_output = "cd " + git_repo_name + \
                   "/code/backend/postgresql/;" + \
                   " python preprocess.py" + \
@@ -120,39 +104,95 @@ def main():
                   " sample_data.csv" + \
                   " newsphi.news_articles"
     stdin, stdout, stderr = ssh.exec_command(load_output)
-    print(stderr.read())
-    print(stdout.read())
     if (stderr.read() is not b""):
         print("ERROR in import data: ", stdout.read())
     else:
         print("IMPORT DATA SUCCESS")
 
+
+if __name__ == '__main__':
+    """
+    The command to run in bash.
+    Connects to EC2;
+    Clones the git repo;
+    Creates the environment;
+    Set crontab for getting streaming data daily;
+    Run the model;
+    Import new model output to RDS;
+    Run the server.
+    """
+    # create ssh connection
+    ssh = ssh_client()
+    ssh_connection(ssh, ec2_address, user, key_file)
+
+    # update git repo
+    boolean = input('Update git repo (Y/N):')
+    if boolean == 'Y':
+        git_clone(ssh)
+    else:
+        print('skip')
+
+    # update env
+    boolean = input('Update environment (Y/N):')
+    if boolean == 'Y':
+        create_or_update_environment(ssh)
+    else:
+        print('skip')
+
+    # set crontab
+    boolean = input('Set crontab for streaming data (Y/N):')
+    if boolean == 'Y':
+        streaming_data(ssh)
+    else:
+        print('skip')
+
+    # running model
+
+    # get output data from s3
+    boolean = input('Download data from S3 (Y/N):')
+    if boolean == 'Y':
+        download_data_from_s3(ssh)
+    else:
+        print('skip')
+
+    # load output data to RDS
+    boolean = input('Upload data to RDS (Y/N):')
+    if boolean == 'Y':
+        load_data_to_rds(ssh)
+    else:
+        print('skip')
+
+    # open a screen session
     transport = ssh.get_transport()
     channel = transport.open_session()
 
     # Launch the RESTful API
-    set_api = "cd " + git_repo_name + \
-              "/code/backend/postgrest/;" + \
-              " ./postgrest postgrest.conf >> log 2>&1 &"
-    stdin, stdout, stderr = ssh.exec_command(set_api)
-    if (stderr.read() is not b""):
-        print("ERROR in run RESTful api: ", stdout.read())
+    boolean = input('Set RESTful API (Y/N):')
+    if boolean == 'Y':
+        set_api = "cd " + git_repo_name + \
+                "/code/backend/postgrest/;" + \
+                " ./postgrest postgrest.conf >> log 2>&1 &"
+        stdin, stdout, stderr = ssh.exec_command(set_api)
+        if (stderr.read() is not b""):
+            print("ERROR in run RESTful api: ", stdout.read())
+        else:
+            print("API SET SUCCESS")
     else:
-        print("API SET SUCCESS")
+        print('skip')
 
     # Launch the application
-    run_server = "source activate msds603;" + \
-                 " cd " + git_repo_name +\
-                 "/code/server/; flask run >> log 2>&1 &"
-    stdin, stdout, stderr = ssh.exec_command(run_server)
-    if (stderr.read() is not b""):
-        print("ERROR in running server: ", stderr.read())
+    boolean = input('Launch website (Y/N):')
+    if boolean == 'Y':
+        run_server = "source activate msds603;" + \
+                    " cd " + git_repo_name +\
+                    "/code/server/; flask run >> log 2>&1 &"
+        stdin, stdout, stderr = ssh.exec_command(run_server)
+        if (stderr.read() is not b""):
+            print("ERROR in running server: ", stderr.read())
+        else:
+            print("SERVER RUN SUCCESS")
     else:
-        print("SERVER RUN SUCCESS")
+        print('skip')
 
     # exit
     ssh.exec_command("exit")
-
-
-if __name__ == '__main__':
-    main()
