@@ -4,10 +4,6 @@
 // import axios from 'axios';
 // some important global variables.
 // the data source
-const API_SERVER = 'https://webhose.io/filterWebContent?token=6caf20d8-8bad-49fb-996e-0726d3621783';
-const QUERY = '&sort=crawled&q=site_type%3Anews%20thread.country%3AUS%20language%3Aenglish';
-const FORMAT = '&format=json';
-const COMMENT_VIEW = 'connectsf_comment';
 const OUR_API = 'http://ec2-35-167-124-232.us-west-2.compute.amazonaws.com:3000/articles'
 
 function updateChart() {
@@ -66,15 +62,15 @@ let app_news = new Vue({
 
   //Used to grab data from rest-api
   mounted:function(){
-      axios.get('/userinfo')
-      .then(response => {
-        console.log(response);
-        this.logged_in = true;
-        this.logged_in_user = response.data.email;
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      // axios.get('/userinfo')
+      //   .then(response => {
+      //     console.log(response);
+      //     this.logged_in = true;
+      //     this.logged_in_user = response.data.email;
+      //   })
+      //   .catch(error => {
+      //     console.log(error);
+      //   });
       axios.get(OUR_API)
         .then(function (response) {
           console.log("data", response.data)
@@ -101,6 +97,16 @@ let app_news = new Vue({
             }
           })
         })
+        .catch(error => {
+          console.log(error);
+        });
+      axios.get(OUR_API+"?select=news_topic")
+        .then(function (response)) {
+          console.log("topic", response.data);
+        }
+        .catch(error => {
+          console.log(error);
+        });
   },
 
 	methods:{
