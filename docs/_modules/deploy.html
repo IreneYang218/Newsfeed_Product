@@ -36,6 +36,7 @@
 <span></span><span class="kn">import</span> <span class="nn">paramiko</span>
 <span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">expanduser</span>
 <span class="kn">from</span> <span class="nn">user_definition</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">sys</span>
 
 
 <div class="viewcode-block" id="ssh_client"><a class="viewcode-back" href="../deploy.html#deploy.ssh_client">[docs]</a><span class="k">def</span> <span class="nf">ssh_client</span><span class="p">():</span>
@@ -100,24 +101,7 @@
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CLONE GIT REPO SUCCESS&quot;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="main"><a class="viewcode-back" href="../deploy.html#deploy.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    The command to run in bash.</span>
-<span class="sd">    Connects to EC2;</span>
-<span class="sd">    Clones the git repo;</span>
-<span class="sd">    Creates the environment;</span>
-<span class="sd">    Set crontab for getting streaming data daily;</span>
-<span class="sd">    Run the model;</span>
-<span class="sd">    Import new model output to RDS;</span>
-<span class="sd">    Run the server.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">ssh</span> <span class="o">=</span> <span class="n">ssh_client</span><span class="p">()</span>
-    <span class="n">ssh_connection</span><span class="p">(</span><span class="n">ssh</span><span class="p">,</span> <span class="n">ec2_address</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">key_file</span><span class="p">)</span>
-    <span class="n">git_clone</span><span class="p">(</span><span class="n">ssh</span><span class="p">)</span>
-    <span class="n">create_or_update_environment</span><span class="p">(</span><span class="n">ssh</span><span class="p">)</span>
-
-    <span class="c1"># set crontab</span>
+<div class="viewcode-block" id="streaming_data"><a class="viewcode-back" href="../deploy.html#deploy.streaming_data">[docs]</a><span class="k">def</span> <span class="nf">streaming_data</span><span class="p">(</span><span class="n">ssh</span><span class="p">):</span>
     <span class="c1"># get streaming data everyday</span>
     <span class="n">stdin</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> \
         <span class="n">ssh</span><span class="o">.</span><span class="n">exec_command</span><span class="p">(</span><span class="s2">&quot;echo &#39;0 0 * * * ~/.conda/envs/MSDS603/bin/python &quot;</span>
@@ -129,11 +113,10 @@
     <span class="k">if</span> <span class="p">(</span><span class="n">stderr</span><span class="o">.</span><span class="n">read</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR in crontab: &quot;</span><span class="p">,</span> <span class="n">stdout</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SET UP CRONTAB SUCCESS&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SET UP CRONTAB SUCCESS&quot;</span><span class="p">)</span></div>
 
-    <span class="c1"># running model</span>
 
-    <span class="c1"># get output data from s3</span>
+<div class="viewcode-block" id="download_data_from_s3"><a class="viewcode-back" href="../deploy.html#deploy.download_data_from_s3">[docs]</a><span class="k">def</span> <span class="nf">download_data_from_s3</span><span class="p">(</span><span class="n">ssh</span><span class="p">):</span>
     <span class="n">download_data</span> <span class="o">=</span> <span class="s2">&quot;source activate msds603;&quot;</span> <span class="o">+</span> \
                     <span class="s2">&quot; cd ~/&quot;</span> <span class="o">+</span> <span class="n">git_repo_name</span> <span class="o">+</span> <span class="s2">&quot;/code/data/;&quot;</span> <span class="o">+</span> \
                     <span class="s2">&quot; python download.py&quot;</span> <span class="o">+</span> \
@@ -143,9 +126,10 @@
     <span class="k">if</span> <span class="n">stderr</span><span class="o">.</span><span class="n">read</span><span class="p">():</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR in download data: &quot;</span><span class="p">,</span> <span class="n">stdout</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;DOWNLOAD DATA SUCCESS&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;DOWNLOAD DATA SUCCESS&quot;</span><span class="p">)</span></div>
 
-    <span class="c1"># load output data to RDS</span>
+
+<div class="viewcode-block" id="load_data_to_rds"><a class="viewcode-back" href="../deploy.html#deploy.load_data_to_rds">[docs]</a><span class="k">def</span> <span class="nf">load_data_to_rds</span><span class="p">(</span><span class="n">ssh</span><span class="p">):</span>
     <span class="n">load_output</span> <span class="o">=</span> <span class="s2">&quot;cd &quot;</span> <span class="o">+</span> <span class="n">git_repo_name</span> <span class="o">+</span> \
                   <span class="s2">&quot;/code/backend/postgresql/;&quot;</span> <span class="o">+</span> \
                   <span class="s2">&quot; python preprocess.py&quot;</span> <span class="o">+</span> \
@@ -155,42 +139,98 @@
                   <span class="s2">&quot; sample_data.csv&quot;</span> <span class="o">+</span> \
                   <span class="s2">&quot; newsphi.news_articles&quot;</span>
     <span class="n">stdin</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="n">ssh</span><span class="o">.</span><span class="n">exec_command</span><span class="p">(</span><span class="n">load_output</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">stderr</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">stdout</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">stderr</span><span class="o">.</span><span class="n">read</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR in import data: &quot;</span><span class="p">,</span> <span class="n">stdout</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;IMPORT DATA SUCCESS&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;IMPORT DATA SUCCESS&quot;</span><span class="p">)</span></div>
 
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The command to run in bash.</span>
+<span class="sd">    Connects to EC2;</span>
+<span class="sd">    Clones the git repo;</span>
+<span class="sd">    Creates the environment;</span>
+<span class="sd">    Set crontab for getting streaming data daily;</span>
+<span class="sd">    Run the model;</span>
+<span class="sd">    Import new model output to RDS;</span>
+<span class="sd">    Run the server.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># create ssh connection</span>
+    <span class="n">ssh</span> <span class="o">=</span> <span class="n">ssh_client</span><span class="p">()</span>
+    <span class="n">ssh_connection</span><span class="p">(</span><span class="n">ssh</span><span class="p">,</span> <span class="n">ec2_address</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">key_file</span><span class="p">)</span>
+
+    <span class="c1"># update git repo</span>
+    <span class="n">boolean</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Update git repo (Y/N):&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">boolean</span> <span class="o">==</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span>
+        <span class="n">git_clone</span><span class="p">(</span><span class="n">ssh</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;skip&#39;</span><span class="p">)</span>
+
+    <span class="c1"># update env</span>
+    <span class="n">boolean</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Update environment (Y/N):&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">boolean</span> <span class="o">==</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span>
+        <span class="n">create_or_update_environment</span><span class="p">(</span><span class="n">ssh</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;skip&#39;</span><span class="p">)</span>
+
+    <span class="c1"># set crontab</span>
+    <span class="n">boolean</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Set crontab for streaming data (Y/N):&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">boolean</span> <span class="o">==</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span>
+        <span class="n">streaming_data</span><span class="p">(</span><span class="n">ssh</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;skip&#39;</span><span class="p">)</span>
+
+    <span class="c1"># running model</span>
+
+    <span class="c1"># get output data from s3</span>
+    <span class="n">boolean</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Download data from S3 (Y/N):&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">boolean</span> <span class="o">==</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span>
+        <span class="n">download_data_from_s3</span><span class="p">(</span><span class="n">ssh</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;skip&#39;</span><span class="p">)</span>
+
+    <span class="c1"># load output data to RDS</span>
+    <span class="n">boolean</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Upload data to RDS (Y/N):&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">boolean</span> <span class="o">==</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span>
+        <span class="n">load_data_to_rds</span><span class="p">(</span><span class="n">ssh</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;skip&#39;</span><span class="p">)</span>
+
+    <span class="c1"># open a screen session</span>
     <span class="n">transport</span> <span class="o">=</span> <span class="n">ssh</span><span class="o">.</span><span class="n">get_transport</span><span class="p">()</span>
     <span class="n">channel</span> <span class="o">=</span> <span class="n">transport</span><span class="o">.</span><span class="n">open_session</span><span class="p">()</span>
 
     <span class="c1"># Launch the RESTful API</span>
-    <span class="n">set_api</span> <span class="o">=</span> <span class="s2">&quot;cd &quot;</span> <span class="o">+</span> <span class="n">git_repo_name</span> <span class="o">+</span> \
-              <span class="s2">&quot;/code/backend/postgrest/;&quot;</span> <span class="o">+</span> \
-              <span class="s2">&quot; ./postgrest postgrest.conf &gt;&gt; log 2&gt;&amp;1 &amp;&quot;</span>
-    <span class="n">stdin</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="n">ssh</span><span class="o">.</span><span class="n">exec_command</span><span class="p">(</span><span class="n">set_api</span><span class="p">)</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">stderr</span><span class="o">.</span><span class="n">read</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR in run RESTful api: &quot;</span><span class="p">,</span> <span class="n">stdout</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+    <span class="n">boolean</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Set RESTful API (Y/N):&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">boolean</span> <span class="o">==</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span>
+        <span class="n">set_api</span> <span class="o">=</span> <span class="s2">&quot;cd &quot;</span> <span class="o">+</span> <span class="n">git_repo_name</span> <span class="o">+</span> \
+                <span class="s2">&quot;/code/backend/postgrest/;&quot;</span> <span class="o">+</span> \
+                <span class="s2">&quot; ./postgrest postgrest.conf &gt;&gt; log 2&gt;&amp;1 &amp;&quot;</span>
+        <span class="n">stdin</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="n">ssh</span><span class="o">.</span><span class="n">exec_command</span><span class="p">(</span><span class="n">set_api</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">stderr</span><span class="o">.</span><span class="n">read</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR in run RESTful api: &quot;</span><span class="p">,</span> <span class="n">stdout</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;API SET SUCCESS&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;API SET SUCCESS&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;skip&#39;</span><span class="p">)</span>
 
     <span class="c1"># Launch the application</span>
-    <span class="n">run_server</span> <span class="o">=</span> <span class="s2">&quot;source activate msds603;&quot;</span> <span class="o">+</span> \
-                 <span class="s2">&quot; cd &quot;</span> <span class="o">+</span> <span class="n">git_repo_name</span> <span class="o">+</span>\
-                 <span class="s2">&quot;/code/server/; flask run &gt;&gt; log 2&gt;&amp;1 &amp;&quot;</span>
-    <span class="n">stdin</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="n">ssh</span><span class="o">.</span><span class="n">exec_command</span><span class="p">(</span><span class="n">run_server</span><span class="p">)</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">stderr</span><span class="o">.</span><span class="n">read</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR in running server: &quot;</span><span class="p">,</span> <span class="n">stderr</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+    <span class="n">boolean</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Launch website (Y/N):&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">boolean</span> <span class="o">==</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span>
+        <span class="n">run_server</span> <span class="o">=</span> <span class="s2">&quot;source activate msds603;&quot;</span> <span class="o">+</span> \
+                    <span class="s2">&quot; cd &quot;</span> <span class="o">+</span> <span class="n">git_repo_name</span> <span class="o">+</span>\
+                    <span class="s2">&quot;/code/server/; flask run &gt;&gt; log 2&gt;&amp;1 &amp;&quot;</span>
+        <span class="n">stdin</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="n">ssh</span><span class="o">.</span><span class="n">exec_command</span><span class="p">(</span><span class="n">run_server</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">stderr</span><span class="o">.</span><span class="n">read</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR in running server: &quot;</span><span class="p">,</span> <span class="n">stderr</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SERVER RUN SUCCESS&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SERVER RUN SUCCESS&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;skip&#39;</span><span class="p">)</span>
 
     <span class="c1"># exit</span>
-    <span class="n">ssh</span><span class="o">.</span><span class="n">exec_command</span><span class="p">(</span><span class="s2">&quot;exit&quot;</span><span class="p">)</span></div>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">main</span><span class="p">()</span>
+    <span class="n">ssh</span><span class="o">.</span><span class="n">exec_command</span><span class="p">(</span><span class="s2">&quot;exit&quot;</span><span class="p">)</span>
 </pre></div>
 
           </div>
