@@ -35,40 +35,37 @@ def read_file_and_process(filepath, TABLE_NAME, SCHEMA_NAME):
             df[col] = df[col].astype(str)
             df.loc[df[col] == 'nan', col] = ''
         elif col in INT_COLS:
-            df[col] = df[col].map('{:.0f}'.format)
+            df[col] = df[col].map('{:.4f}'.format)
             df.loc[df[col] == 'nan', col] = 'NULL'
         elif col in TIME_COLS:
             df.loc[df[col] == 'nan', col] = ''
 
     columns = df.columns
-
-    f = StringIO()
-    df.to_csv(f, sep='\t', header=False, index=False, na_rep='NULL')
-    f.seek(0)
     print('total number of records: %s' % len(df))
-    return f, columns
 
-
-def import_data(f, columns):
-    """Connect RDS database and copy data into database"""
+    # Connect RDS database and copy data into database
     conn = config.connect(config.dbconfig())
     dbcursor = conn.cursor()
+    for i in range(len(df)):
+        f = StringIO()
+        df.iloc[[i]].to_csv(f, sep='\t', header=False, index=False, na_rep='NULL')
+        f.seek(0)
+    
+        try:
+            dbcursor.copy_from(f, '%s.%s' % (SCHEMA_NAME, TABLE_NAME),
+                            sep='\t', null='NULL', columns=(columns))
+            conn.commit()
+        except (Exception, psycopg2.DatabaseError) as error:
+            print(error)
+            conn.rollback()
+        
+        if ((i+1)%100==0): print('copy %d records' % (i+1))
 
-    try:
-        dbcursor.copy_from(f, '%s.%s' % (SCHEMA_NAME, TABLE_NAME),
-                           sep='\t', null='NULL', columns=(columns))
-        conn.commit()
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-        conn.rollback()
-    finally:
-        conn.close()
+    conn.close()
 
 
 if __name__ == '__main__':
     SCHEMA_NAME = sys.argv[2].split('.')[0]
     TABLE_NAME = sys.argv[2].split('.')[1]
     filepath = sys.argv[1]
-    f, columns = \
-        read_file_and_process(filepath, TABLE_NAME, SCHEMA_NAME)
-    import_data(f, columns)
+    read_file_and_process(filepath, TABLE_NAME, SCHEMA_NAME)

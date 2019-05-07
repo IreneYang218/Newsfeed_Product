@@ -6,6 +6,7 @@
 	<script src="https://unpkg.com/vue/dist/vue.js"></script>
 	<script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
 	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
 	<style>[v-cloak] {display: none}</style>
@@ -141,9 +142,6 @@
 									</v-list-tile-content>
 								</v-list-tile>
 							</v-list>
-							<v-container>
-								<div id="bar-chart"></div>
-							</v-container>
 							<v-container v-for="(clicked, index) in my_articles">
 								<v-card>
 									<v-card-title>
@@ -163,6 +161,7 @@
 										</v-card-text>
 									<v-card-text>
 										<i><strong>Topic: </strong>[[clicked.news_topic]]</i>
+										<div id="bar-chart" style="height: 100%"></div>
 										<div id="dount-chart"></div>
 									</v-card-text>						
 									<v-btn fab dark small color="primary" @click="removeArticle(index, clicked)">
