@@ -6,19 +6,19 @@
 // the data source
 const API_SERVER = 'http://ec2-35-167-124-232.us-west-2.compute.amazonaws.com:3000/articles'
 
-function updateChart(artilce) {
+function updateChart(article) {
   // fetch the details
-  var topic = artilce.news_topic.replace(' ', '%20');
+  var topic = article[0].news_topic.replace(' ', '%20');
   let finalUrl = API_SERVER + '?select=sentiment_score&news_topic=eq.' + topic;
 
   fetch(finalUrl).then((resp) => resp.json()).then(function(jsonData) {
-      buildChartDataFromJson(jsonData);
+      buildChartDataFromJson(jsonData, article[0].sentiment_score);
   }).catch(function(error) {
       console.log("err: "+error);
   });
 }
 
-function buildChartDataFromJson(json) {
+function buildChartDataFromJson(json, score) {
   let sort_data = new Array();
 
   for (let n=0; n<json.length; n++) {
@@ -27,19 +27,23 @@ function buildChartDataFromJson(json) {
   sort_data.sort((a, b) => a - b);
 
   let data = new Array();
+  var position = 0
   for (let n=0; n<sort_data.length; n++) {
-      data.push([n,0,sort_data[n]]);
+    if(sort_data[n] == score){
+      position = n
+    }
+    data.push([n,0,sort_data[n]]);
   }
-
-  buildChart(data, sort_data);
+  buildChart(data, sort_data, position);
 }
 
-function buildChart(data, xData) {
+function buildChart(data, xData, position) {
   var dom = document.getElementById("bar-chart");
   var myChart = echarts.init(dom);
   var app = {};
   var option = null;
   var yData = [0];
+  var color = ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026'].reverse();
 
   var option = {
       grid: {
@@ -62,7 +66,7 @@ function buildChart(data, xData) {
           precision: 4,
           show: false,
           inRange: {
-              color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
+              color: color
           }
       },
       series: [{
@@ -73,7 +77,7 @@ function buildChart(data, xData) {
               symbolSize: 30,
               symbolOffset: [0, '-50%'],
               data: [
-                  {xAxis: 10, yAxis: 0},
+                  {xAxis: position, yAxis: 0},
               ],
           },
           itemStyle: {
@@ -91,6 +95,9 @@ function buildChart(data, xData) {
 }
 
 function buildAuthorGauge(){
+  var dom = document.getElementById("author-gauge");
+  console.log("dom", dom)
+  var myChart = echarts.init(dom);
   option = {
       tooltip : {
           formatter: "{a} <br/>{b} : {c}%"
@@ -110,10 +117,11 @@ function buildAuthorGauge(){
           }
       ]
   };
-  
 
+  if (option && typeof option === "object") {
+      myChart.setOption(option, true);
+  }  
 }
-
 function compare(a, b) {
   // Helper function to sort descending
   // Use toUpperCase() to ignore character casing
@@ -154,13 +162,8 @@ function getTopicsInfo(articles){
 }
 
 function getMeanControversy(topic, articles){
-  console.log("currtop", topic)
   var filtered = articles.filter(article => article.news_topic == topic)
-  var total = 0
-  for(var i=0; i < filtered.length; i++) {
-    total += filtered[i].controversy_score
-  }
-  return total/filtered.length
+  return filtered[0].controversy_score
 }
 
 let app_news = new Vue({
@@ -209,7 +212,7 @@ let app_news = new Vue({
       //     console.log(error);
       //   });
 
-      axios.get(API_SERVER+"?order=published_time.desc&limit=1000")
+      axios.get(API_SERVER+"?limit=1000")
         .then(function (response) {
           console.log("data", response.data)
           app_news.news = response.data
@@ -238,6 +241,15 @@ let app_news = new Vue({
         .catch(error => {
           console.log(error);
         });
+
+      // axios.get(API_SERVER+"?select=news_topic")
+      //   .then(function (response) {
+      //     // var topic = response.data
+      //     // console.log("topic", typeof(topic));
+      //   })
+      //   .catch(error => {
+      //     console.log(error);
+      //   });
   },
 
 	methods:{
@@ -253,7 +265,8 @@ let app_news = new Vue({
    //      this.clicked_ids.add(clicked.article_id)
    //    }
    //    console.log("my articles", this.my_articles);
-      updateChart(this.displayed_news[idx]);
+      updateChart(this.clicked_article);
+      buildAuthorGauge();
 		},
     handleSignUp: function(idx) {
       console.log(this.input_email + ' ' + this.input_pwd);

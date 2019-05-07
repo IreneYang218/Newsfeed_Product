@@ -194,5 +194,20 @@ if __name__ == '__main__':
     else:
         print('skip')
 
+    # Disable the application
+    boolean = input('Disable website (Y/N):')
+    if boolean == 'Y':
+        check_pid = "pgrep flask"
+        stdin, stdout, stderr = ssh.exec_command(check_pid)
+        pid = stdout
+        kill_server = "kill -9 " + str(pid)
+        stdin, stdout, stderr = ssh.exec_command(kill_server)
+        if (stderr.read() is not b""):
+            print("ERROR in killing server: ", stderr.read())
+        else:
+            print("KILL SERVER SUCCESS")
+    else:
+        print('skip')        
+
     # exit
     ssh.exec_command("exit")
