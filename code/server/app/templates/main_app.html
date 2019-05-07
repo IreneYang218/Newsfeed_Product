@@ -198,16 +198,27 @@
 										<!-- <div><i>[[ clicked.site_full ]]</i></div> -->
 										<div><i>[[ clicked.th!=''?clicked.author:"No author" ]]</i></div>
 										<!-- <div><i>[[ clicked.published_time ]]</i></div> -->
+										<div id="author-gauge" style="height: 100%"></div>
+
 									</v-card-text>
-									<v-card-text style='font-size: 24px'>
+<!-- 									<v-card-text style='font-size: 24px'>
 											<i><strong>Controversy Score: </strong>[[Math.round(clicked.controversy_score)]]</i>
 									</v-card-text>
-									
-									<v-card-text style='font-size: 24px'>
-											<i><strong>Controversy Score: </strong>[[Math.round(clicked.controversy_score)]]</i>
+ -->									
+									<v-card-text>
+									<v-progress-circular
+										:rotate="180"
+										:size="175"
+										:width="15"
+										:value="clicked.controversy_score"
+										color="teal"
+									>
+										<v-card-text style="font-size: 20px"justify-center><strong>[[clicked.news_topic]]</strong></v-card-text>
+									</v-progress-circular>
+									<i><strong>Controversy Score: </strong>[[Math.round(clicked.controversy_score)]]</i>
 									</v-card-text>
-									<v-card-text style='font-size: 24px'>
-										<i><strong>Topic: </strong>[[clicked.news_topic]]</i>
+									<v-card-text style='font-size: 16px'>
+										<i><strong>Sentiment Score: </strong>[[clicked.sentiment_score]]</i>
 										<div id="bar-chart" style="height: 100%"></div>
 										<!-- <div id="dount-chart"></div> -->
 									</v-card-text>
