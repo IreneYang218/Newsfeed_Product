@@ -6,9 +6,11 @@
 // the data source
 const API_SERVER = 'http://ec2-35-167-124-232.us-west-2.compute.amazonaws.com:3000/articles'
 
-function updateChart() {
+function updateChart(article) {
   // fetch the details
-  let finalUrl = API_SERVER + '?select=sentiment_score&news_topic=eq.' + 'Space%20exploration'
+  var topic = article[0].news_topic.replace(' ', '%20');
+  console.log(topic);
+  let finalUrl = API_SERVER + '?select=sentiment_score&news_topic=eq.' + topic;
   // app_news.click_id[0].news_topic
   // need replace space with %20
 
@@ -92,6 +94,55 @@ function buildChart(data, xData) {
   }
 }
 
+function compare(a, b) {
+  // Helper function to sort descending
+  // Use toUpperCase() to ignore character casing
+  const countA = a.count;
+  const countB = b.count;
+
+  let comparison = 0
+  if (countA > countB) {
+    comparison = -1;
+  } else if (countA < countB) {
+    comparison = 1;
+  }
+  return comparison;
+}
+
+function countTopics(articles){
+  var countDict = {}
+  articles.forEach(function(article){
+    if(article.news_topic in countDict){
+      countDict[article.news_topic] += 1
+    }else{
+    countDict[article.news_topic] = 1
+    }
+  })
+  return countDict;
+}
+
+function getTopicsInfo(articles){
+  var countDict = countTopics(articles)
+  var keys = Object.keys(countDict)
+  var countList = []
+  for(var i=0; i < keys.length; i++){
+    countList.push({topic: keys[i],
+                    count: countDict[keys[i]],
+                    avg_score: getMeanControversy(keys[i], articles)})
+  }
+  return countList.sort(compare)
+}
+
+function getMeanControversy(topic, articles){
+  console.log("currtop", topic)
+  var filtered = articles.filter(article => article.news_topic == topic)
+  var total = 0
+  for(var i=0; i < filtered.length; i++) {
+    total += filtered[i].controversy_score
+  }
+  return total/filtered.length
+}
+
 let app_news = new Vue({
   delimiters:['[[', ']]'], // resolve confilt with jinja2
 	el: '#feed',
@@ -107,7 +158,10 @@ let app_news = new Vue({
     time: new Date(),
     my_articles: [],
     topics: ['Politics', 'Sports', 'Business', 'Current Event'],
-    topic_on: [false, false, false, false],
+    topic_info: [],
+    topic0: null,
+    topic1: null,
+    topic2: null,
     chosen_topics: new Set(),
     clicked_ids: new Set(),
     input_email: '',
@@ -125,24 +179,29 @@ let app_news = new Vue({
 
   //Used to grab data from rest-api
   mounted:function(){
-      axios.get('/userinfo')
-        .then(response => {
-          console.log(response);
-          this.logged_in = true;
-          this.logged_in_user = response.data.email;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-      axios.get(API_SERVER+"?order=published_time.desc&limit=10")
+      // axios.get('/userinfo')
+      //   .then(response => {
+      //     console.log(response);
+      //     this.logged_in = true;
+      //     this.logged_in_user = response.data.email;
+      //   })
+      //   .catch(error => {
+      //     console.log(error);
+      //   });
+
+      axios.get(API_SERVER+"?order=published_time.desc&limit=1000")
         .then(function (response) {
           console.log("data", response.data)
           app_news.news = response.data
           app_news.filtered_news = response.data
           app_news.displayed_news = response.data.slice(0,10)
           app_news.page_length = Math.ceil(response.data.length/10)
+          app_news.topic_info = getTopicsInfo(response.data).slice(0,3)
+          app_news.topic0 = app_news.topic_info[0]
+          app_news.topic1 = app_news.topic_info[1]
+          app_news.topic2 = app_news.topic_info[2]
 
-          // Hardcoding the general topic
+          // Creating general topic sublists
           app_news.news.forEach(function(article){
             var topic = article.general_topic
             if(topic=='Politics'){
@@ -160,14 +219,14 @@ let app_news = new Vue({
           console.log(error);
         });
 
-      axios.get(API_SERVER+"?select=news_topic")
-        .then(function (response) {
-          // var topic = response.data
-          // console.log("topic", typeof(topic));
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      // axios.get(API_SERVER+"?select=news_topic")
+      //   .then(function (response) {
+      //     // var topic = response.data
+      //     // console.log("topic", typeof(topic));
+      //   })
+      //   .catch(error => {
+      //     console.log(error);
+      //   });
   },
 
 	methods:{
@@ -181,7 +240,7 @@ let app_news = new Vue({
         this.clicked_ids.add(clicked.article_id)
       }
       console.log("my articles", this.my_articles);
-      updateChart();
+      updateChart(this.my_articles);
 		},
     handleSignUp: function(idx) {
       console.log(this.input_email + ' ' + this.input_pwd);
@@ -264,6 +323,11 @@ let app_news = new Vue({
         this.displayed_news = this.filtered_news.slice(0,10)
         this.page_length = Math.ceil(this.filtered_news.length/10)
       }
+      this.topic_info = getTopicsInfo(this.filtered_news).slice(0,3)
+      this.topic0 = this.topic_info[0]
+      this.topic1 = this.topic_info[1]
+      this.topic2 = this.topic_info[2]
+
       updateChart();
     },
     nextPage: function(page){
