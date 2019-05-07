@@ -3,7 +3,9 @@ import pandas as pd
 import datetime as dt
 import boto3
 from pandas.io.json import json_normalize
+import numpy as np
 from urllib.error import HTTPError
+from fuzzywuzzy import fuzz
 from user_definition_api import *
 from info import *
 
@@ -38,7 +40,8 @@ def output_to_df(output, df):
     :param output:
         a json output from single webhose query
     :param df:
-        previous pandas data frame from previous query, each row represent one news
+        previous pandas data frame from previous query,
+            each row represent one news
     :return:
         pandas data frame, each row represent one news
     """
@@ -85,10 +88,76 @@ def api_df(token, site_lists, time_delta, filename):
         try:
             output = webhoseio.get_next()
         except HTTPError:
-            df.to_csv(filename, index=False)
+            return df
+            # df.to_csv(filename, index=False)
         if len(df) % 1000 == 0:
             print(str(len(df)) + ' has finished')
-    df.to_csv(filename, index=False)
+    return df
+
+
+def pre_process_data(df, filename):
+    """
+    Pre-process data got from api:
+    drop duplicates
+    drop articles with no title, image, url and text
+        less than 200 words
+    drop articles with correct author name
+    """
+
+    # remove articles without title, title, url and main_image
+    cols = ['thread.uuid', 'title', 'text',
+            'thread.main_image', 'published', 'url',
+            'thread.site_full', 'author']
+
+    clean = df[cols]
+
+    clean = clean.dropna()
+
+    to_remove = ['rss.cnn.com', 'cnnespanol.cnn.com',
+                 'execed.economist.com', 'espndeportes.espn.com',
+                 'events.latimes.com', 'gmat.economist.com',
+                 'gre.economist.com', 'long-island-jobs.newsday.com',
+                 'interactive.aljazeera.com', 'markets.businessinsider.com',
+                 'partners.wsj.com', 'rss.cnn.com', 'tv5.espn.com',
+                 'video.cnbc.com', 'ww.npr.org', 'www3.forbes.com']
+
+    clean = clean[clean['thread.site_full'].map(
+        lambda x: x not in to_remove)]
+
+    # drop duplicate
+
+    clean = clean.drop_duplicates(subset='thread.uuid')
+    clean = clean.reset_index(drop=True)
+
+    titles = clean['title'].values
+
+    to_drop = []
+
+    for i in range(len(titles) - 4):
+        f1 = fuzz.ratio(titles[i], titles[i + 1])
+        f2 = fuzz.ratio(titles[i], titles[i + 2])
+        f3 = fuzz.ratio(titles[i], titles[i + 3])
+        f4 = fuzz.ratio(titles[i], titles[i + 4])
+        if f1 > 90 or f2 > 90 or f3 > 90 or f4 > 90:
+            to_drop.append(i)
+
+    clean.drop(to_drop, inplace=True)
+    clean.reset_index(inplace=True, drop=True)
+
+    # clean text
+    clean = clean[clean['text'].str.split(' ').map(
+        lambda x: len(x) >= 200)]
+
+    # clean author
+    clean = clean[clean['author'].str.len() <= 256]
+    clean['author'] = clean['author'].map(
+        lambda x: x.split(',')[0] if ',' in x else x)
+
+    clean.replace('', np.nan, inplace=True)
+    clean.dropna(inplace=True, how='any')
+    clean.to_csv(filename, index=False)
+
+    return clean
 
 
 def write_s3(filename):
@@ -105,5 +174,6 @@ def write_s3(filename):
 
 
 if __name__ == '__main__':
-    api_df(token, site_lists, time_delta, filename)
+    data = api_df(token, site_lists, time_delta, filename)
+    pre_process_data(data, filename)
     write_s3(filename)
