@@ -1,16 +1,16 @@
 import datetime
 
 
-token = '2fc2173a-abd5-437f-a617-4ebc492b90db'
-site_lists = ['cnn.com', 'foxnews.com', 'npr.org', 'nbcnews.com',
-              'latimes.com', 'newsday.com', 'seattletimes.com',
-              'bostonglobe.com', 'nydailynews.com', 'espn.com',
-              'aljazeera.com', 'bbc.com', 'pbs.org', 'cnbc.com',
-              'economist.com', 'nationalreview.com', 'businessinsider.com',
-              'nbcnews.com', 'propublica.org', 'huffingtonpost.com',
-              'salon.com', 'slate.com', 'pitchfork.com', 'usatoday.com',
-              'techmeme.com', 'bloomberg.com', 'wsj.com', 'forbes.com',
-              'politico.com', 'tmz.com', 'msnbc.com']
+token = '48d3f6a0-4b6d-4c42-9221-71f15b7694aa'
+site_lists = ['wsj.com', 'latimes.com', 'newsday.com'
+              'cnn.com', 'bloomberg.com', 'espn.com', 'aljazeera.com',
+              'pitchfork.com', 'bbc.com', 'npr.org', 'pbs.org', 'cnbc.com',
+              'msnbc.com', 'economist.com', 'tmz.com', 'forbes.com',
+              'politico.com', 'slate.com', 'salon.com', 'huffingtonpost.com',
+              'propublica.org', 'nbcnews.com', 'businessinsider.com',
+              'thedailybeast.com', 'foreignpolicy.com', 'bleacherreport.com',
+              'mtv.com', 'rollingstone.com', 'theverge.com', 'cbssports.com']
+
 time_delta = -1
 
 today = datetime.datetime.now().date()
