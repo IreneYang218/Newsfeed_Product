@@ -9,10 +9,7 @@ const API_SERVER = 'http://ec2-35-167-124-232.us-west-2.compute.amazonaws.com:30
 function updateChart(artilce) {
   // fetch the details
   var topic = artilce.news_topic.replace(' ', '%20');
-  console.log(topic);
   let finalUrl = API_SERVER + '?select=sentiment_score&news_topic=eq.' + topic;
-  // app_news.click_id[0].news_topic
-  // need replace space with %20
 
   fetch(finalUrl).then((resp) => resp.json()).then(function(jsonData) {
       buildChartDataFromJson(jsonData);
