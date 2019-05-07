@@ -71,7 +71,7 @@ let app_news = new Vue({
       //   .catch(error => {
       //     console.log(error);
       //   });
-      axios.get(OUR_API)
+      axios.get(OUR_API+'?limit=10')
         .then(function (response) {
           console.log("data", response.data)
           app_news.news = response.data
@@ -100,13 +100,13 @@ let app_news = new Vue({
         .catch(error => {
           console.log(error);
         });
-      axios.get(OUR_API+"?select=news_topic")
-        .then(function (response) {
-          console.log("topic", response.data);
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      // axios.get(OUR_API+"?select=news_topic")
+      //   .then(function (response) {
+      //     console.log("topic", response.data);
+      //   })
+      //   .catch(error => {
+      //     console.log(error);
+      //   });
   },
 
 	methods:{

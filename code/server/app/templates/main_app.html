@@ -85,7 +85,9 @@
 									<v-container grid-list-md>
 										<v-layout row left wrap>
 											<v-flex xs12 v-for="(n, index) in displayed_news">
-												<v-card @click="renderArticle(index)" v-if="index!=3" >
+												<v-card @click="renderArticle(index)" v-if="index!=3"
+												class="mx-auto"
+												max-height="500">
 													<v-layout row>
 														<v-flex xs5>
 															<v-img
@@ -95,13 +97,14 @@
 															></v-img>
 														</v-flex>
 														<v-flex xs7>
-															<v-card-text>
+															<v-card-text p=a class="title font-weight-light">
 																<i>[[ n.site_full ]]</i>
 															</v-card-text>
 															<v-card-title primary-title>
 																<div class="headline">
-																	<h2>[[ n.title!=''?n.title:"No title. Link to article." ]]</h2>
+																	<h5>[[ n.title!=''?n.title:"No title. Link to article." ]]</h5>
 																</div>
+																<!-- <span class="headline">[[ n.title!=''?n.title:"No title. Link to article." ]]</span><br> -->
 															</v-card-title>
 															<v-card-text>
 																<i>[[ n.th!=''?n.author:"No author" ]]</i>
