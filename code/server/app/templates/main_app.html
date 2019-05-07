@@ -17,19 +17,50 @@
 				<!-- <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon> -->
 				<v-toolbar-title>
 					<a href="/" style="text-decoration: none">
-						<v-btn flat>NewsPhi</v-btn>
+						<v-btn flat>
+							NewsPhi
+						</v-btn>
 					</a>
 				</v-toolbar-title>
+				<!-- Topic navigation dropdown -->
+				<div class="text-xs">
+					<v-menu
+						:close-on-content-click="false"
+						:nudge-width="200"
+						offset-x
+					>
+						<template v-slot:activator="{ on }">
+							<v-btn
+								color="grey"
+								dark
+								v-on="on"
+							>
+								Topic Navigation
+							</v-btn>
+						</template>
+						<v-card>
+							<v-divider></v-divider>
+							<v-list v-for="(topic, index) in topics">
+								<v-list-tile>
+									<v-list-tile-action>
+										<v-switch @change="chooseTopic(topic)" color="purple"></v-switch>
+									</v-list-tile-action>
+									<v-list-tile-title>[[ topic ]]</v-list-tile-title>
+								</v-list-tile>
+						</v-list>
+						</v-card>
+					</v-menu>
+				</div>
 				<v-spacer></v-spacer>
 				<!-- app -->
 				<!-- <div> -->
 					<v-toolbar-item v-if="!logged_in">
-						<input v-model="input_email" placeholder="email">
-						<input v-model="input_pwd" type="password" placeholder="password">
-						<v-btn color="black" flat value="Sign Up" @click="handleSignUp">
+						<input v-model="input_email" placeholder="Email">
+						<input v-model="input_pwd" type="password" placeholder="Password">
+						<v-btn color="grey" dark value="Sign Up" @click="handleSignUp">
 							<span>Sign Up</span>
 						</v-btn>
-						<v-btn color="black" flat value="Log In" @click="handleLogIn">
+						<v-btn color="grey" dark value="Log In" @click="handleLogIn">
 							<span>Log In</span>
 						</v-btn>
 					</v-toolbar-item>
@@ -50,35 +81,7 @@
 					<v-layout row>
 						<v-flex xs7>
 							<v-container>
-								<!-- Topic navigation dropdown -->
-								<div class="text-xs">
-									<v-menu
-										:close-on-content-click="false"
-										:nudge-width="200"
-										offset-x
-									>
-										<template v-slot:activator="{ on }">
-											<v-btn
-												color="indigo"
-												dark
-												v-on="on"
-											>
-												Topic Navigation
-											</v-btn>
-										</template>
-										<v-card>
-											<v-divider></v-divider>
-											<v-list v-for="(topic, index) in topics">
-												<v-list-tile>
-													<v-list-tile-action>
-														<v-switch @change="chooseTopic(topic)" color="purple"></v-switch>
-													</v-list-tile-action>
-													<v-list-tile-title>[[ topic ]]</v-list-tile-title>
-												</v-list-tile>
-										</v-list>
-										</v-card>
-									</v-menu>
-								</div>
+
 
 								<!-- News Feed -->
 								<div>
