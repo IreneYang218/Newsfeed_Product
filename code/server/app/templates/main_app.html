@@ -166,7 +166,6 @@
 								<div class="text-xs-center">
 									<v-pagination
 										v-model="page"
-										:length=page_length
 										@input="nextPage"
 									></v-pagination>
 								</div>
@@ -175,10 +174,6 @@
 
 						<!-- Article dashboard -->
 						<v-flex xs5>
-							<!-- ad position -->
-							<v-card>
-								<v-card-title>AD</v-card-title>
-							</v-card>
 							<v-card>
 							<v-list dense>
 								<v-list-tile>
@@ -209,8 +204,8 @@
 										</v-card-text>
 									<v-card-text>
 										<i><strong>Topic: </strong>[[clicked.news_topic]]</i>
-										<div id="bar-chart" style="height: 100%"></div>
-										<div id="dount-chart"></div>
+										<div :id="index" style="height: 100%"></div>
+										<!-- <div id="dount-chart"></div> -->
 									</v-card-text>
 									<v-btn fab dark small color="primary" @click="removeArticle(index, clicked)">
 										<v-icon dark>remove</v-icon>
