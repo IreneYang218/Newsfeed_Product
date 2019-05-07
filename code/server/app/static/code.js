@@ -94,6 +94,30 @@ function buildChart(data, xData) {
   }
 }
 
+function buildAuthorGauge(){
+  option = {
+      tooltip : {
+          formatter: "{a} <br/>{b} : {c}%"
+      },
+      toolbox: {
+          feature: {
+              restore: {},
+              saveAsImage: {}
+          }
+      },
+      series: [
+          {
+              name: '业务指标',
+              type: 'gauge',
+              detail: {formatter:'{value}%'},
+              data: [{value: 50, name: '完成率'}]
+          }
+      ]
+  };
+  
+
+}
+
 function compare(a, b) {
   // Helper function to sort descending
   // Use toUpperCase() to ignore character casing

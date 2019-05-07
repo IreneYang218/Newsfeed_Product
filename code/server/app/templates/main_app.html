@@ -200,13 +200,17 @@
 										</div>
 									</v-card-title>
 									<v-card-text>
-										<div><i>[[ clicked.site_full ]]</i></div>
+										<!-- <div><i>[[ clicked.site_full ]]</i></div> -->
 										<div><i>[[ clicked.th!=''?clicked.author:"No author" ]]</i></div>
-										<div><i>[[ clicked.published_time ]]</i></div>
+										<!-- <div><i>[[ clicked.published_time ]]</i></div> -->
 									</v-card-text>
 									<v-card-text style='font-size: 24px'>
 											<i><strong>Controversy Score: </strong>[[Math.round(clicked.controversy_score)]]</i>
-										</v-card-text>
+									</v-card-text>
+									
+									<v-card-text style='font-size: 24px'>
+											<i><strong>Controversy Score: </strong>[[Math.round(clicked.controversy_score)]]</i>
+									</v-card-text>
 									<v-card-text style='font-size: 24px'>
 										<i><strong>Topic: </strong>[[clicked.news_topic]]</i>
 										<div id="bar-chart" style="height: 100%"></div>
