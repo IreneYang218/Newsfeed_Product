@@ -65,7 +65,7 @@ def read_file_and_process(filepath, TABLE_NAME, SCHEMA_NAME):
 
 
 if __name__ == '__main__':
-    SCHEMA_NAME = sys.argv[2].split('.')[0]
-    TABLE_NAME = sys.argv[2].split('.')[1]
+    SCHEMA_NAME = 'newsphi'
+    TABLE_NAME = 'news_articles'
     filepath = sys.argv[1]
     read_file_and_process(filepath, TABLE_NAME, SCHEMA_NAME)
