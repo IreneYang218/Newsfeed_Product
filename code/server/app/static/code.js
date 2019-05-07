@@ -204,7 +204,7 @@ let app_news = new Vue({
       //     console.log(error);
       //   });
 
-      axios.get(API_SERVER+"?limit=1000")
+      axios.get(API_SERVER+"?order=published_time.desc&limit=1000")
         .then(function (response) {
           console.log("data", response.data)
           app_news.news = response.data
