@@ -18,19 +18,50 @@
 				<!-- <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon> -->
 				<v-toolbar-title>
 					<a href="/" style="text-decoration: none">
-						<v-btn flat>NewsPhi</v-btn>
+						<v-btn flat>
+							NewsPhi
+						</v-btn>
 					</a>
 				</v-toolbar-title>
+				<!-- Topic navigation dropdown -->
+				<div class="text-xs">
+					<v-menu
+						:close-on-content-click="false"
+						:nudge-width="200"
+						offset-x
+					>
+						<template v-slot:activator="{ on }">
+							<v-btn
+								color="grey"
+								dark
+								v-on="on"
+							>
+								Topic Navigation
+							</v-btn>
+						</template>
+						<v-card>
+							<v-divider></v-divider>
+							<v-list v-for="(topic, index) in topics">
+								<v-list-tile>
+									<v-list-tile-action>
+										<v-switch @change="chooseTopic(topic)" color="purple"></v-switch>
+									</v-list-tile-action>
+									<v-list-tile-title>[[ topic ]]</v-list-tile-title>
+								</v-list-tile>
+						</v-list>
+						</v-card>
+					</v-menu>
+				</div>
 				<v-spacer></v-spacer>
 				<!-- app -->
 				<!-- <div> -->
 					<v-toolbar-item v-if="!logged_in">
-						<input v-model="input_email" placeholder="email">
-						<input v-model="input_pwd" type="password" placeholder="password">
-						<v-btn color="black" flat value="Sign Up" @click="handleSignUp">
+						<input v-model="input_email" placeholder="Email">
+						<input v-model="input_pwd" type="password" placeholder="Password">
+						<v-btn color="grey" dark value="Sign Up" @click="handleSignUp">
 							<span>Sign Up</span>
 						</v-btn>
-						<v-btn color="black" flat value="Log In" @click="handleLogIn">
+						<v-btn color="grey" dark value="Log In" @click="handleLogIn">
 							<span>Log In</span>
 						</v-btn>
 					</v-toolbar-item>
@@ -51,42 +82,13 @@
 					<v-layout row>
 						<v-flex xs7>
 							<v-container>
-								<!-- Topic navigation dropdown -->
-								<div class="text-xs">
-									<v-menu
-										:close-on-content-click="false"
-										:nudge-width="200"
-										offset-x
-									>
-										<template v-slot:activator="{ on }">
-											<v-btn
-												color="indigo"
-												dark
-												v-on="on"
-											>
-												Topic Navigation
-											</v-btn>
-										</template>
-										<v-card>
-											<v-divider></v-divider>
-											<v-list v-for="(topic, index) in topics">
-												<v-list-tile>
-													<v-list-tile-action>
-														<v-switch @change="chooseTopic(topic)" color="purple"></v-switch>
-													</v-list-tile-action>
-													<v-list-tile-title>[[ topic ]]</v-list-tile-title>
-												</v-list-tile>
-										</v-list>
-										</v-card>
-									</v-menu>
-								</div>
-
 								<!-- News Feed -->
 								<div>
 									<v-container grid-list-md>
 										<v-layout row left wrap>
 											<v-flex xs12 v-for="(n, index) in displayed_news">
-												<v-card @click="renderArticle(index)">
+												<v-card @click="renderArticle(index)" v-if="index!=3"
+																class="mx-auto" max-height="500">
 													<v-layout row>
 														<v-flex xs5>
 															<v-img
@@ -96,13 +98,14 @@
 															></v-img>
 														</v-flex>
 														<v-flex xs7>
-															<v-card-text>
+															<v-card-text p=a class="title font-weight-light">
 																<i>[[ n.site_full ]]</i>
 															</v-card-text>
 															<v-card-title primary-title>
 																<div class="headline">
-																	<h2>[[ n.title!=''?n.title:"No title. Link to article." ]]</h2>
+																	<h5>[[ n.title!=''?n.title:"No title. Link to article." ]]</h5>
 																</div>
+																<!-- <span class="headline">[[ n.title!=''?n.title:"No title. Link to article." ]]</span><br> -->
 															</v-card-title>
 															<v-card-text>
 																<i>[[ n.th!=''?n.author:"No author" ]]</i>
@@ -110,6 +113,16 @@
 															</v-card-text>
 														</v-flex>
 													</v-layout>
+												</v-card>
+
+												<v-card v-if="index==3" >
+														<a href="https://www.usfca.edu/arts-sciences/graduate-programs/data-science">
+															<v-img
+																src="/static/assets/ads/usf_msds.png"
+																height="250px"
+																contain
+															></v-img>
+														</a>
 												</v-card>
 											</v-flex>
 										</v-layout>
@@ -163,7 +176,7 @@
 										<i><strong>Topic: </strong>[[clicked.news_topic]]</i>
 										<div id="bar-chart" style="height: 100%"></div>
 										<div id="dount-chart"></div>
-									</v-card-text>						
+									</v-card-text>
 									<v-btn fab dark small color="primary" @click="removeArticle(index, clicked)">
 										<v-icon dark>remove</v-icon>
 									</v-btn>
