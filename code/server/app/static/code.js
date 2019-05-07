@@ -43,7 +43,7 @@ let app_news = new Vue({
     drawer: true,
     time: new Date(),
     my_articles: [],
-    topics: ['Politics', 'Sports', 'Business', 'Current Events'],
+    topics: ['Politics', 'Sports', 'Business', 'Current Event'],
     topic_on: [false, false, false, false],
     chosen_topics: new Set(),
     clicked_ids: new Set(),
@@ -81,10 +81,6 @@ let app_news = new Vue({
 
           // Hardcoding the general topic
           app_news.news.forEach(function(article){
-            var rand_int = Math.floor(Math.random() * (+4 - +0)) + +0
-            article.general_topic = app_news.topics[rand_int]
-          })
-          app_news.news.forEach(function(article){
             var topic = article.general_topic
             if(topic=='Politics'){
               app_news.politics_news.push(article)
@@ -100,7 +96,7 @@ let app_news = new Vue({
         .catch(error => {
           console.log(error);
         });
-      axios.get(OUR_API+"?select=news_topic")
+      axios.get(OUR_API+"?news_topic=news_topic")
         .then(function (response) {
           console.log("topic", response.data);
         })
@@ -192,7 +188,7 @@ let app_news = new Vue({
         if(this.chosen_topics.has('Business')){
           this.filtered_news = this.filtered_news.concat(this.business_news)
         }
-        if(this.chosen_topics.has('Current')){
+        if(this.chosen_topics.has('Current Event')){
           this.filtered_news = this.filtered_news.concat(this.current_news)
         }
       }
