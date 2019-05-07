@@ -6,9 +6,9 @@
 // the data source
 const API_SERVER = 'http://ec2-35-167-124-232.us-west-2.compute.amazonaws.com:3000/articles'
 
-function updateChart(article) {
+function updateChart(artilce) {
   // fetch the details
-  var topic = article[0].news_topic.replace(' ', '%20');
+  var topic = artilce.news_topic.replace(' ', '%20');
   console.log(topic);
   let finalUrl = API_SERVER + '?select=sentiment_score&news_topic=eq.' + topic;
   // app_news.click_id[0].news_topic
@@ -43,7 +43,6 @@ function buildChart(data, xData) {
   var app = {};
   var option = null;
   var yData = [0];
-  var color = ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026'].reverse();
 
   var option = {
       grid: {
@@ -66,7 +65,7 @@ function buildChart(data, xData) {
           precision: 4,
           show: false,
           inRange: {
-              color: color
+              color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
           }
       },
       series: [{
@@ -242,15 +241,6 @@ let app_news = new Vue({
         .catch(error => {
           console.log(error);
         });
-
-      // axios.get(API_SERVER+"?select=news_topic")
-      //   .then(function (response) {
-      //     // var topic = response.data
-      //     // console.log("topic", typeof(topic));
-      //   })
-      //   .catch(error => {
-      //     console.log(error);
-      //   });
   },
 
 	methods:{
@@ -266,7 +256,7 @@ let app_news = new Vue({
    //      this.clicked_ids.add(clicked.article_id)
    //    }
    //    console.log("my articles", this.my_articles);
-      updateChart(this.clicked_article);
+      updateChart(this.displayed_news[idx]);
 		},
     handleSignUp: function(idx) {
       console.log(this.input_email + ' ' + this.input_pwd);
