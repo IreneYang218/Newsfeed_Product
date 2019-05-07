@@ -5,6 +5,7 @@
 // some important global variables.
 // the data source
 const API_SERVER = 'http://ec2-35-167-124-232.us-west-2.compute.amazonaws.com:3000/articles'
+const API_SERVER_AUTHOR = 'http://ec2-35-167-124-232.us-west-2.compute.amazonaws.com:3000/authors'
 
 function updateChart(article) {
   // fetch the details
@@ -18,6 +19,25 @@ function updateChart(article) {
   });
 }
 
+function getAuthorRank(name){
+  console.log("name", name)
+  var author = name.replace(' ', '%20');
+  let authorURL = API_SERVER_AUTHOR + '?select=rank&author_name=eq.' + author;
+  let rank = null
+  var out = fetch(authorURL)
+    .then(function(response){
+      return response.json()
+    })
+    .then(function(myJson){
+      return myJson[0].rank
+    })
+    .catch(function(error) {
+      console.log("err: "+error);
+  });
+  console.log("out", out)
+  // rank = out.then(function(response){return response})
+  return rank
+}
 function buildChartDataFromJson(json, score) {
   let sort_data = new Array();
 
@@ -40,6 +60,7 @@ function buildChartDataFromJson(json, score) {
 function buildChart(data, xData, position) {
   var dom = document.getElementById("bar-chart");
   var myChart = echarts.init(dom);
+
   var app = {};
   var option = null;
   var yData = [0];
@@ -92,35 +113,6 @@ function buildChart(data, xData, position) {
   if (option && typeof option === "object") {
       myChart.setOption(option, true);
   }
-}
-
-function buildAuthorGauge(){
-  var dom = document.getElementById("author-gauge");
-  console.log("dom", dom)
-  var myChart = echarts.init(dom);
-  option = {
-      tooltip : {
-          formatter: "{a} <br/>{b} : {c}%"
-      },
-      toolbox: {
-          feature: {
-              restore: {},
-              saveAsImage: {}
-          }
-      },
-      series: [
-          {
-              name: '业务指标',
-              type: 'gauge',
-              detail: {formatter:'{value}%'},
-              data: [{value: 50, name: '完成率'}]
-          }
-      ]
-  };
-
-  if (option && typeof option === "object") {
-      myChart.setOption(option, true);
-  }  
 }
 function compare(a, b) {
   // Helper function to sort descending
@@ -256,17 +248,11 @@ let app_news = new Vue({
 		renderArticle: function(idx){
       this.clicked_article = [this.displayed_news[idx]]
       console.log("clicked", this.clicked_article)
-			// var clicked = this.displayed_news[idx]
-   //    var click_id = this.my_articles.length
-   //    clicked['click_id'] = click_id
-
-   //    if( !this.clicked_ids.has(clicked.article_id) ){
-   //      this.my_articles.push(clicked)
-   //      this.clicked_ids.add(clicked.article_id)
-   //    }
-   //    console.log("my articles", this.my_articles);
       updateChart(this.clicked_article);
-      buildAuthorGauge();
+      var rank = getAuthorRank(this.clicked_article[0].author)
+      console.log("rank", rank)
+      this.clicked_article[0].score = parseInt((Math.random() * (5 - 1 + 1)), 10) + 1;
+      console.log("rank", this.clicked_article[0])
 		},
     handleSignUp: function(idx) {
       console.log(this.input_email + ' ' + this.input_pwd);

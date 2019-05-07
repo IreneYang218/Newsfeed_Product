@@ -196,15 +196,17 @@
 									</v-card-title>
 									<v-card-text>
 										<!-- <div><i>[[ clicked.site_full ]]</i></div> -->
-										<div><i>[[ clicked.th!=''?clicked.author:"No author" ]]</i></div>
-										<!-- <div><i>[[ clicked.published_time ]]</i></div> -->
-										<div id="author-gauge" style="height: 100%"></div>
-
+										<div>
+											<i style="font-size: 20px">[[ clicked.th!=''?clicked.author:"No author" ]]</i>
+										</div>
+										<div>
+											<i><strong>Impact Score: </strong>[[clicked.score]]</i>			
+										</div>
+									
 									</v-card-text>
-<!-- 									<v-card-text style='font-size: 24px'>
-											<i><strong>Controversy Score: </strong>[[Math.round(clicked.controversy_score)]]</i>
+									<v-card-text style='font-size: 20px'>
 									</v-card-text>
- -->									
+									
 									<v-card-text>
 									<v-progress-circular
 										:rotate="180"
