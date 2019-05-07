@@ -14,16 +14,17 @@ def read_file_and_process(filepath, TABLE_NAME, SCHEMA_NAME):
     Read files and process to the format for database
     """
     df = pd.read_csv(filepath)
-    used_columns = ["author", "rep_score", "author_screen_name"]
+    used_columns = ["author", "rep_score", "author_screen_name", 'rep_score_rank']
     df = df[used_columns]
 
     df.rename(columns={'author': 'author_name',
-                       'rep_score': 'reputation_score'},
+                       'rep_score': 'reputation_score',
+                       'rep_score_rank': 'rank'},
               inplace=True)
     df['tweet_site'] = 'https://twitter.com/' + df.author_screen_name
     df.drop(columns=['author_screen_name'], inplace=True)
     OBJ_COLS = ['author_name', 'tweet_site']
-    INT_COLS = ['reputation_score']
+    INT_COLS = ['reputation_score', 'rank']
     TIME_COLS = []
     df = df.replace([np.inf, -np.inf], np.nan)
 
@@ -55,7 +56,7 @@ def read_file_and_process(filepath, TABLE_NAME, SCHEMA_NAME):
             # dbcursor.execute(,row)
             dbcursor.copy_from(f, '%s.%s' % (SCHEMA_NAME, TABLE_NAME),
                             sep='\t', null='NULL', columns=(columns))
-            # conn.commit()
+            conn.commit()
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
             conn.rollback()

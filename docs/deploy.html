@@ -45,6 +45,11 @@ it will just update the environment.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="deploy.download_data_from_s3">
+<code class="descclassname">deploy.</code><code class="descname">download_data_from_s3</code><span class="sig-paren">(</span><em>ssh</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deploy.html#download_data_from_s3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#deploy.download_data_from_s3" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
 <dt id="deploy.git_clone">
 <code class="descclassname">deploy.</code><code class="descname">git_clone</code><span class="sig-paren">(</span><em>ssh</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deploy.html#git_clone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#deploy.git_clone" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clones the git repository,
@@ -52,17 +57,9 @@ Otherwise pulls if already exists.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="deploy.main">
-<code class="descclassname">deploy.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/deploy.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#deploy.main" title="Permalink to this definition">¶</a></dt>
-<dd><p>The command to run in bash.
-Connects to EC2;
-Clones the git repo;
-Creates the environment;
-Set crontab for getting streaming data daily;
-Run the model;
-Import new model output to RDS;
-Run the server.</p>
-</dd></dl>
+<dt id="deploy.load_data_to_rds">
+<code class="descclassname">deploy.</code><code class="descname">load_data_to_rds</code><span class="sig-paren">(</span><em>ssh</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deploy.html#load_data_to_rds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#deploy.load_data_to_rds" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="function">
 <dt id="deploy.ssh_client">
@@ -76,6 +73,11 @@ Run the server.</p>
 <dd><p>Makes SSH connection using the ec2 address,
 username, and the key file (.pem).</p>
 </dd></dl>
+
+<dl class="function">
+<dt id="deploy.streaming_data">
+<code class="descclassname">deploy.</code><code class="descname">streaming_data</code><span class="sig-paren">(</span><em>ssh</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/deploy.html#streaming_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#deploy.streaming_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 

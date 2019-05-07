@@ -6,9 +6,9 @@
 // the data source
 const API_SERVER = 'http://ec2-35-167-124-232.us-west-2.compute.amazonaws.com:3000/articles'
 
-function updateChart(idx) {
+function updateChart(artilce) {
   // fetch the details
-  var topic = app_news.displayed_news[idx].news_topic.replace(' ', '%20');
+  var topic = artilce.news_topic.replace(' ', '%20');
   console.log(topic);
   let finalUrl = API_SERVER + '?select=sentiment_score&news_topic=eq.' + topic;
   // app_news.click_id[0].news_topic
@@ -155,7 +155,7 @@ let app_news = new Vue({
     current_news: [],
     drawer: true,
     time: new Date(),
-    my_articles: [],
+    clicked_article: [],
     topics: ['Politics', 'Sports', 'Business', 'Current Event'],
     topic_info: [],
     topic0: null,
@@ -221,17 +221,18 @@ let app_news = new Vue({
 
 	methods:{
 		renderArticle: function(idx){
-      console.log("my articles", this.my_articles);
-			var clicked = this.displayed_news[idx]
-      var click_id = this.my_articles.length
-      clicked['click_id'] = click_id
+      this.clicked_article = [this.displayed_news[idx]]
+      console.log("clicked", this.clicked_article)
+			// var clicked = this.displayed_news[idx]
+   //    var click_id = this.my_articles.length
+   //    clicked['click_id'] = click_id
 
-      if( !this.clicked_ids.has(clicked.article_id) ){
-        this.my_articles.push(clicked)
-        this.clicked_ids.add(clicked.article_id)
-      }
-      
-      updateChart(idx);
+   //    if( !this.clicked_ids.has(clicked.article_id) ){
+   //      this.my_articles.push(clicked)
+   //      this.clicked_ids.add(clicked.article_id)
+   //    }
+   //    console.log("my articles", this.my_articles);
+      updateChart(this.displayed_news[idx]);
 		},
     handleSignUp: function(idx) {
       console.log(this.input_email + ' ' + this.input_pwd);
@@ -274,15 +275,16 @@ let app_news = new Vue({
       })
     },
     removeArticle: function(index, clicked){
-      console.log("index", index)
-      if (this.my_articles.length == 1){
-        this.my_articles = []
-        this.clicked_ids = new Set()
-      }else{
+      this.clicked_article = []
+      // console.log("index", index)
+      // if (this.my_articles.length == 1){
+      //   this.my_articles = []
+      //   this.clicked_ids = new Set()
+      // }else{
 
-        this.my_articles.splice(index, 1)
-        this.clicked_ids.delete(clicked.article_id)
-      }
+      //   this.my_articles.splice(index, 1)
+      //   this.clicked_ids.delete(clicked.article_id)
+      // }
     },
     chooseTopic: function(topic){
       if(this.chosen_topics.has(topic)){
@@ -319,7 +321,7 @@ let app_news = new Vue({
       this.topic1 = this.topic_info[1]
       this.topic2 = this.topic_info[2]
 
-      updateChart();
+      // updateChart();
     },
     nextPage: function(page){
       // Using incremements of 10, extract the start/end index articles
