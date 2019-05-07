@@ -85,7 +85,7 @@
 									<v-container grid-list-md>
 										<v-layout row left wrap>
 											<v-flex xs12 v-for="(n, index) in displayed_news">
-												<v-card @click="renderArticle(index)">
+												<v-card @click="renderArticle(index)" v-if="index!=3" >
 													<v-layout row>
 														<v-flex xs5>
 															<v-img
@@ -109,6 +109,15 @@
 															</v-card-text>
 														</v-flex>
 													</v-layout>
+												</v-card>
+												<v-card @click="renderArticle(index)" v-if="index==3" >
+														<a href="https://www.usfca.edu/arts-sciences/graduate-programs/data-science">
+															<v-img
+																src="/static/assets/ads/usf_msds.png"
+																height="250px"
+																contain
+															></v-img>
+														</a>
 												</v-card>
 											</v-flex>
 										</v-layout>
@@ -164,7 +173,7 @@
 									<v-card-text>
 										<i><strong>Topic: </strong>[[clicked.news_topic]]</i>
 										<div id="dount-chart"></div>
-									</v-card-text>						
+									</v-card-text>
 									<v-btn fab dark small color="primary" @click="removeArticle(index, clicked)">
 										<v-icon dark>remove</v-icon>
 									</v-btn>
