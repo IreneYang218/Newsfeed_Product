@@ -190,7 +190,7 @@
 									</v-list-tile-content>
 								</v-list-tile>
 							</v-list>
-							<v-container v-for="(clicked, index) in my_articles">
+							<v-container v-for="(clicked, index) in clicked_article">
 								<v-card>
 									<v-card-title>
 										<div class="headline">
@@ -204,10 +204,10 @@
 										<div><i>[[ clicked.th!=''?clicked.author:"No author" ]]</i></div>
 										<div><i>[[ clicked.published_time ]]</i></div>
 									</v-card-text>
-									<v-card-text>
-											<i><strong>Controversy Score: </strong>[[clicked.controversy_score]]</i>
+									<v-card-text style='font-size: 24px'>
+											<i><strong>Controversy Score: </strong>[[Math.round(clicked.controversy_score)]]</i>
 										</v-card-text>
-									<v-card-text>
+									<v-card-text style='font-size: 24px'>
 										<i><strong>Topic: </strong>[[clicked.news_topic]]</i>
 										<div id="bar-chart" style="height: 100%"></div>
 										<div id="dount-chart"></div>
