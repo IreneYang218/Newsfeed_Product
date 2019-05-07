@@ -73,7 +73,6 @@
 					</v-toolbar-item>
 				<!-- </div> -->
 			</v-toolbar>
-
 			<v-content>
 				<!-- Article dashboard -->
 				<!-- <v-navigation-drawer disable-resize-watcher right clipped fixed v-model="drawer" width="500px" app> -->
@@ -81,6 +80,45 @@
 					<v-layout row>
 						<v-flex xs7>
 							<v-container>
+				<!-- Subtopic Explorer -->
+			    <div class="text-xs-center">
+					<v-card-title primary-title class="justify-center">
+						<div class="headline">
+							Subtopic Explorer
+						</div>
+					</v-card-title>
+
+			      <v-progress-circular
+			        :rotate="180"
+			        :size="175"
+			        :width="15"
+			        :value="topic0.avg_score"
+			        color="teal"
+			      >
+			        [[topic0.topic]]: [[topic0.count]] Articles
+			      </v-progress-circular>
+			      <v-progress-circular
+			        :rotate="180"
+			        :size="175"
+			        :width="15"
+			        :value="topic1.avg_score"
+			        color="teal"
+			      >
+			        [[topic1.topic]]: [[topic1.count]] Articles
+			      </v-progress-circular>
+			      <v-progress-circular
+			        :rotate="180"
+			        :size="175"
+			        :width="15"
+			        :value="topic2.avg_score"
+			        color="teal"
+			      >
+			        [[topic2.topic]]: [[topic2.count]] Articles
+			      </v-progress-circular>
+			    </div>
+
+
+
 
 
 								<!-- News Feed -->
