@@ -118,7 +118,7 @@
 									</v-progress-circular>
 								</div>
 								<!-- News Feed -->
-								<div>
+								<v-list style="max-height: 500px" class="scroll-y">
 									<v-container grid-list-md>
 										<v-layout row left wrap>
 											<v-flex xs12 v-for="(n, index) in displayed_news">
@@ -162,18 +162,21 @@
 											</v-flex>
 										</v-layout>
 									</v-container>
-								</div>
 								<div class="text-xs-center">
 									<v-pagination
 										v-model="page"
 										@input="nextPage"
+										:length="page_length"
+										:total-visible=6
 									></v-pagination>
 								</div>
+								</v-list>>
+
 							</v-container>
 						</v-flex>
 
 						<!-- Article dashboard -->
-						<v-flex xs5>
+						<v-flex xs5 right clipped fixed>
 							<v-card>
 							<v-list dense>
 								<v-list-tile>
@@ -196,17 +199,15 @@
 									</v-card-title>
 									<v-card-text>
 										<!-- <div><i>[[ clicked.site_full ]]</i></div> -->
-										<div>
 											<i style="font-size: 20px">[[ clicked.th!=''?clicked.author:"No author" ]]</i>
-										</div>
-										<div>
-											<i><strong>Impact Score: </strong>[[clicked.score]]</i>			
-										</div>
+											<v-layout>
+													<strong>Impact Score</strong>: ([[clicked.score]])
+													<v-flex xs1 v-for="n in clicked.score">
+														<v-icon large color="orange darken-2">trending_up</v-icon>
+													</v-flex>
+											</v-layout>
 									
-									</v-card-text>
-									<v-card-text style='font-size: 20px'>
-									</v-card-text>
-									
+									</v-card-text>									
 									<v-card-text>
 									<v-progress-circular
 										:rotate="180"
@@ -220,9 +221,9 @@
 									<i><strong>Controversy Score: </strong>[[Math.round(clicked.controversy_score)]]</i>
 									</v-card-text>
 									<v-card-text style='font-size: 16px'>
-										<i><strong>Sentiment Score: </strong>[[clicked.sentiment_score]]</i>
-										<p>Sentiment Score Distribution for [[clicked.news_topic]]</p>
-										<div id="bar-chart" style="height: 100%"></div>
+										<i><strong>Article Sentiment score: </strong>[[clicked.sentiment_score]]</i>
+										<p><strong>Distribution of Sentiment For [[clicked.news_topic]] Articles</strong></p>
+										<div id="bar-chart" style="height: 100%">hi</div>
 										<!-- <div id="dount-chart"></div> -->
 									</v-card-text>
 									<v-btn fab dark small color="primary" @click="removeArticle(index, clicked)">

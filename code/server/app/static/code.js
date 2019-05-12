@@ -19,25 +19,6 @@ function updateChart(article) {
   });
 }
 
-function getAuthorRank(name){
-  console.log("name", name)
-  var author = name.replace(' ', '%20');
-  let authorURL = API_SERVER_AUTHOR + '?select=rank&author_name=eq.' + author;
-  let rank = null
-  var out = fetch(authorURL)
-    .then(function(response){
-      return response.json()
-    })
-    .then(function(myJson){
-      return myJson[0].rank
-    })
-    .catch(function(error) {
-      console.log("err: "+error);
-  });
-  console.log("out", out)
-  // rank = out.then(function(response){return response})
-  return rank
-}
 function buildChartDataFromJson(json, score) {
   let sort_data = new Array();
 
@@ -98,7 +79,10 @@ function buildChart(data, xData, position) {
               symbolSize: 30,
               symbolOffset: [0, '-50%'],
               data: [
-                  {xAxis: position, yAxis: 0},
+                  {name: 'hello',
+                    value: 'hi',
+                    xAxis: position,
+                   yAxis: 0},
               ],
           },
           itemStyle: {
@@ -246,13 +230,23 @@ let app_news = new Vue({
 
 	methods:{
 		renderArticle: function(idx){
-      this.clicked_article = [this.displayed_news[idx]]
-      console.log("clicked", this.clicked_article)
-      updateChart(this.clicked_article);
-      var rank = getAuthorRank(this.clicked_article[0].author)
-      console.log("rank", rank)
-      this.clicked_article[0].score = parseInt((Math.random() * (5 - 1 + 1)), 10) + 1;
-      console.log("rank", this.clicked_article[0])
+      var clicked_article = [this.displayed_news[idx]]
+      var author = clicked_article[0].author.replace(' ', '%20');              
+      let authorURL = API_SERVER_AUTHOR + '?select=rank&author_name=eq.' + author;
+      axios.get(authorURL)
+      .then(function (response) {
+          this.clicked_article = clicked_article
+          updateChart(this.clicked_article);
+          this.clicked_article[0].score = 7 - Math.ceil(response.data[0].rank/1000)
+        }.bind(this))
+        .catch(function(error) {
+          console.log("err: "+error);
+        })
+      console.log("after click", this.clicked_article)
+      // var rank = getAuthorRank(this.clicked_article[0].author)
+      // console.log("rank", rank)
+      // this.clicked_article[0].score = parseInt((Math.random() * (5 - 1 + 1)), 10) + 1;
+      // console.log("rank", this.clicked_article[0])
 		},
     handleSignUp: function(idx) {
       console.log(this.input_email + ' ' + this.input_pwd);
