@@ -7,7 +7,15 @@
 	<script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
 	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 	<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-139697319-1"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
 
+	  gtag('config', 'UA-139697319-1');
+	</script>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
 	<style>[v-cloak] {display: none}</style>
 </head>
@@ -206,8 +214,8 @@
 														<v-icon large color="orange darken-2">trending_up</v-icon>
 													</v-flex>
 											</v-layout>
-									
-									</v-card-text>									
+
+									</v-card-text>
 									<v-card-text>
 									<v-progress-circular
 										:rotate="180"
