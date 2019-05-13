@@ -1,13 +1,11 @@
 import webhoseio
-import pandas as pd
 import datetime as dt
-import boto3
 from pandas.io.json import json_normalize
 import numpy as np
 from urllib.error import HTTPError
 from fuzzywuzzy import fuzz
 from user_definition_api import *
-from info import *
+from S3_connection import *
 
 
 def get_query(site_lists, time_delta):
@@ -160,20 +158,7 @@ def pre_process_data(df, filename):
     return clean
 
 
-def write_s3(filename):
-    """
-    Write data to s3 bucket
-    """
-    # write DF to string stream
-    s3 = boto3.client('s3',
-                      aws_access_key_id=key_id,
-                      aws_secret_access_key=secret_key)
-
-    with open(filename, "rb") as f:
-        s3.upload_fileobj(f, "newsphi", "news_articles"+filename)
-
-
 if __name__ == '__main__':
-    data = api_df(token, site_lists, time_delta, filename)
-    pre_process_data(data, filename)
-    write_s3(filename)
+    data = api_df(token, site_lists, time_delta, news_filename)
+    pre_process_data(data, news_filename)
+    write_s3(news_filename)
