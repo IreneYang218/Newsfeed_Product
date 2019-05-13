@@ -135,11 +135,10 @@
 							</div>
 							</v-flex>
 
-						<!-- Article dashboard -->
 						<v-flex xs5 right clipped fixed>
 							<v-card>
 							<!-- Subtopic Explorer -->
-							<div style="margin-bottom: 20px">
+							<div style="margin-bottom: 20px; padding: 10px">
 								<v-list-tile>
 									<v-list-tile-action>
 										<v-icon>dashboard</v-icon>
@@ -151,8 +150,8 @@
 
 								<v-progress-circular
 									:rotate="180"
-									:size="175"
-									:width="15"
+									:size="150"
+									:width="12"
 									:value="topic0.avg_score"
 									color="teal"
 								>
@@ -160,8 +159,8 @@
 								</v-progress-circular>
 								<v-progress-circular
 									:rotate="180"
-									:size="175"
-									:width="15"
+									:size="150"
+									:width="12"
 									:value="topic1.avg_score"
 									color="teal"
 								>
@@ -169,16 +168,18 @@
 								</v-progress-circular>
 								<v-progress-circular
 									:rotate="180"
-									:size="175"
-									:width="15"
+									:size="150"
+									:width="12"
 									:value="topic2.avg_score"
 									color="teal"
 								>
 									[[topic2.topic]]: [[topic2.count]] Articles
 								</v-progress-circular>
 							</div>
+							</v-card>
 
-							<v-divider></v-divider>
+							<v-card>
+							<!-- Article dashboard -->
 							<v-list-tile>
 								<v-list-tile-action>
 									<v-icon>dashboard</v-icon>
@@ -195,11 +196,11 @@
 										</a>
 									</div>
 									<v-fab-transition>
-										<v-btn color="#C9AEAA"
+										<v-btn color="#800000"
 											dark
 											small
 											absolute
-											top
+											bottom
 											right
 											fab
 											@click="removeArticle(index, clicked)">
