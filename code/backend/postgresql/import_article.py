@@ -48,18 +48,20 @@ def read_file_and_process(filepath, TABLE_NAME, SCHEMA_NAME):
     dbcursor = conn.cursor()
     for i in range(len(df)):
         f = StringIO()
-        df.iloc[[i]].to_csv(f, sep='\t', header=False, index=False, na_rep='NULL')
+        df.iloc[[i]].to_csv(f, sep='\t', header=False,
+                            index=False, na_rep='NULL')
         f.seek(0)
-    
+
         try:
             dbcursor.copy_from(f, '%s.%s' % (SCHEMA_NAME, TABLE_NAME),
-                            sep='\t', null='NULL', columns=(columns))
+                               sep='\t', null='NULL', columns=(columns))
             conn.commit()
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
             conn.rollback()
-        
-        if ((i+1)%100==0): print('copy %d records' % (i+1))
+
+        if ((i+1) % 100 == 0):
+            print('copy %d records' % (i+1))
 
     conn.close()
 

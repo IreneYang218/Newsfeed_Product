@@ -10,6 +10,7 @@ def index():
     """Render introduction page"""
     return render_template('index.html')
 
+
 @application.route('/NewsPhi')
 def newsPhi():
     """Render main page"""
@@ -45,7 +46,7 @@ def login():
     user = classes.User.query.filter_by(email=email).first()
     if user is not None and user.check_password(password):
         login_user(user)
-        resp = jsonify({'status':'ok', 'user': user.email})
+        resp = jsonify({'status': 'ok', 'user': user.email})
         resp.status_code = 200
     else:
         error = 'Invalid Credentials. Please try again.'

@@ -11,7 +11,7 @@ def pre_process_output(input_path, output_path):
     """
     data = pd.read_csv(input_path)
     used_columns = ["title", "author", "published", "thread.site_full",
-                    "thread.main_image", "url", "topic", "thread.uuid", 
+                    "thread.main_image", "url", "topic", "thread.uuid",
                     "sentiment", "General_Topic", 'controversy_score']
     OBJ_COLS = ['title', 'author', 'thread.site_full', 'thread.main_image',
                 'url', 'thread.uuid']
@@ -19,8 +19,8 @@ def pre_process_output(input_path, output_path):
     output = data[used_columns]
 
     # remove articles without title and main_image
-    output = output[~output[['thread.uuid', 'title', 'thread.main_image', 'published',
-                             'url', 'thread.site_full']]
+    output = output[~output[['thread.uuid', 'title', 'thread.main_image',
+                             'published', 'url', 'thread.site_full']]
                     .isnull().any(axis=1)]
 
     # remove unqualified rows
