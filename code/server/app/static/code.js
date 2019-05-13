@@ -178,15 +178,15 @@ let app_news = new Vue({
 
   //Used to grab data from rest-api
   mounted:function(){
-      // axios.get('/userinfo')
-      //   .then(response => {
-      //     console.log(response);
-      //     this.logged_in = true;
-      //     this.logged_in_user = response.data.email;
-      //   })
-      //   .catch(error => {
-      //     console.log(error);
-      //   });
+      axios.get('/userinfo')
+        .then(response => {
+          console.log(response);
+          this.logged_in = true;
+          this.logged_in_user = response.data.email;
+        })
+        .catch(error => {
+          console.log(error);
+        });
 
       axios.get(API_SERVER+"?order=published_time.desc&limit=1000")
         .then(function (response) {
@@ -217,15 +217,6 @@ let app_news = new Vue({
         .catch(error => {
           console.log(error);
         });
-
-      // axios.get(API_SERVER+"?select=news_topic")
-      //   .then(function (response) {
-      //     // var topic = response.data
-      //     // console.log("topic", typeof(topic));
-      //   })
-      //   .catch(error => {
-      //     console.log(error);
-      //   });
   },
 
 	methods:{

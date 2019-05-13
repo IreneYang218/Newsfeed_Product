@@ -1,5 +1,5 @@
 from app import application, classes, db
-from flask import render_template, redirect, url_for  # need for Week3 Homework
+from flask import render_template, redirect, url_for
 from flask import request, jsonify  # handle form
 from flask_login import current_user, login_user, login_required, logout_user
 
@@ -7,35 +7,18 @@ from flask_login import current_user, login_user, login_required, logout_user
 @application.route('/index')
 @application.route('/')
 def index():
-    """Render main page"""
-    # button for signup
-    # button for login
-    # return("<h1> WELCOME TO NEWSPHI </h1>")
+    """Render introduction page"""
     return render_template('index.html')
 
 @application.route('/NewsPhi')
 def newsPhi():
+    """Render main page"""
     return render_template('main_app.html')
-
-#
-# @application.route('/login_page', methods=['GET', 'POST'])
-# def login_page():
-#     """Render the user log in page"""
-#     if request.method == 'GET':
-#         return render_template('login.html')
-#
-#
-# @application.route('/signup_page', methods=['GET', 'POST'])
-# def signup_page():
-#     """render the user sign up page"""
-#     if request.method == 'GET':
-#         return render_template('signup.html')
 
 
 @application.route('/register', methods=['GET', 'POST'])
 def register():
     """User register"""
-    error = None
     if request.method == 'POST':
         print(request.json)
         password = request.json['password']
@@ -53,34 +36,22 @@ def register():
 
 @application.route('/login', methods=['POST'])
 def login():
-    """Log user in"""
+    """User log-in"""
     error = None
     email = request.json['email']
     password = request.json['password']
-    username = email.split('@')[0]
+
     # Look for it in the database.
     user = classes.User.query.filter_by(email=email).first()
     if user is not None and user.check_password(password):
-
         login_user(user)
         resp = jsonify({'status':'ok', 'user': user.email})
         resp.status_code = 200
-        # return '<h1> Logged in : ' + username + '</h1>'
     else:
         error = 'Invalid Credentials. Please try again.'
         resp = jsonify({'status': 'failed', 'msg': error})
         resp.status_code = 403
-        # return '<h1> Invalid username and password combination! </h1>'
     return resp
-
-
-@application.route('/secret_page', methods=['GET', 'POST'])
-@login_required
-def secret_page():
-    """Render the page for login user"""
-    return render_template('secret.html',
-                           name=current_user.username,
-                           email=current_user.email)
 
 
 @application.route('/userinfo', methods=['GET'])
@@ -92,8 +63,6 @@ def get_useinfo():
 @application.route('/logout', methods=['POST'])
 @login_required
 def logout():
-    """Log user out"""
-
+    """User log-out"""
     logout_user()
-
     return jsonify({'status': 'ok'})
