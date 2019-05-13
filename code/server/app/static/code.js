@@ -142,6 +142,14 @@ function getMeanControversy(topic, articles){
   return filtered[0].controversy_score
 }
 
+// function handleClicks(event) {
+//   ga('send', 'event', {
+//     eventCategory: 'Topic Navigation',
+//     eventAction: 'click',
+//     eventLabel: 'BLABLA'
+//   });
+// }
+
 let app_news = new Vue({
   delimiters:['[[', ']]'], // resolve confilt with jinja2
 	el: '#feed',
@@ -222,7 +230,7 @@ let app_news = new Vue({
 	methods:{
 		renderArticle: function(idx){
       var clicked_article = [this.displayed_news[idx]]
-      var author = clicked_article[0].author.replace(' ', '%20');              
+      var author = clicked_article[0].author.replace(' ', '%20');
       let authorURL = API_SERVER_AUTHOR + '?select=rank&author_name=eq.' + author;
       axios.get(authorURL)
       .then(function (response) {
@@ -337,6 +345,30 @@ let app_news = new Vue({
         this.last_idx = page*10
       }
       this.displayed_news = this.filtered_news.slice(this.first_idx, this.last_idx)
+    },
+
+    handleClicks_navi: function(event) {
+      ga('send', 'event', {
+        eventCategory: 'Topic Navigation',
+        eventAction: 'click',
+        eventLabel: 'BLABLA'
+      })
+    },
+
+    handleClicks_news: function(event) {
+      ga('send', 'event', {
+        eventCategory: 'News Card',
+        eventAction: 'click',
+        eventLabel: 'click news card'
+      })
+    },
+
+    handleClicks_ad: function(event) {
+      ga('send', 'event', {
+        eventCategory: 'ad',
+        eventAction: 'click',
+        eventLabel: 'click ad in news feed'
+      })
     },
 	}
 })
