@@ -2,21 +2,62 @@ import gensim
 import gensim.corpora as corpora
 import spacy
 
+nlp = spacy.load('en', disable=['parser', 'ner'])
+additional_stopwords = ['day', 'today', 'week', 'year', 'time',
+                        'make', 'times', 'weeks', 'days',
+                        'made', 'makes', 'people', 'good',
+                        'feel', 'felt', 'feels',
+                        'lot', 'thing',
+                        'things', 'life', 'live', 'lives',
+                        'woman', 'women', 'man',
+                        'men', 'well',
+                        'great', 'Monday', 'Tuesday', 'Wednesday', 'Thursday',
+                        'Friday',
+                        'Saturday', 'Sunday', 'linkedin',
+                        'share', 'Forbes',
+                        'NEWSWIRE', 'Fox',
+                        'CNBC', 'Insider', 'Reuters', 'Embed',
+                        'Getty', 'AP',
+                        'AFP', 'copyright',
+                        'pm', 'image', 'images', 'Image',
+                        'Images', 'express',
+                        'Bloomberg', 'CNN', 'BBC', 'NBCUniversal',
+                        'Newsday',
+                        'Bleacher', 'Highlights', 'highlights',
+                        'Enlarge', 'people', 'thing', 'time', 'NPR',
+                        'place', 'ET',
+                        'et', 'PM', 'message',
+                        'EMT', 'EST', 'video', 'photo', 'videos', 'photos',
+                        'Photo', 'Photos',
+                        'caption', 'Beast', 'Good', 'News',
+                        'Council', 'Analysis', 'LLC', 'Global',
+                        'April', 'Quotes',
+                        'contributor', 'group']
+
+for i in additional_stopwords:
+    nlp.Defaults.stop_words.add(i)
+    nlp.vocab[i].is_stop = True
+
 
 def tokenizer(texts):
     """
     https://spacy.io/api/annotation
     remove stopwords, punchtuation, wired word,
     only keep meaningfull words based on
-    pos['NOUN', 'ADJ', 'VERB', 'ADV','INTJ'], lemmatization
+        pos['NOUN', 'ADJ', 'VERB', 'ADV','INTJ'], lemmatization
     """
     words = []
-    nlp = spacy.load('en', disable=['parser', 'ner'])
     for text in texts:
         doc = nlp(text)
-        ws = [token.lemma_ for token in doc if
-              (token.pos_ in ['NOUN', 'ADJ', 'VERB', 'ADV', 'INTJ']) &
-              (token.is_alpha) & (~token.is_stop)]
+        ws = [token.lemma_ if ((
+                               token.pos_ in
+                               ['NOUN', 'ADJ', 'VERB', 'ADV', 'INTJ']) &
+                               token.is_alpha & ~token.is_stop &
+                               (token.lemma_ != '-PRON-'))
+              else token.text if ((token.pos_ == 'PROPN') &
+                                  token.is_alpha & ~token.is_stop)
+              else None for token in doc]
+        ws = [token for token in ws if token]
         words.append(ws)
     return words
 
@@ -43,8 +84,8 @@ def make_gram(words, num_gram=1):
 
 def make_id_corpus(grams):
     """
-    According to gram, get id2word dictionary
-    and get corpus with format (id, freq) in each doc
+    According to gram, get id2word dictionary and get
+    corpus with format (id,req) in each doc
     """
     id2word = corpora.Dictionary(grams)
     corpus = [id2word.doc2bow(gs) for gs in grams]
@@ -55,7 +96,4 @@ def text2corpus(texts, num_gram):
     words = tokenizer(texts)
     grams = make_gram(words, num_gram=num_gram)
     id2word, corpus = make_id_corpus(grams)
-    return id2word, corpus
-
-
-# id2text, corpus = text2corpus(texts, num_gram=3)
+    return id2word, corpus, grams
