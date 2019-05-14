@@ -207,7 +207,7 @@ if __name__ == '__main__':
         else:
             print("KILL SERVER SUCCESS")
     else:
-        print('skip')        
+        print('skip')
 
     # exit
     ssh.exec_command("exit")

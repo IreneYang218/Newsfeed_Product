@@ -33,25 +33,19 @@
 <body>
 	<div id="feed" v-cloak>
 		<v-app>
-			<v-toolbar app fixed clipped-left>
-				<!-- <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon> -->
+			<v-toolbar app fixed clipped-left color="#800000">
 				<v-toolbar-title>
 					<a href="/" style="text-decoration: none">
-						<v-btn flat>
-							NewsPhi
-						</v-btn>
+						<v-btn flat class="white--text">NewsPhi</v-btn>
 					</a>
 				</v-toolbar-title>
+
 				<!-- Topic navigation dropdown -->
 				<div class="text-xs">
-					<v-menu
-						:close-on-content-click="false"
-						:nudge-width="200"
-						offset-x
-					>
+					<v-menu :close-on-content-click="false" :nudge-width="200" offset-x>
 						<template v-slot:activator="{ on }">
-							<v-btn
-								color="grey"
+							<v-btn 
+								color="#C9AEAA"
 								dark
 								v-on="on"
 								@click="handleClicks_navi"
@@ -73,163 +67,176 @@
 					</v-menu>
 				</div>
 				<v-spacer></v-spacer>
-				<!-- app -->
-				<!-- <div> -->
-					<v-toolbar-item v-if="!logged_in">
-						<input v-model="input_email" placeholder="Email">
-						<input v-model="input_pwd" type="password" placeholder="Password">
-						<v-btn color="grey" dark value="Sign Up" @click="handleSignUp">
-							<span>Sign Up</span>
-						</v-btn>
-						<v-btn color="grey" dark value="Log In" @click="handleLogIn">
-							<span>Log In</span>
-						</v-btn>
-					</v-toolbar-item>
 
-					<v-toolbar-item v-if="logged_in">
-						Welcome [[ logged_in_user ]]
-						<v-btn color="black" flat value="Log Out" @click="handleLogOut">
-							<span>Log Out</span>
-						</v-btn>
-					</v-toolbar-item>
-				<!-- </div> -->
+				<!-- log in -->
+				<v-toolbar-item v-if="!logged_in">
+					<input v-model="input_email" placeholder="Email">
+					<input v-model="input_pwd" type="password" placeholder="Password">
+					<v-btn color="#C9AEAA" dark value="Sign Up" @click="handleSignUp">
+						<span>Sign Up</span>
+					</v-btn>
+					<v-btn color="#C9AEAA" dark value="Log In" @click="handleLogIn">
+						<span>Log In</span>
+					</v-btn>
+				</v-toolbar-item>
+				<v-toolbar-item v-if="logged_in">
+					Welcome [[ logged_in_user ]]
+					<v-btn color="#C9AEAA" flat value="Log Out" @click="handleLogOut">
+						<span>Log Out</span>
+					</v-btn>
+				</v-toolbar-item>
 			</v-toolbar>
-			<v-content>
-				<!-- Article dashboard -->
-				<!-- <v-navigation-drawer disable-resize-watcher right clipped fixed v-model="drawer" width="500px" app> -->
-				<v-flex xs12>
-					<v-layout row>
-						<v-flex xs7>
-							<v-container>
-							<!-- Subtopic Explorer -->
-								<div class="text-xs-center">
-								<v-card-title primary-title class="justify-center">
-									<div class="headline">
-										Subtopic Explorer
+
+			<v-content style="background-color:#C9C0BB; text-align: center">
+				<div style=" width:90%; display: inline-block">
+					<v-flex>
+						<v-container
+						fluid
+						grid-list-md
+						>
+						<v-layout row>
+							<!-- News Feed -->
+							<v-flex xs7>
+							<v-list style="background-color:#C9C0BB; max-height: 600px" class="scroll-y">
+								<v-layout row left wrap>
+									<v-flex xs12 v-for="(n, index) in displayed_news">
+										<div style="margin-bottom: 20px">
+										<v-card @click="renderArticle(index)" v-if="index!=3"
+												class="mx-auto" max-height="500">
+											<v-layout row>
+												<v-flex xs5>
+													<v-img
+														:src="n.main_image"
+														height="250px"
+														contain
+													></v-img>
+												</v-flex>
+												<v-flex xs7>
+													<v-card-text p=a class="title font-weight-light">
+														<i>[[ n.site_full ]]</i>
+													</v-card-text>
+													<v-card-title primary-title>
+														<div class="headline">
+															<h5>[[ n.title!=''?n.title:"No title. Link to article." ]]</h5>
+														</div>
+													</v-card-title>
+													<v-card-text>
+														<i>[[ n.th!=''?n.author:"No author" ]]</i>
+														<i>[[n.published_time]]</i>
+													</v-card-text>
+												</v-flex>
+											</v-layout>
+										</v-card>
+
+										<v-card v-if="index==3" >
+											<a href="https://www.usfca.edu/arts-sciences/graduate-programs/data-science">
+												<v-img
+													src="/static/assets/ads/usf_msds.png"
+													height="250px"
+													contain
+												></v-img>
+											</a>
+										</v-card>
 									</div>
-								</v-card-title>
+									</v-flex>
+								</v-layout>
+							</v-list>
+							<div class="text-xs-center">
+								<v-pagination
+									v-model="page"
+									@input="nextPage"
+									:length="page_length"
+									:total-visible=6
+								></v-pagination>
+							</div>
+							</v-flex>
 
-									<v-progress-circular
-										:rotate="180"
-										:size="175"
-										:width="15"
-										:value="topic0.avg_score"
-										color="teal"
-									>
-										[[topic0.topic]]: [[topic0.count]] Articles
-									</v-progress-circular>
-									<v-progress-circular
-										:rotate="180"
-										:size="175"
-										:width="15"
-										:value="topic1.avg_score"
-										color="teal"
-									>
-										[[topic1.topic]]: [[topic1.count]] Articles
-									</v-progress-circular>
-									<v-progress-circular
-										:rotate="180"
-										:size="175"
-										:width="15"
-										:value="topic2.avg_score"
-										color="teal"
-									>
-										[[topic2.topic]]: [[topic2.count]] Articles
-									</v-progress-circular>
-								</div>
-								<!-- News Feed -->
-								<v-list style="max-height: 500px" class="scroll-y">
-									<v-container grid-list-md>
-										<v-layout row left wrap>
-											<v-flex xs12 v-for="(n, index) in displayed_news">
-												<v-card @click="renderArticle(index); handleClicks_news();" v-if="index!=3"
-																class="mx-auto" max-height="500">
-													<v-layout row>
-														<v-flex xs5>
-															<v-img
-																:src="n.main_image"
-																height="250px"
-																contain
-															></v-img>
-														</v-flex>
-														<v-flex xs7>
-															<v-card-text p=a class="title font-weight-light">
-																<i>[[ n.site_full ]]</i>
-															</v-card-text>
-															<v-card-title primary-title>
-																<div class="headline">
-																	<h5>[[ n.title!=''?n.title:"No title. Link to article." ]]</h5>
-																</div>
-																<!-- <span class="headline">[[ n.title!=''?n.title:"No title. Link to article." ]]</span><br> -->
-															</v-card-title>
-															<v-card-text>
-																<i>[[ n.th!=''?n.author:"No author" ]]</i>
-																<i>[[n.published_time]]</i>
-															</v-card-text>
-														</v-flex>
-													</v-layout>
-												</v-card>
-
-												<v-card v-if="index==3"  @click='handleClicks_ad'>
-														<a href="https://www.usfca.edu/arts-sciences/graduate-programs/data-science">
-															<v-img
-																src="/static/assets/ads/usf_msds.png"
-																height="250px"
-																contain
-															></v-img>
-														</a>
-												</v-card>
-											</v-flex>
-										</v-layout>
-									</v-container>
-								<div class="text-xs-center">
-									<v-pagination
-										v-model="page"
-										@input="nextPage"
-										:length="page_length"
-										:total-visible=6
-									></v-pagination>
-								</div>
-								</v-list>>
-
-							</v-container>
-						</v-flex>
-
-						<!-- Article dashboard -->
 						<v-flex xs5 right clipped fixed>
 							<v-card>
-							<v-list dense>
+							<!-- Subtopic Explorer -->
+							<div style="margin-bottom: 20px; padding: 10px">
 								<v-list-tile>
 									<v-list-tile-action>
 										<v-icon>dashboard</v-icon>
 									</v-list-tile-action>
 									<v-list-tile-content>
-										<v-list-tile-title>Article Dashboard</v-list-tile-title>
+										<v-list-tile-title>Subtopic Explorer</v-list-tile-title>
 									</v-list-tile-content>
 								</v-list-tile>
-							</v-list>
-							<v-container v-for="(clicked, index) in clicked_article">
-								<v-card>
-									<v-card-title>
-										<div class="headline">
-											<a :href="clicked.post_link" target="_blank">
-											[[ clicked.title ]]
-											</a>
-										</div>
-									</v-card-title>
-									<v-card-text>
-										<!-- <div><i>[[ clicked.site_full ]]</i></div> -->
-											<i style="font-size: 20px">[[ clicked.th!=''?clicked.author:"No author" ]]</i>
-											<v-layout>
-													<strong>Impact Score</strong>: ([[clicked.score]])
-													<v-flex xs1 v-for="n in clicked.score">
-														<v-icon large color="orange darken-2">trending_up</v-icon>
-													</v-flex>
-											</v-layout>
 
-									</v-card-text>
-									<v-card-text>
-									<v-progress-circular
+								<v-progress-circular
+									:rotate="180"
+									:size="150"
+									:width="12"
+									:value="topic0.avg_score"
+									color="teal"
+								>
+									[[topic0.topic]]: [[topic0.count]] Articles
+								</v-progress-circular>
+								<v-progress-circular
+									:rotate="180"
+									:size="150"
+									:width="12"
+									:value="topic1.avg_score"
+									color="teal"
+								>
+									[[topic1.topic]]: [[topic1.count]] Articles
+								</v-progress-circular>
+								<v-progress-circular
+									:rotate="180"
+									:size="150"
+									:width="12"
+									:value="topic2.avg_score"
+									color="teal"
+								>
+									[[topic2.topic]]: [[topic2.count]] Articles
+								</v-progress-circular>
+							</div>
+							</v-card>
+
+							<v-card>
+							<!-- Article dashboard -->
+							<v-list-tile>
+								<v-list-tile-action>
+									<v-icon>dashboard</v-icon>
+								</v-list-tile-action>
+								<v-list-tile-content>
+									<v-list-tile-title>Article Dashboard</v-list-tile-title>
+								</v-list-tile-content>
+							</v-list-tile>
+							<v-container v-for="(clicked, index) in clicked_article">
+								<v-card-title>
+									<div class="title">
+										<a :href="clicked.post_link" target="_blank" style="text-decoration: none">
+										[[ clicked.title ]]
+										</a>
+									</div>
+									<v-fab-transition>
+										<v-btn color="#800000"
+											dark
+											small
+											absolute
+											bottom
+											right
+											fab
+											@click="removeArticle(index, clicked)">
+											<v-icon dark>remove</v-icon>
+										</v-btn>
+									</v-fab-transition>
+								</v-card-title>
+								<v-card-text class="text-sm-left">
+									<span class="subheading">Author:</span>
+									<span class="body-2"><i>[[ clicked.th!=''?clicked.author:"No author" ]]</i></span>
+									<div class="subheading">Impact Score: [[clicked.score]]
+									<span v-for="n in clicked.score">
+										<v-icon large color="orange darken-2">trending_up</v-icon>
+									</span>
+									</div>
+									<span class="subheading">Subtopic:</span>
+									<span class="body-2"><i>[[ clicked.news_topic ]]</i></span>
+									<div class="subheading">Controversy Score: [[Math.round(clicked.controversy_score)]]
+									</div>
+									<!-- <v-progress-circular
 										:rotate="180"
 										:size="175"
 										:width="15"
@@ -237,31 +244,16 @@
 										color="teal"
 									>
 										<v-card-text style="font-size: 20px"justify-center><strong>[[clicked.news_topic]]</strong></v-card-text>
-									</v-progress-circular>
-									<i><strong>Controversy Score: </strong>[[Math.round(clicked.controversy_score)]]</i>
-									</v-card-text>
-									<v-card-text style='font-size: 16px'>
-										<i><strong>Article Sentiment score: </strong>[[clicked.sentiment_score]]</i>
-										<p><strong>Distribution of Sentiment For [[clicked.news_topic]] Articles</strong></p>
-										<div id="bar-chart" style="height: 100%">hi</div>
-										<!-- <div id="dount-chart"></div> -->
-									</v-card-text>
-									<v-btn fab dark small color="primary" @click="removeArticle(index, clicked)">
-										<v-icon dark>remove</v-icon>
-									</v-btn>
-								</v-card>
+									</v-progress-circular> -->
+									<div class="subheading">Article Sentiment Score: [[clicked.sentiment_score]]</div>
+									<div class="body-1">Distribution for Sentiment Score of [[clicked.news_topic]] Articles</div>
+									<div id="bar-chart" style="height: 100%">hi</div>
+								</v-card-text>
 							</v-container>
-							<!-- </v-navigation-drawer> -->
 							</v-card>
 						</v-flex>
-					</v-layout>
-				</v-flex>
+				</div>
 			</v-content>
-
-			<v-footer app fixed>
-				<span>NewsPhi</span>
-			</v-footer>
-
 		</v-app>
 	</div>
 	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>

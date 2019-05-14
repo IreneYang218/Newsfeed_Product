@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
   <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
+  <script src="{{ url_for('static', filename='main.css')}}"></script>
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139697319-1"></script>
   <script>
@@ -19,52 +20,34 @@
 <body>
  <div id="app">
    <v-app light>
-    <v-toolbar class="white">
-      <v-toolbar-title v-text="title"></v-toolbar-title>
-    </v-toolbar>
     <v-content>
       <section>
-        <v-parallax src="/static/assets/hero.jpeg" height="600">
-          <v-layout
-            column
-            align-center
-            justify-center
-            class="white--text"
-          >
-            <h1 class="white--text mb-2 display-1 text-xs-center">NewsPhi</h1>
-            <div class="subheading mb-3 text-xs-center">An Aid For Contextual News Consumption</div>
-            <v-btn
-              class="blue lighten-2 mt-5"
-              dark
-              large
-              href="/NewsPhi"
-            >
-              Read Critically
-            </v-btn>
+        <v-parallax src="/static/assets/san-francisco.jpg" height="600">
+          <v-layout column align-center justify-center class="white--text">
+            <a href="/NewsPhi" style="text-decoration: none">
+              <h1 class="white--text mb-2 display-3 font-weight-medium text-xs-center">NewsPhi</h1>
+            </a>
+            <div class="subheading mb-3 text-xs-center">
+              <p class="title">An Aid For Contextual News Consumption</p></div>
           </v-layout>
         </v-parallax>
       </section>
 
       <section>
-        <v-layout
-          column
-          wrap
-          class="my-5"
-          align-center
-        >
+        <v-layout column wrap class="my-5" align-center>
           <v-flex xs12 sm4 class="my-3">
             <div class="text-xs-center">
-              <h1 class="headline">Our Mission</h1>
+              <h1 class="display-1">Our Mission</h1>
 	        </div>
           </v-flex>
           <v-flex xs12>
             <v-container grid-list-xl>
               <v-layout column wrap align-center justify-center>
               	<div class="text-xs-center">
-                  <p>Our mission is to raise awareness for readers of controversial news topics and reputation of writers.</p>
-                  <p>The critical analysis service we provide will include a controversy score of the subject/topic of the article.</p>
-                  <p>Our aim is to encourage readers to select news they want to read instead of just giving them what to read.</p>
-                  <p>We provide a platform to warn users of which news topics to be aware.</p>
+                  <p class="title">Our mission is to raise awareness for readers of controversial news topics and reputation of writers.</p>
+                  <p class="title">The critical analysis service we provide will include a controversy score of the subject/topic of the article.</p>
+                  <p class="title">Our aim is to encourage readers to select news they want to read instead of just giving them what to read.</p>
+                  <p class="title">We provide a platform to warn users of which news topics to be aware.</p>
               	</div>
               </v-layout>
             </v-container>
@@ -73,19 +56,18 @@
       </section>
 
 	<section>
-        <v-layout
-          column
-          wrap
-          class="my-5"
-          align-center
-        >
+        <v-layout column wrap class="my-5" align-center>
           <v-flex xs12 sm4 class="my-3">
             <div class="text-xs-center">
-              <h1 class="headline">Our Team</h1>
+              <h1 class="display-1">Our Team</h1>
             </div>
           </v-flex>
           <v-flex xs12>
             <v-container grid-list-xl>
+              <div class="text-xs-center">
+                <p class="title">We are MSDS Cohort 7 students at University of San Francisco.</p>
+                <p class="title">We are data enthusiasts, data scientists, and we care about what people read everyday.</p>
+              </div>
               <v-layout row wrap align-center>
                 <v-flex xs12 md3>
                   <v-card class="elevation-0 transparent">
@@ -94,35 +76,9 @@
                     </v-card-text>
                     <v-card-title primary-title class="layout justify-center">
                     	<div class="text-xs-center">
-                      		<h2 class="headline">Paul Kim</h2>
-                      		<span class="subheading">Project Manager</span>
-						</div>
-                    </v-card-title>
-                 </v-card>
-                </v-flex>
-                <v-flex xs12 md3>
-                  <v-card class="elevation-0 transparent">
-                    <v-card-text class="text-xs-center">
-                      	<v-img src="/static/assets/us/jacques.png"></v-img>
-                    </v-card-text>
-                    <v-card-title primary-title class="layout justify-center">
-                    	<div class="text-xs-center">
-                      		<h2 class="headline">Jacques Sham</h2>
-                      		<span class="subheading">DevOps Engineer</span>
-						</div>
-                    </v-card-title>
-                 </v-card>
-                </v-flex>
-                <v-flex xs12 md3>
-                  <v-card class="elevation-0 transparent">
-                    <v-card-text class="text-xs-center">
-                      	<v-img src="/static/assets/us/crystal.png"></v-img>
-                    </v-card-text>
-                    <v-card-title primary-title class="layout justify-center">
-                    	<div class="text-xs-center">
-                      		<h2 class="headline">Crystal Sun</h2>
-                      		<span class="subheading">Lead Engineer</span>
-						</div>
+                      		<h2 class="title">Paul Kim</h2>
+                      		<span class="body-2">Project Manager</span>
+						          </div>
                     </v-card-title>
                   </v-card>
                 </v-flex>
@@ -133,9 +89,9 @@
                     </v-card-text>
                     <v-card-title primary-title class="layout justify-center">
                     	<div class="text-xs-center">
-                      		<h2 class="headline">Xi Yang</h2>
-                      		<span class="subheading">Lead Data Scientist</span>
-						</div>
+                      		<h2 class="title">Xi Yang</h2>
+                      		<span class="body-2">Lead Data Scientist</span>
+						          </div>
                     </v-card-title>
                   </v-card>
                 </v-flex>
@@ -146,9 +102,9 @@
                     </v-card-text>
                     <v-card-title primary-title class="layout justify-center">
                     	<div class="text-xs-center">
-                      		<h2 class="headline">Ziyu Fan</h2>
-                      		<span class="subheading">Data Scientist</span>
-						</div>
+                      		<h2 class="title">Ziyu Fan</h2>
+                      		<span class="body-2">Data Scientist</span>
+						          </div>
                     </v-card-title>
                   </v-card>
                 </v-flex>
@@ -159,9 +115,35 @@
                     </v-card-text>
                     <v-card-title primary-title class="layout justify-center">
                     	<div class="text-xs-center">
-                      		<h2 class="headline">Brian Wright</h2>
-                      		<span class="subheading">Data Scientist</span>
-						</div>
+                      		<h2 class="title">Brian Wright</h2>
+                      		<span class="body-2">Data Scientist</span>
+                      </div>
+                    </v-card-title>
+                  </v-card>
+                </v-flex>
+                <v-flex xs12 md3>
+                  <v-card class="elevation-0 transparent">
+                    <v-card-text class="text-xs-center">
+                        <v-img src="/static/assets/us/jacques.png"></v-img>
+                    </v-card-text>
+                    <v-card-title primary-title class="layout justify-center">
+                      <div class="text-xs-center">
+                          <h2 class="title">Jacques Sham</h2>
+                          <span class="body-2">DevOps Engineer</span>
+                      </div>
+                    </v-card-title>
+                  </v-card>
+                </v-flex>
+                <v-flex xs12 md3>
+                  <v-card class="elevation-0 transparent">
+                    <v-card-text class="text-xs-center">
+                        <v-img src="/static/assets/us/crystal.png"></v-img>
+                    </v-card-text>
+                    <v-card-title primary-title class="layout justify-center">
+                      <div class="text-xs-center">
+                          <h2 class="title">Crystal Sun</h2>
+                          <span class="body-2">Lead Engineer</span>
+                      </div>
                     </v-card-title>
                   </v-card>
                 </v-flex>
@@ -172,9 +154,9 @@
                     </v-card-text>
                     <v-card-title primary-title class="layout justify-center">
                     	<div class="text-xs-center">
-                      		<h2 class="headline">Yixin Sun</h2>
-                      		<span class="subheading">Backend Engineer</span>
-						</div>
+                      		<h2 class="title">Yixin Sun</h2>
+                      		<span class="body-2">Backend Engineer</span>
+						          </div>
                     </v-card-title>
                   </v-card>
                 </v-flex>
@@ -185,9 +167,9 @@
                     </v-card-text>
                     <v-card-title primary-title class="layout justify-center">
                     	<div class="text-xs-center">
-                      		<h2 class="headline">Lance Fernando</h2>
-                      		<span class="subheading">Frontend Engineer</span>
-						</div>
+                      		<h2 class="title">Lance Fernando</h2>
+                      		<span class="body-2">Frontend Engineer</span>
+						          </div>
                     </v-card-title>
                  </v-card>
                 </v-flex>
@@ -197,73 +179,6 @@
           </v-flex>
         </v-layout>
       </section>
-
-      <section>
-        <v-container grid-list-xl>
-          <v-layout row wrap justify-center class="my-5">
-            <v-flex xs12 sm4>
-              <v-card class="elevation-0 transparent">
-                <v-card-title primary-title class="layout justify-center">
-                  <div class="headline">About us</div>
-                </v-card-title>
-                <v-card-text>
-                  We are MSDS Cohort 7 students at University of San Francisco.
-                  We are data enthusiasts, data scientists, and we care about what people read everyday.
-                </v-card-text>
-              </v-card>
-            </v-flex>
-            <v-flex xs12 sm4 offset-sm1>
-              <v-card class="elevation-0 transparent">
-                <v-card-title primary-title class="layout justify-center">
-                  <div class="headline">Contact Us</div>
-                </v-card-title>
-                <v-card-text>
-                  Feel free to reach our if you have any questions!
-                </v-card-text>
-                <v-list class="transparent">
-                  <v-list-tile>
-                    <v-list-tile-action>
-                      <v-icon class="blue--text text--lighten-2">phone</v-icon>
-                    </v-list-tile-action>
-                    <v-list-tile-content>
-                      <v-list-tile-title>XXX-XXX-XXXX</v-list-tile-title>
-                    </v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile>
-                    <v-list-tile-action>
-                      <v-icon class="blue--text text--lighten-2">place</v-icon>
-                    </v-list-tile-action>
-                    <v-list-tile-content>
-                      <v-list-tile-title>San Francisco, US</v-list-tile-title>
-                    </v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile>
-                    <v-list-tile-action>
-                      <v-icon class="blue--text text--lighten-2">email</v-icon>
-                    </v-list-tile-action>
-                    <v-list-tile-content>
-                      <v-list-tile-title>john@something.com</v-list-tile-title>
-                    </v-list-tile-content>
-                  </v-list-tile>
-                </v-list>
-              </v-card>
-            </v-flex>
-          </v-layout>
-        </v-container>
-      </section>
-
-      <v-footer class="blue darken-2">
-        <v-layout row wrap align-center>
-          <v-flex xs12>
-<!--             <div class="white--text ml-3">
-              Made with
-              <v-icon class="red--text">favorite</v-icon>
-              by <a class="white--text" href="https://vuetifyjs.com" target="_blank">Vuetify</a>
-              and <a class="white--text" href="https://github.com/vwxyzjn">Costa Huang</a>
-            </div>
- -->          </v-flex>
-        </v-layout>
-      </v-footer>
     </v-content>
   </v-app>
  </div>
