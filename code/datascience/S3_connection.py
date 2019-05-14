@@ -6,7 +6,7 @@ import io
 
 def read_s3(folder, filename):
     """
-    read data from s3 bucket and return data frame
+    Read data from s3 bucket and return dataframe.
     """
     # write DF to string stream
     s3 = boto3.client('s3',
@@ -20,7 +20,7 @@ def read_s3(folder, filename):
 
 def write_s3(folder, filename):
     """
-    Write data to s3 bucket
+    Write data to s3 bucket.
     """
     # write DF to string stream
     s3 = boto3.client('s3',

@@ -39,28 +39,30 @@
 <span class="target" id="module-texts2id_corpus"></span><dl class="function">
 <dt id="texts2id_corpus.make_gram">
 <code class="descclassname">texts2id_corpus.</code><code class="descname">make_gram</code><span class="sig-paren">(</span><em>words</em>, <em>num_gram=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/texts2id_corpus.html#make_gram"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#texts2id_corpus.make_gram" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make unigram, bigram or trigram into account, the default is unigram</p>
+<dd><p>Decides which of unigram, bigram or trigram to take into account. The default is unigram.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="texts2id_corpus.make_id_corpus">
 <code class="descclassname">texts2id_corpus.</code><code class="descname">make_id_corpus</code><span class="sig-paren">(</span><em>grams</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/texts2id_corpus.html#make_id_corpus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#texts2id_corpus.make_id_corpus" title="Permalink to this definition">¶</a></dt>
-<dd><p>According to gram, get id2word dictionary
-and get corpus with format (id, freq) in each doc</p>
+<dd><p>According to num-gram, gets id2word dictionary and
+corpus with format (id,req) in each doc.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="texts2id_corpus.text2corpus">
 <code class="descclassname">texts2id_corpus.</code><code class="descname">text2corpus</code><span class="sig-paren">(</span><em>texts</em>, <em>num_gram</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/texts2id_corpus.html#text2corpus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#texts2id_corpus.text2corpus" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Preprocessing for IDA.</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="texts2id_corpus.tokenizer">
 <code class="descclassname">texts2id_corpus.</code><code class="descname">tokenizer</code><span class="sig-paren">(</span><em>texts</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/texts2id_corpus.html#tokenizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#texts2id_corpus.tokenizer" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://spacy.io/api/annotation">https://spacy.io/api/annotation</a>
-remove stopwords, punchtuation, wired word,
-only keep meaningfull words based on
-pos[‘NOUN’, ‘ADJ’, ‘VERB’, ‘ADV’,’INTJ’], lemmatization</p>
+removes stopwords, punchtuation, abnormal words, etc;
+only keep meaningfull words based on</p>
+<blockquote>
+<div>pos[‘NOUN’, ‘ADJ’, ‘VERB’, ‘ADV’,’INTJ’] lemmatization.</div></blockquote>
 </dd></dl>
 
 </div>

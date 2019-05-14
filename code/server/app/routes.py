@@ -7,19 +7,19 @@ from flask_login import current_user, login_user, login_required, logout_user
 @application.route('/index')
 @application.route('/')
 def index():
-    """Render introduction page"""
+    """Render introduction page."""
     return render_template('index.html')
 
 
 @application.route('/NewsPhi')
 def newsPhi():
-    """Render main page"""
+    """Render main page."""
     return render_template('main_app.html')
 
 
 @application.route('/register', methods=['GET', 'POST'])
 def register():
-    """User register"""
+    """Handle user registration."""
     if request.method == 'POST':
         print(request.json)
         password = request.json['password']
@@ -37,7 +37,7 @@ def register():
 
 @application.route('/login', methods=['POST'])
 def login():
-    """User log-in"""
+    """Handle user log-in."""
     error = None
     email = request.json['email']
     password = request.json['password']
@@ -58,12 +58,13 @@ def login():
 @application.route('/userinfo', methods=['GET'])
 @login_required
 def get_useinfo():
+    """Get user's information."""
     return jsonify({'email': current_user.email})
 
 
 @application.route('/logout', methods=['POST'])
 @login_required
 def logout():
-    """User log-out"""
+    """Handle user log-out"""
     logout_user()
     return jsonify({'status': 'ok'})

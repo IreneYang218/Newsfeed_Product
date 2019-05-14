@@ -5,13 +5,13 @@ import sys
 
 
 def ssh_client():
-    """Return ssh client object"""
+    """Return SSH client object."""
     return paramiko.SSHClient()
 
 
 def ssh_connection(ssh, ec2_address, user, key_file):
     """
-    Makes SSH connection using the ec2 address,
+    Makes SSH connection using the EC2 address,
     username, and the key file (.pem).
     """
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -45,8 +45,8 @@ def create_or_update_environment(ssh):
 
 def git_clone(ssh):
     """
-    Clones the git repository,
-    Otherwise pulls if already exists.
+    Clones the GIT repository,
+    otherwise pulls if already exists.
     """
     stdin, stdout, stderr = ssh.exec_command("git --version")
     if (b"" is stderr.read()):
@@ -67,7 +67,7 @@ def git_clone(ssh):
 
 
 def streaming_data(ssh):
-    # get streaming data everyday
+    """Get streaming data from Webhose API source."""
     stdin, stdout, stderr = \
         ssh.exec_command("echo '0 0 * * * ~/.conda/envs/MSDS603/bin/python "
                          "/home/ec2-user/" + git_repo_name +
@@ -82,6 +82,7 @@ def streaming_data(ssh):
 
 
 def download_data_from_s3(ssh):
+    """Download data from S3 bucket to EC2/local machine."""
     download_data = "source activate msds603;" + \
                     " cd ~/" + git_repo_name + "/code/data/;" + \
                     " python day" + \
@@ -95,6 +96,7 @@ def download_data_from_s3(ssh):
 
 
 def load_data_to_rds(ssh):
+    """Import data to RDS tables."""
     load_output = "cd " + git_repo_name + \
                   "/code/backend/postgresql/;" + \
                   " python preprocess.py" + \

@@ -34,23 +34,23 @@
             
   <h1>Source code for api_to_df</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">webhoseio</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
-<span class="kn">import</span> <span class="nn">boto3</span>
 <span class="kn">from</span> <span class="nn">pandas.io.json</span> <span class="k">import</span> <span class="n">json_normalize</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">urllib.error</span> <span class="k">import</span> <span class="n">HTTPError</span>
+<span class="kn">from</span> <span class="nn">fuzzywuzzy</span> <span class="k">import</span> <span class="n">fuzz</span>
 <span class="kn">from</span> <span class="nn">user_definition_api</span> <span class="k">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">info</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">S3_connection</span> <span class="k">import</span> <span class="o">*</span>
 
 
 <div class="viewcode-block" id="get_query"><a class="viewcode-back" href="../pipeline.html#api_to_df.get_query">[docs]</a><span class="k">def</span> <span class="nf">get_query</span><span class="p">(</span><span class="n">site_lists</span><span class="p">,</span> <span class="n">time_delta</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Get query for webhose api given a site_lists and time window</span>
+<span class="sd">    Get query for Webhose API given a site_lists and time window.</span>
 
-<span class="sd">    :param site_lists: list of sites we need to crawl</span>
-<span class="sd">    :param time_delta: time window, -3 means recent 3 days.</span>
-<span class="sd">                       Can only be from -1 to -30</span>
-<span class="sd">    :return: a string of query for webhose api</span>
+<span class="sd">    :param site_lists: list of sites we need to crawl.</span>
+<span class="sd">    :param time_delta: time window. Ex: -3 means the most recent 3 days.</span>
+<span class="sd">                       Can only be from -1 to -30.</span>
+<span class="sd">    :return: a string of query for Webhose API.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;language:english site_type:news thread.country:US &quot;</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">site_lists</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
@@ -67,15 +67,16 @@
 
 <div class="viewcode-block" id="output_to_df"><a class="viewcode-back" href="../pipeline.html#api_to_df.output_to_df">[docs]</a><span class="k">def</span> <span class="nf">output_to_df</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Convert a single output (100 news) from webhose to pandas data frame</span>
-<span class="sd">    and concat to previous data frame</span>
+<span class="sd">    Convert a single output (100 news articles) from Webhose API to pandas dataframe</span>
+<span class="sd">    and concatenates to previous dataframe</span>
 
 <span class="sd">    :param output:</span>
-<span class="sd">        a json output from single webhose query</span>
+<span class="sd">        a JSON output from single Webhose API query.</span>
 <span class="sd">    :param df:</span>
-<span class="sd">        previous pandas data frame from previous query, each row represent one news</span>
+<span class="sd">        previous pandas dataframe from previous query,</span>
+<span class="sd">            each row represent one news aritcle.</span>
 <span class="sd">    :return:</span>
-<span class="sd">        pandas data frame, each row represent one news</span>
+<span class="sd">        pandas dataframe, each row represent one news article.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">output_flat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">json</span><span class="o">.</span><span class="n">json_normalize</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="s1">&#39;posts&#39;</span><span class="p">])</span>
     <span class="n">df_tmp</span> <span class="o">=</span> <span class="n">output_flat</span><span class="p">[[</span><span class="s1">&#39;thread.uuid&#39;</span><span class="p">,</span> <span class="s1">&#39;author&#39;</span><span class="p">,</span> <span class="s1">&#39;external_links&#39;</span><span class="p">,</span>
@@ -91,16 +92,16 @@
 
 <div class="viewcode-block" id="api_df"><a class="viewcode-back" href="../pipeline.html#api_to_df.api_df">[docs]</a><span class="k">def</span> <span class="nf">api_df</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">site_lists</span><span class="p">,</span> <span class="n">time_delta</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A pipeline from api to csv</span>
+<span class="sd">    A pipeline from Webhose API to CSV.</span>
 
 <span class="sd">    :param token:</span>
-<span class="sd">        api token for webhose</span>
+<span class="sd">        api token for Webhose API.</span>
 <span class="sd">    :param site_lists:</span>
-<span class="sd">        list of sites we need to crawl</span>
+<span class="sd">        list of sites we need to crawl.</span>
 <span class="sd">    :param time_delta:</span>
-<span class="sd">        time window, -3 means recent 3 days.  Can only be from -1 to -30</span>
+<span class="sd">        time window. Ex: -3 means the most recent 3 days. Can only be from -1 to -30.</span>
 <span class="sd">    :param filename:</span>
-<span class="sd">        filename of csv</span>
+<span class="sd">        filename of CSV.</span>
 <span class="sd">    :return:</span>
 <span class="sd">        None</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -120,28 +121,82 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">output</span> <span class="o">=</span> <span class="n">webhoseio</span><span class="o">.</span><span class="n">get_next</span><span class="p">()</span>
         <span class="k">except</span> <span class="n">HTTPError</span><span class="p">:</span>
-            <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">df</span>
+            <span class="c1"># df.to_csv(filename, index=False)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="o">%</span> <span class="mi">1000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39; has finished&#39;</span><span class="p">)</span>
-    <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">df</span></div>
 
 
-<div class="viewcode-block" id="write_s3"><a class="viewcode-back" href="../pipeline.html#api_to_df.write_s3">[docs]</a><span class="k">def</span> <span class="nf">write_s3</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="pre_process_data"><a class="viewcode-back" href="../pipeline.html#api_to_df.pre_process_data">[docs]</a><span class="k">def</span> <span class="nf">pre_process_data</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Write data to s3 bucket</span>
+<span class="sd">    Pre-process data got from Webhose API:</span>
+<span class="sd">    drop duplicate news articles;</span>
+<span class="sd">    drop news articles with no title, image, url and text</span>
+<span class="sd">        less than 200 words;</span>
+<span class="sd">    drop news articles with incorrect author name.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># write DF to string stream</span>
-    <span class="n">s3</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">&#39;s3&#39;</span><span class="p">,</span>
-                      <span class="n">aws_access_key_id</span><span class="o">=</span><span class="n">key_id</span><span class="p">,</span>
-                      <span class="n">aws_secret_access_key</span><span class="o">=</span><span class="n">secret_key</span><span class="p">)</span>
 
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">s3</span><span class="o">.</span><span class="n">upload_fileobj</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;newsphi&quot;</span><span class="p">,</span> <span class="s2">&quot;news_articles&quot;</span><span class="o">+</span><span class="n">filename</span><span class="p">)</span></div>
+    <span class="c1"># remove articles without title, title, url and main_image</span>
+    <span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;thread.uuid&#39;</span><span class="p">,</span> <span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;thread.main_image&#39;</span><span class="p">,</span> <span class="s1">&#39;published&#39;</span><span class="p">,</span> <span class="s1">&#39;url&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;thread.site_full&#39;</span><span class="p">,</span> <span class="s1">&#39;author&#39;</span><span class="p">]</span>
+
+    <span class="n">clean</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span>
+
+    <span class="n">clean</span> <span class="o">=</span> <span class="n">clean</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+
+    <span class="n">to_remove</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;rss.cnn.com&#39;</span><span class="p">,</span> <span class="s1">&#39;cnnespanol.cnn.com&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;execed.economist.com&#39;</span><span class="p">,</span> <span class="s1">&#39;espndeportes.espn.com&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;events.latimes.com&#39;</span><span class="p">,</span> <span class="s1">&#39;gmat.economist.com&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;gre.economist.com&#39;</span><span class="p">,</span> <span class="s1">&#39;long-island-jobs.newsday.com&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;interactive.aljazeera.com&#39;</span><span class="p">,</span> <span class="s1">&#39;markets.businessinsider.com&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;partners.wsj.com&#39;</span><span class="p">,</span> <span class="s1">&#39;rss.cnn.com&#39;</span><span class="p">,</span> <span class="s1">&#39;tv5.espn.com&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;video.cnbc.com&#39;</span><span class="p">,</span> <span class="s1">&#39;ww.npr.org&#39;</span><span class="p">,</span> <span class="s1">&#39;www3.forbes.com&#39;</span><span class="p">]</span>
+
+    <span class="n">clean</span> <span class="o">=</span> <span class="n">clean</span><span class="p">[</span><span class="n">clean</span><span class="p">[</span><span class="s1">&#39;thread.site_full&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">to_remove</span><span class="p">)]</span>
+
+    <span class="c1"># drop duplicate</span>
+
+    <span class="n">clean</span> <span class="o">=</span> <span class="n">clean</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="s1">&#39;thread.uuid&#39;</span><span class="p">)</span>
+    <span class="n">clean</span> <span class="o">=</span> <span class="n">clean</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">titles</span> <span class="o">=</span> <span class="n">clean</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="n">to_drop</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">titles</span><span class="p">)</span> <span class="o">-</span> <span class="mi">4</span><span class="p">):</span>
+        <span class="n">f1</span> <span class="o">=</span> <span class="n">fuzz</span><span class="o">.</span><span class="n">ratio</span><span class="p">(</span><span class="n">titles</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">titles</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">f2</span> <span class="o">=</span> <span class="n">fuzz</span><span class="o">.</span><span class="n">ratio</span><span class="p">(</span><span class="n">titles</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">titles</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">])</span>
+        <span class="n">f3</span> <span class="o">=</span> <span class="n">fuzz</span><span class="o">.</span><span class="n">ratio</span><span class="p">(</span><span class="n">titles</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">titles</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">3</span><span class="p">])</span>
+        <span class="n">f4</span> <span class="o">=</span> <span class="n">fuzz</span><span class="o">.</span><span class="n">ratio</span><span class="p">(</span><span class="n">titles</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">titles</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">4</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">f1</span> <span class="o">&gt;</span> <span class="mi">90</span> <span class="ow">or</span> <span class="n">f2</span> <span class="o">&gt;</span> <span class="mi">90</span> <span class="ow">or</span> <span class="n">f3</span> <span class="o">&gt;</span> <span class="mi">90</span> <span class="ow">or</span> <span class="n">f4</span> <span class="o">&gt;</span> <span class="mi">90</span><span class="p">:</span>
+            <span class="n">to_drop</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+    <span class="n">clean</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">to_drop</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">clean</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># clean text</span>
+    <span class="n">clean</span> <span class="o">=</span> <span class="n">clean</span><span class="p">[</span><span class="n">clean</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">200</span><span class="p">)]</span>
+
+    <span class="c1"># clean author</span>
+    <span class="n">clean</span> <span class="o">=</span> <span class="n">clean</span><span class="p">[</span><span class="n">clean</span><span class="p">[</span><span class="s1">&#39;author&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">len</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">256</span><span class="p">]</span>
+    <span class="n">clean</span><span class="p">[</span><span class="s1">&#39;author&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">clean</span><span class="p">[</span><span class="s1">&#39;author&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;,&#39;</span> <span class="ow">in</span> <span class="n">x</span> <span class="k">else</span> <span class="n">x</span><span class="p">)</span>
+
+    <span class="n">clean</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">clean</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;any&#39;</span><span class="p">)</span>
+    <span class="n">clean</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">clean</span></div>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">api_df</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">site_lists</span><span class="p">,</span> <span class="n">time_delta</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
-    <span class="n">write_s3</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">api_df</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">site_lists</span><span class="p">,</span> <span class="n">time_delta</span><span class="p">,</span> <span class="n">news_filename</span><span class="p">)</span>
+    <span class="n">pre_process_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">news_filename</span><span class="p">)</span>
+    <span class="n">write_s3</span><span class="p">(</span><span class="n">news_folder</span><span class="p">,</span> <span class="n">news_filename</span><span class="p">)</span>
 </pre></div>
 
           </div>

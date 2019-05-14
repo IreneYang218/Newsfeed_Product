@@ -41,20 +41,21 @@
 <div class="viewcode-block" id="pre_process_output"><a class="viewcode-back" href="../pipeline.html#preprocess.pre_process_output">[docs]</a><span class="k">def</span> <span class="nf">pre_process_output</span><span class="p">(</span><span class="n">input_path</span><span class="p">,</span> <span class="n">output_path</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Pre-process models&#39; output:</span>
-<span class="sd">    Only keep website used columns</span>
-<span class="sd">    Remove unquantified ariticles under restrictions</span>
+<span class="sd">    only keeps websites used columns;</span>
+<span class="sd">    removes unquantified ariticles under restrictions.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">input_path</span><span class="p">)</span>
     <span class="n">used_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;author&quot;</span><span class="p">,</span> <span class="s2">&quot;published&quot;</span><span class="p">,</span> <span class="s2">&quot;thread.site_full&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;thread.main_image&quot;</span><span class="p">,</span> <span class="s2">&quot;url&quot;</span><span class="p">,</span> <span class="s2">&quot;topic&quot;</span><span class="p">,</span> <span class="s2">&quot;thread.uuid&quot;</span><span class="p">,</span> <span class="s2">&quot;sentiment&quot;</span><span class="p">]</span>
+                    <span class="s2">&quot;thread.main_image&quot;</span><span class="p">,</span> <span class="s2">&quot;url&quot;</span><span class="p">,</span> <span class="s2">&quot;topic&quot;</span><span class="p">,</span> <span class="s2">&quot;thread.uuid&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;sentiment&quot;</span><span class="p">,</span> <span class="s2">&quot;General_Topic&quot;</span><span class="p">,</span> <span class="s1">&#39;controversy_score&#39;</span><span class="p">]</span>
     <span class="n">OBJ_COLS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;author&#39;</span><span class="p">,</span> <span class="s1">&#39;thread.site_full&#39;</span><span class="p">,</span> <span class="s1">&#39;thread.main_image&#39;</span><span class="p">,</span>
                 <span class="s1">&#39;url&#39;</span><span class="p">,</span> <span class="s1">&#39;thread.uuid&#39;</span><span class="p">]</span>
 
     <span class="n">output</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">used_columns</span><span class="p">]</span>
 
     <span class="c1"># remove articles without title and main_image</span>
-    <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="o">~</span><span class="n">output</span><span class="p">[[</span><span class="s1">&#39;thread.uuid&#39;</span><span class="p">,</span> <span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;thread.main_image&#39;</span><span class="p">,</span> <span class="s1">&#39;published&#39;</span><span class="p">,</span>
-                             <span class="s1">&#39;url&#39;</span><span class="p">,</span> <span class="s1">&#39;thread.site_full&#39;</span><span class="p">]]</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="o">~</span><span class="n">output</span><span class="p">[[</span><span class="s1">&#39;thread.uuid&#39;</span><span class="p">,</span> <span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;thread.main_image&#39;</span><span class="p">,</span>
+                             <span class="s1">&#39;published&#39;</span><span class="p">,</span> <span class="s1">&#39;url&#39;</span><span class="p">,</span> <span class="s1">&#39;thread.site_full&#39;</span><span class="p">]]</span>
                     <span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)]</span>
 
     <span class="c1"># remove unqualified rows</span>

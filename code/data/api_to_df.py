@@ -10,12 +10,12 @@ from S3_connection import *
 
 def get_query(site_lists, time_delta):
     """
-    Get query for webhose api given a site_lists and time window
+    Get query for Webhose API given a site_lists and time window.
 
-    :param site_lists: list of sites we need to crawl
-    :param time_delta: time window, -3 means recent 3 days.
-                       Can only be from -1 to -30
-    :return: a string of query for webhose api
+    :param site_lists: list of sites we need to crawl.
+    :param time_delta: time window. Ex: -3 means the most recent 3 days.
+                       Can only be from -1 to -30.
+    :return: a string of query for Webhose API.
     """
     q = "language:english site_type:news thread.country:US "
     if len(site_lists) == 1:
@@ -32,16 +32,16 @@ def get_query(site_lists, time_delta):
 
 def output_to_df(output, df):
     """
-    Convert a single output (100 news) from webhose to pandas data frame
-    and concat to previous data frame
+    Convert a single output (100 news articles) from Webhose API to pandas dataframe
+    and concatenates to previous dataframe
 
     :param output:
-        a json output from single webhose query
+        a JSON output from single Webhose API query.
     :param df:
-        previous pandas data frame from previous query,
-            each row represent one news
+        previous pandas dataframe from previous query,
+            each row represent one news aritcle.
     :return:
-        pandas data frame, each row represent one news
+        pandas dataframe, each row represent one news article.
     """
     output_flat = pd.io.json.json_normalize(output['posts'])
     df_tmp = output_flat[['thread.uuid', 'author', 'external_links',
@@ -57,16 +57,16 @@ def output_to_df(output, df):
 
 def api_df(token, site_lists, time_delta, filename):
     """
-    A pipeline from api to csv
+    A pipeline from Webhose API to CSV.
 
     :param token:
-        api token for webhose
+        api token for Webhose API.
     :param site_lists:
-        list of sites we need to crawl
+        list of sites we need to crawl.
     :param time_delta:
-        time window, -3 means recent 3 days.  Can only be from -1 to -30
+        time window. Ex: -3 means the most recent 3 days. Can only be from -1 to -30.
     :param filename:
-        filename of csv
+        filename of CSV.
     :return:
         None
     """
@@ -95,11 +95,11 @@ def api_df(token, site_lists, time_delta, filename):
 
 def pre_process_data(df, filename):
     """
-    Pre-process data got from api:
-    drop duplicates
-    drop articles with no title, image, url and text
-        less than 200 words
-    drop articles with correct author name
+    Pre-process data got from Webhose API:
+    drop duplicate news articles;
+    drop news articles with no title, image, url and text
+        less than 200 words;
+    drop news articles with incorrect author name.
     """
 
     # remove articles without title, title, url and main_image

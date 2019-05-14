@@ -39,16 +39,16 @@
 <span class="target" id="module-api_to_df"></span><dl class="function">
 <dt id="api_to_df.api_df">
 <code class="descclassname">api_to_df.</code><code class="descname">api_df</code><span class="sig-paren">(</span><em>token</em>, <em>site_lists</em>, <em>time_delta</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api_to_df.html#api_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api_to_df.api_df" title="Permalink to this definition">¶</a></dt>
-<dd><p>A pipeline from api to csv</p>
+<dd><p>A pipeline from Webhose API to CSV.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>token</strong> – api token for webhose</li>
-<li><strong>site_lists</strong> – list of sites we need to crawl</li>
-<li><strong>time_delta</strong> – time window, -3 means recent 3 days.  Can only be from -1 to -30</li>
-<li><strong>filename</strong> – filename of csv</li>
+<li><strong>token</strong> – api token for Webhose API.</li>
+<li><strong>site_lists</strong> – list of sites we need to crawl.</li>
+<li><strong>time_delta</strong> – time window. Ex: -3 means the most recent 3 days. Can only be from -1 to -30.</li>
+<li><strong>filename</strong> – filename of CSV.</li>
 </ul>
 </td>
 </tr>
@@ -62,19 +62,19 @@
 <dl class="function">
 <dt id="api_to_df.get_query">
 <code class="descclassname">api_to_df.</code><code class="descname">get_query</code><span class="sig-paren">(</span><em>site_lists</em>, <em>time_delta</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api_to_df.html#get_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api_to_df.get_query" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get query for webhose api given a site_lists and time window</p>
+<dd><p>Get query for Webhose API given a site_lists and time window.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>site_lists</strong> – list of sites we need to crawl</li>
-<li><strong>time_delta</strong> – time window, -3 means recent 3 days.
-Can only be from -1 to -30</li>
+<li><strong>site_lists</strong> – list of sites we need to crawl.</li>
+<li><strong>time_delta</strong> – time window. Ex: -3 means the most recent 3 days.
+Can only be from -1 to -30.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a string of query for webhose api</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a string of query for Webhose API.</p>
 </td>
 </tr>
 </tbody>
@@ -84,19 +84,23 @@ Can only be from -1 to -30</li>
 <dl class="function">
 <dt id="api_to_df.output_to_df">
 <code class="descclassname">api_to_df.</code><code class="descname">output_to_df</code><span class="sig-paren">(</span><em>output</em>, <em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api_to_df.html#output_to_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api_to_df.output_to_df" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert a single output (100 news) from webhose to pandas data frame
-and concat to previous data frame</p>
+<dd><p>Convert a single output (100 news articles) from Webhose API to pandas dataframe
+and concatenates to previous dataframe</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>output</strong> – a json output from single webhose query</li>
-<li><strong>df</strong> – previous pandas data frame from previous query, each row represent one news</li>
+<li><strong>output</strong> – a JSON output from single Webhose API query.</li>
+<li><strong>df</strong> – <dl class="docutils">
+<dt>previous pandas dataframe from previous query,</dt>
+<dd>each row represent one news aritcle.</dd>
+</dl>
+</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">pandas data frame, each row represent one news</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">pandas dataframe, each row represent one news article.</p>
 </td>
 </tr>
 </tbody>
@@ -104,29 +108,28 @@ and concat to previous data frame</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="api_to_df.write_s3">
-<code class="descclassname">api_to_df.</code><code class="descname">write_s3</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api_to_df.html#write_s3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api_to_df.write_s3" title="Permalink to this definition">¶</a></dt>
-<dd><p>Write data to s3 bucket</p>
+<dt id="api_to_df.pre_process_data">
+<code class="descclassname">api_to_df.</code><code class="descname">pre_process_data</code><span class="sig-paren">(</span><em>df</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api_to_df.html#pre_process_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api_to_df.pre_process_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pre-process data got from Webhose API:
+drop duplicate news articles;
+drop news articles with no title, image, url and text</p>
+<blockquote>
+<div>less than 200 words;</div></blockquote>
+<p>drop news articles with incorrect author name.</p>
 </dd></dl>
 
 <span class="target" id="module-download"></span><dl class="function">
 <dt id="download.downloaded_from_s3">
 <code class="descclassname">download.</code><code class="descname">downloaded_from_s3</code><span class="sig-paren">(</span><em>filepath</em>, <em>output_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/download.html#downloaded_from_s3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#download.downloaded_from_s3" title="Permalink to this definition">¶</a></dt>
-<dd><p>Download data from s3 bucket</p>
+<dd><p>Download data from S3 bucket and return a CSV file.</p>
 </dd></dl>
 
 <span class="target" id="module-preprocess"></span><dl class="function">
 <dt id="preprocess.pre_process_output">
 <code class="descclassname">preprocess.</code><code class="descname">pre_process_output</code><span class="sig-paren">(</span><em>input_path</em>, <em>output_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/preprocess.html#pre_process_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#preprocess.pre_process_output" title="Permalink to this definition">¶</a></dt>
 <dd><p>Pre-process models’ output:
-Only keep website used columns
-Remove unquantified ariticles under restrictions</p>
-</dd></dl>
-
-<span class="target" id="module-import"></span><dl class="function">
-<dt id="import.read_file_and_process">
-<code class="descclassname">import.</code><code class="descname">read_file_and_process</code><span class="sig-paren">(</span><em>filepath</em>, <em>TABLE_NAME</em>, <em>SCHEMA_NAME</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/import.html#read_file_and_process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#import.read_file_and_process" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read files and process to the format for database</p>
+only keeps websites used columns;
+removes unquantified ariticles under restrictions.</p>
 </dd></dl>
 
 </div>

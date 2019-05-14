@@ -6,8 +6,8 @@ import sys
 def pre_process_output(input_path, output_path):
     """
     Pre-process models' output:
-    Only keep website used columns
-    Remove unquantified ariticles under restrictions
+    only keeps websites used columns;
+    removes unquantified ariticles under restrictions.
     """
     data = pd.read_csv(input_path)
     used_columns = ["title", "author", "published", "thread.site_full",

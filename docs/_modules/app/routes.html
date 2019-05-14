@@ -34,7 +34,7 @@
             
   <h1>Source code for app.routes</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">app</span> <span class="k">import</span> <span class="n">application</span><span class="p">,</span> <span class="n">classes</span><span class="p">,</span> <span class="n">db</span>
-<span class="kn">from</span> <span class="nn">flask</span> <span class="k">import</span> <span class="n">render_template</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">url_for</span>  <span class="c1"># need for Week3 Homework</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="k">import</span> <span class="n">render_template</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">url_for</span>
 <span class="kn">from</span> <span class="nn">flask</span> <span class="k">import</span> <span class="n">request</span><span class="p">,</span> <span class="n">jsonify</span>  <span class="c1"># handle form</span>
 <span class="kn">from</span> <span class="nn">flask_login</span> <span class="k">import</span> <span class="n">current_user</span><span class="p">,</span> <span class="n">login_user</span><span class="p">,</span> <span class="n">login_required</span><span class="p">,</span> <span class="n">logout_user</span>
 
@@ -42,35 +42,19 @@
 <div class="viewcode-block" id="index"><a class="viewcode-back" href="../../server.html#app.routes.index">[docs]</a><span class="nd">@application</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/index&#39;</span><span class="p">)</span>
 <span class="nd">@application</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Render main page&quot;&quot;&quot;</span>
-    <span class="c1"># button for signup</span>
-    <span class="c1"># button for login</span>
-    <span class="c1"># return(&quot;&lt;h1&gt; WELCOME TO NEWSPHI &lt;/h1&gt;&quot;)</span>
+    <span class="sd">&quot;&quot;&quot;Render introduction page.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;index.html&#39;</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="newsPhi"><a class="viewcode-back" href="../../server.html#app.routes.newsPhi">[docs]</a><span class="nd">@application</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/NewsPhi&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">newsPhi</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Render main page.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;main_app.html&#39;</span><span class="p">)</span></div>
-
-<span class="c1">#</span>
-<span class="c1"># @application.route(&#39;/login_page&#39;, methods=[&#39;GET&#39;, &#39;POST&#39;])</span>
-<span class="c1"># def login_page():</span>
-<span class="c1">#     &quot;&quot;&quot;Render the user log in page&quot;&quot;&quot;</span>
-<span class="c1">#     if request.method == &#39;GET&#39;:</span>
-<span class="c1">#         return render_template(&#39;login.html&#39;)</span>
-<span class="c1">#</span>
-<span class="c1">#</span>
-<span class="c1"># @application.route(&#39;/signup_page&#39;, methods=[&#39;GET&#39;, &#39;POST&#39;])</span>
-<span class="c1"># def signup_page():</span>
-<span class="c1">#     &quot;&quot;&quot;render the user sign up page&quot;&quot;&quot;</span>
-<span class="c1">#     if request.method == &#39;GET&#39;:</span>
-<span class="c1">#         return render_template(&#39;signup.html&#39;)</span>
 
 
 <div class="viewcode-block" id="register"><a class="viewcode-back" href="../../server.html#app.routes.register">[docs]</a><span class="nd">@application</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/register&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">register</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;User register&quot;&quot;&quot;</span>
-    <span class="n">error</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="sd">&quot;&quot;&quot;Handle user registration.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">)</span>
         <span class="n">password</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">]</span>
@@ -88,49 +72,36 @@
 
 <div class="viewcode-block" id="login"><a class="viewcode-back" href="../../server.html#app.routes.login">[docs]</a><span class="nd">@application</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">login</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Log user in&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Handle user log-in.&quot;&quot;&quot;</span>
     <span class="n">error</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">email</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">]</span>
     <span class="n">password</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">]</span>
-    <span class="n">username</span> <span class="o">=</span> <span class="n">email</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;@&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
     <span class="c1"># Look for it in the database.</span>
     <span class="n">user</span> <span class="o">=</span> <span class="n">classes</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="n">email</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">user</span><span class="o">.</span><span class="n">check_password</span><span class="p">(</span><span class="n">password</span><span class="p">):</span>
-
         <span class="n">login_user</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
-        <span class="n">resp</span> <span class="o">=</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;status&#39;</span><span class="p">:</span><span class="s1">&#39;ok&#39;</span><span class="p">,</span> <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">})</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="s1">&#39;ok&#39;</span><span class="p">,</span> <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">})</span>
         <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">=</span> <span class="mi">200</span>
-        <span class="c1"># return &#39;&lt;h1&gt; Logged in : &#39; + username + &#39;&lt;/h1&gt;&#39;</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">error</span> <span class="o">=</span> <span class="s1">&#39;Invalid Credentials. Please try again.&#39;</span>
         <span class="n">resp</span> <span class="o">=</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="s1">&#39;failed&#39;</span><span class="p">,</span> <span class="s1">&#39;msg&#39;</span><span class="p">:</span> <span class="n">error</span><span class="p">})</span>
         <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">=</span> <span class="mi">403</span>
-        <span class="c1"># return &#39;&lt;h1&gt; Invalid username and password combination! &lt;/h1&gt;&#39;</span>
     <span class="k">return</span> <span class="n">resp</span></div>
-
-
-<div class="viewcode-block" id="secret_page"><a class="viewcode-back" href="../../server.html#app.routes.secret_page">[docs]</a><span class="nd">@application</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/secret_page&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
-<span class="nd">@login_required</span>
-<span class="k">def</span> <span class="nf">secret_page</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Render the page for login user&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;secret.html&#39;</span><span class="p">,</span>
-                           <span class="n">name</span><span class="o">=</span><span class="n">current_user</span><span class="o">.</span><span class="n">username</span><span class="p">,</span>
-                           <span class="n">email</span><span class="o">=</span><span class="n">current_user</span><span class="o">.</span><span class="n">email</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="get_useinfo"><a class="viewcode-back" href="../../server.html#app.routes.get_useinfo">[docs]</a><span class="nd">@application</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/userinfo&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
 <span class="nd">@login_required</span>
 <span class="k">def</span> <span class="nf">get_useinfo</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Get user&#39;s information.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="n">current_user</span><span class="o">.</span><span class="n">email</span><span class="p">})</span></div>
 
 
 <div class="viewcode-block" id="logout"><a class="viewcode-back" href="../../server.html#app.routes.logout">[docs]</a><span class="nd">@application</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/logout&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
 <span class="nd">@login_required</span>
 <span class="k">def</span> <span class="nf">logout</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Log user out&quot;&quot;&quot;</span>
-
+    <span class="sd">&quot;&quot;&quot;Handle user log-out&quot;&quot;&quot;</span>
     <span class="n">logout_user</span><span class="p">()</span>
-
     <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="s1">&#39;ok&#39;</span><span class="p">})</span></div>
 </pre></div>
 

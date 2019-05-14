@@ -12,7 +12,7 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 def para_filter(x):
     """
-    Preprocess the news text, return the first paragraph more than 20 words
+    Preprocess the news text, return the first paragraph more than 20 words.
     """
     para = x.split('\n')
     for p in para:
@@ -22,8 +22,8 @@ def para_filter(x):
 
 def format_topics_sentences(ldamodel, corpus, df_assign):
     """
-    Mapped the topics to news texts,
-    return the data frame contains index and assigned topics
+    Mapping the news topics to news texts,
+    return the dataframe contains index and assigned news topics.
     """
     # Init output
     sent_topics_df = pd.DataFrame()
@@ -55,7 +55,7 @@ def format_topics_sentences(ldamodel, corpus, df_assign):
 def predict(model_name, df, model_type, df_assign):
     """
     Use the model to predict topics on new data,
-    return the data frame with uuid and assigned topics
+    return the dataframe with uuid and assigned news topics.
     """
     mallet_path = 'mallet-2.0.8/bin/mallet'
     model = gensim.models.wrappers.LdaMallet.load(model_name)
@@ -81,7 +81,7 @@ def predict(model_name, df, model_type, df_assign):
 def calculate_sentiment(df):
     """
     Calculate the sentiment score of each articles,
-    return a data frame contains uuid and responding sentiment score
+    return a dataframe contains uuid and responding sentiment score.
     """
     SIA = SentimentIntensityAnalyzer()
     df['sentiment'] = df['text'].apply(
@@ -94,7 +94,7 @@ def calculate_sentiment(df):
 def merge_topic_sentiment(df_general, df_specific, df_sentiment):
     """
     Merge the results of two topic modeling and sentiment score by uuid,
-    generate the model output into a csv file
+    generate the model output into a CSV file.
     """
     df_topic2 = pd.merge(df_general, df_specific, on='thread.uuid')
     df_final = pd.merge(df_topic2, df_sentiment, on='thread.uuid')

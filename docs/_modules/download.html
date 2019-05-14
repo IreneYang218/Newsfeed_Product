@@ -41,7 +41,7 @@
 
 
 <div class="viewcode-block" id="downloaded_from_s3"><a class="viewcode-back" href="../pipeline.html#download.downloaded_from_s3">[docs]</a><span class="k">def</span> <span class="nf">downloaded_from_s3</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">output_path</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Download data from s3 bucket&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Download data from S3 bucket and return a CSV file.&quot;&quot;&quot;</span>
     <span class="c1"># Declare S3 as the destination</span>
     <span class="n">s3</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">&#39;s3&#39;</span><span class="p">,</span>
                       <span class="n">aws_access_key_id</span><span class="o">=</span><span class="n">key_id</span><span class="p">,</span>

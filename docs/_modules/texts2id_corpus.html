@@ -37,28 +37,69 @@
 <span class="kn">import</span> <span class="nn">gensim.corpora</span> <span class="k">as</span> <span class="nn">corpora</span>
 <span class="kn">import</span> <span class="nn">spacy</span>
 
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;en&#39;</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;parser&#39;</span><span class="p">,</span> <span class="s1">&#39;ner&#39;</span><span class="p">])</span>
+<span class="n">additional_stopwords</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;day&#39;</span><span class="p">,</span> <span class="s1">&#39;today&#39;</span><span class="p">,</span> <span class="s1">&#39;week&#39;</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;make&#39;</span><span class="p">,</span> <span class="s1">&#39;times&#39;</span><span class="p">,</span> <span class="s1">&#39;weeks&#39;</span><span class="p">,</span> <span class="s1">&#39;days&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;made&#39;</span><span class="p">,</span> <span class="s1">&#39;makes&#39;</span><span class="p">,</span> <span class="s1">&#39;people&#39;</span><span class="p">,</span> <span class="s1">&#39;good&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;feel&#39;</span><span class="p">,</span> <span class="s1">&#39;felt&#39;</span><span class="p">,</span> <span class="s1">&#39;feels&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;lot&#39;</span><span class="p">,</span> <span class="s1">&#39;thing&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;things&#39;</span><span class="p">,</span> <span class="s1">&#39;life&#39;</span><span class="p">,</span> <span class="s1">&#39;live&#39;</span><span class="p">,</span> <span class="s1">&#39;lives&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;woman&#39;</span><span class="p">,</span> <span class="s1">&#39;women&#39;</span><span class="p">,</span> <span class="s1">&#39;man&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;men&#39;</span><span class="p">,</span> <span class="s1">&#39;well&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;great&#39;</span><span class="p">,</span> <span class="s1">&#39;Monday&#39;</span><span class="p">,</span> <span class="s1">&#39;Tuesday&#39;</span><span class="p">,</span> <span class="s1">&#39;Wednesday&#39;</span><span class="p">,</span> <span class="s1">&#39;Thursday&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;Friday&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;Saturday&#39;</span><span class="p">,</span> <span class="s1">&#39;Sunday&#39;</span><span class="p">,</span> <span class="s1">&#39;linkedin&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;share&#39;</span><span class="p">,</span> <span class="s1">&#39;Forbes&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;NEWSWIRE&#39;</span><span class="p">,</span> <span class="s1">&#39;Fox&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;CNBC&#39;</span><span class="p">,</span> <span class="s1">&#39;Insider&#39;</span><span class="p">,</span> <span class="s1">&#39;Reuters&#39;</span><span class="p">,</span> <span class="s1">&#39;Embed&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;Getty&#39;</span><span class="p">,</span> <span class="s1">&#39;AP&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;AFP&#39;</span><span class="p">,</span> <span class="s1">&#39;copyright&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;pm&#39;</span><span class="p">,</span> <span class="s1">&#39;image&#39;</span><span class="p">,</span> <span class="s1">&#39;images&#39;</span><span class="p">,</span> <span class="s1">&#39;Image&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;Images&#39;</span><span class="p">,</span> <span class="s1">&#39;express&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;Bloomberg&#39;</span><span class="p">,</span> <span class="s1">&#39;CNN&#39;</span><span class="p">,</span> <span class="s1">&#39;BBC&#39;</span><span class="p">,</span> <span class="s1">&#39;NBCUniversal&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;Newsday&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;Bleacher&#39;</span><span class="p">,</span> <span class="s1">&#39;Highlights&#39;</span><span class="p">,</span> <span class="s1">&#39;highlights&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;Enlarge&#39;</span><span class="p">,</span> <span class="s1">&#39;people&#39;</span><span class="p">,</span> <span class="s1">&#39;thing&#39;</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;NPR&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;place&#39;</span><span class="p">,</span> <span class="s1">&#39;ET&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;et&#39;</span><span class="p">,</span> <span class="s1">&#39;PM&#39;</span><span class="p">,</span> <span class="s1">&#39;message&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;EMT&#39;</span><span class="p">,</span> <span class="s1">&#39;EST&#39;</span><span class="p">,</span> <span class="s1">&#39;video&#39;</span><span class="p">,</span> <span class="s1">&#39;photo&#39;</span><span class="p">,</span> <span class="s1">&#39;videos&#39;</span><span class="p">,</span> <span class="s1">&#39;photos&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;Photo&#39;</span><span class="p">,</span> <span class="s1">&#39;Photos&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;caption&#39;</span><span class="p">,</span> <span class="s1">&#39;Beast&#39;</span><span class="p">,</span> <span class="s1">&#39;Good&#39;</span><span class="p">,</span> <span class="s1">&#39;News&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;Council&#39;</span><span class="p">,</span> <span class="s1">&#39;Analysis&#39;</span><span class="p">,</span> <span class="s1">&#39;LLC&#39;</span><span class="p">,</span> <span class="s1">&#39;Global&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;April&#39;</span><span class="p">,</span> <span class="s1">&#39;Quotes&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;contributor&#39;</span><span class="p">,</span> <span class="s1">&#39;group&#39;</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">additional_stopwords</span><span class="p">:</span>
+    <span class="n">nlp</span><span class="o">.</span><span class="n">Defaults</span><span class="o">.</span><span class="n">stop_words</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">nlp</span><span class="o">.</span><span class="n">vocab</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">is_stop</span> <span class="o">=</span> <span class="kc">True</span>
+
 
 <div class="viewcode-block" id="tokenizer"><a class="viewcode-back" href="../model.html#texts2id_corpus.tokenizer">[docs]</a><span class="k">def</span> <span class="nf">tokenizer</span><span class="p">(</span><span class="n">texts</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    https://spacy.io/api/annotation</span>
-<span class="sd">    remove stopwords, punchtuation, wired word,</span>
+<span class="sd">    removes stopwords, punchtuation, abnormal words, etc;</span>
 <span class="sd">    only keep meaningfull words based on</span>
-<span class="sd">    pos[&#39;NOUN&#39;, &#39;ADJ&#39;, &#39;VERB&#39;, &#39;ADV&#39;,&#39;INTJ&#39;], lemmatization</span>
+<span class="sd">        pos[&#39;NOUN&#39;, &#39;ADJ&#39;, &#39;VERB&#39;, &#39;ADV&#39;,&#39;INTJ&#39;] lemmatization.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">words</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;en&#39;</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;parser&#39;</span><span class="p">,</span> <span class="s1">&#39;ner&#39;</span><span class="p">])</span>
     <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
         <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-        <span class="n">ws</span> <span class="o">=</span> <span class="p">[</span><span class="n">token</span><span class="o">.</span><span class="n">lemma_</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span> <span class="k">if</span>
-              <span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">pos_</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;NOUN&#39;</span><span class="p">,</span> <span class="s1">&#39;ADJ&#39;</span><span class="p">,</span> <span class="s1">&#39;VERB&#39;</span><span class="p">,</span> <span class="s1">&#39;ADV&#39;</span><span class="p">,</span> <span class="s1">&#39;INTJ&#39;</span><span class="p">])</span> <span class="o">&amp;</span>
-              <span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">is_alpha</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="o">~</span><span class="n">token</span><span class="o">.</span><span class="n">is_stop</span><span class="p">)]</span>
+        <span class="n">ws</span> <span class="o">=</span> <span class="p">[</span><span class="n">token</span><span class="o">.</span><span class="n">lemma_</span> <span class="k">if</span> <span class="p">((</span>
+                               <span class="n">token</span><span class="o">.</span><span class="n">pos_</span> <span class="ow">in</span>
+                               <span class="p">[</span><span class="s1">&#39;NOUN&#39;</span><span class="p">,</span> <span class="s1">&#39;ADJ&#39;</span><span class="p">,</span> <span class="s1">&#39;VERB&#39;</span><span class="p">,</span> <span class="s1">&#39;ADV&#39;</span><span class="p">,</span> <span class="s1">&#39;INTJ&#39;</span><span class="p">])</span> <span class="o">&amp;</span>
+                               <span class="n">token</span><span class="o">.</span><span class="n">is_alpha</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">token</span><span class="o">.</span><span class="n">is_stop</span> <span class="o">&amp;</span>
+                               <span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">lemma_</span> <span class="o">!=</span> <span class="s1">&#39;-PRON-&#39;</span><span class="p">))</span>
+              <span class="k">else</span> <span class="n">token</span><span class="o">.</span><span class="n">text</span> <span class="k">if</span> <span class="p">((</span><span class="n">token</span><span class="o">.</span><span class="n">pos_</span> <span class="o">==</span> <span class="s1">&#39;PROPN&#39;</span><span class="p">)</span> <span class="o">&amp;</span>
+                                  <span class="n">token</span><span class="o">.</span><span class="n">is_alpha</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">token</span><span class="o">.</span><span class="n">is_stop</span><span class="p">)</span>
+              <span class="k">else</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">]</span>
+        <span class="n">ws</span> <span class="o">=</span> <span class="p">[</span><span class="n">token</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">ws</span> <span class="k">if</span> <span class="n">token</span><span class="p">]</span>
         <span class="n">words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ws</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">words</span></div>
 
 
 <div class="viewcode-block" id="make_gram"><a class="viewcode-back" href="../model.html#texts2id_corpus.make_gram">[docs]</a><span class="k">def</span> <span class="nf">make_gram</span><span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="n">num_gram</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Make unigram, bigram or trigram into account, the default is unigram</span>
+<span class="sd">    Decides which of unigram, bigram or trigram to take into account. The default is unigram.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">num_gram</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">grams</span> <span class="o">=</span> <span class="n">words</span>
@@ -78,8 +119,8 @@
 
 <div class="viewcode-block" id="make_id_corpus"><a class="viewcode-back" href="../model.html#texts2id_corpus.make_id_corpus">[docs]</a><span class="k">def</span> <span class="nf">make_id_corpus</span><span class="p">(</span><span class="n">grams</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    According to gram, get id2word dictionary</span>
-<span class="sd">    and get corpus with format (id, freq) in each doc</span>
+<span class="sd">    According to num-gram, gets id2word dictionary and</span>
+<span class="sd">    corpus with format (id,req) in each doc.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">id2word</span> <span class="o">=</span> <span class="n">corpora</span><span class="o">.</span><span class="n">Dictionary</span><span class="p">(</span><span class="n">grams</span><span class="p">)</span>
     <span class="n">corpus</span> <span class="o">=</span> <span class="p">[</span><span class="n">id2word</span><span class="o">.</span><span class="n">doc2bow</span><span class="p">(</span><span class="n">gs</span><span class="p">)</span> <span class="k">for</span> <span class="n">gs</span> <span class="ow">in</span> <span class="n">grams</span><span class="p">]</span>
@@ -87,13 +128,11 @@
 
 
 <div class="viewcode-block" id="text2corpus"><a class="viewcode-back" href="../model.html#texts2id_corpus.text2corpus">[docs]</a><span class="k">def</span> <span class="nf">text2corpus</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">num_gram</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Preprocessing for IDA.&quot;&quot;&quot;</span>
     <span class="n">words</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
     <span class="n">grams</span> <span class="o">=</span> <span class="n">make_gram</span><span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="n">num_gram</span><span class="o">=</span><span class="n">num_gram</span><span class="p">)</span>
     <span class="n">id2word</span><span class="p">,</span> <span class="n">corpus</span> <span class="o">=</span> <span class="n">make_id_corpus</span><span class="p">(</span><span class="n">grams</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">id2word</span><span class="p">,</span> <span class="n">corpus</span></div>
-
-
-<span class="c1"># id2text, corpus = text2corpus(texts, num_gram=3)</span>
+    <span class="k">return</span> <span class="n">id2word</span><span class="p">,</span> <span class="n">corpus</span><span class="p">,</span> <span class="n">grams</span></div>
 </pre></div>
 
           </div>

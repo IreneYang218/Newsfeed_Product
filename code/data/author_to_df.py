@@ -8,8 +8,8 @@ import config
 
 def loadkeys(filename):
     """"
-    load twitter api keys/tokens from CSV file with form
-    consumer_key, consumer_secret, access_token, access_token_secret
+    Load Twitter API keys/tokens from CSV file with format:
+    consumer_key, consumer_secret, access_token, access_token_secret.
     """
     with open(filename) as f:
         items = f.readline().strip().split(',')
@@ -18,8 +18,8 @@ def loadkeys(filename):
 
 def authenticate(twitter_auth_filename):
     """
-    Given a file name containing the Twitter keys and tokens,
-    create and return a tweepy API object.
+    Given a file containing the Twitter keys and tokens,
+    create and return a Tweepy API object.
     """
     consumer_key, consumer_secret, \
         access_token, access_token_secret = loadkeys(twitter_auth_filename)
@@ -33,17 +33,17 @@ def authenticate(twitter_auth_filename):
 
 def fetch_user(api, con_dict):
     """
-    Given a tweepy API object and the con_dict of
+    Given a Tweepy API object and the con_dict of
     the authors' Twitter accounts,
-    append authors' twitter information in the original dictionary.
+    append authors' Twitter information in the original dictionary.
     The key-values pairs contain:
         followers_count: The number of followers this account currently has.
         listed_count: The number of public lists that
-            this user is a member of a list
-        verified: Whether the Twitter account is verified or not
-    :param api: twitter api
-    :param con_dict: authors's dictionary with screen name
-    :return: a dictionary with all new key_values pairs appended
+            this user is a member of a list.
+        verified: Whether the Twitter account is verified or not.
+    :param api: Twitter API.
+    :param con_dict: authors's dictionary with screen name.
+    :return: a dictionary with all new key_values pairs appended.
     """
     user = api.get_user(screen_name=con_dict['author_screen_name'])
     con_dict['verified'] = user.verified

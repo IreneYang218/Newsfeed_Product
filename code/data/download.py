@@ -6,7 +6,7 @@ import os
 
 
 def downloaded_from_s3(filepath, output_path):
-    """Download data from s3 bucket"""
+    """Download data from S3 bucket and return a CSV file."""
     # Declare S3 as the destination
     s3 = boto3.client('s3',
                       aws_access_key_id=key_id,

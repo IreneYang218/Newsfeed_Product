@@ -42,9 +42,9 @@ for i in additional_stopwords:
 def tokenizer(texts):
     """
     https://spacy.io/api/annotation
-    remove stopwords, punchtuation, wired word,
+    removes stopwords, punchtuation, abnormal words, etc;
     only keep meaningfull words based on
-        pos['NOUN', 'ADJ', 'VERB', 'ADV','INTJ'], lemmatization
+        pos['NOUN', 'ADJ', 'VERB', 'ADV','INTJ'] lemmatization.
     """
     words = []
     for text in texts:
@@ -64,7 +64,7 @@ def tokenizer(texts):
 
 def make_gram(words, num_gram=1):
     """
-    Make unigram, bigram or trigram into account, the default is unigram
+    Decides which of unigram, bigram or trigram to take into account. The default is unigram.
     """
     if num_gram == 1:
         grams = words
@@ -84,8 +84,8 @@ def make_gram(words, num_gram=1):
 
 def make_id_corpus(grams):
     """
-    According to gram, get id2word dictionary and get
-    corpus with format (id,req) in each doc
+    According to num-gram, gets id2word dictionary and
+    corpus with format (id,req) in each doc.
     """
     id2word = corpora.Dictionary(grams)
     corpus = [id2word.doc2bow(gs) for gs in grams]
@@ -93,6 +93,7 @@ def make_id_corpus(grams):
 
 
 def text2corpus(texts, num_gram):
+    """Preprocessing for IDA."""
     words = tokenizer(texts)
     grams = make_gram(words, num_gram=num_gram)
     id2word, corpus = make_id_corpus(grams)

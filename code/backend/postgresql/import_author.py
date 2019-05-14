@@ -11,7 +11,7 @@ except ImportError:
 
 def read_file_and_process(filepath, TABLE_NAME, SCHEMA_NAME):
     """
-    Read files and process to the format for database
+    Read news authors' files and process to the format for database.
     """
     df = pd.read_csv(filepath)
     used_columns = ["author", "rep_score", "author_screen_name",

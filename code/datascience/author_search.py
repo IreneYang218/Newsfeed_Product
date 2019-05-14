@@ -5,8 +5,8 @@ from author_user_definition import *
 
 def loadkeys(filename):
     """"
-    load twitter api keys/tokens from CSV file with form
-    consumer_key, consumer_secret, access_token, access_token_secret
+    Load twitter API keys/tokens from CSV file with format:
+    consumer_key, consumer_secret, access_token, access_token_secret.
     """
     with open(filename) as f:
         items = f.readline().strip().split(',')
@@ -15,8 +15,8 @@ def loadkeys(filename):
 
 def authenticate(twitter_auth_filename):
     """
-    Given a file name containing the Twitter keys and tokens,
-    create and return a tweepy API object.
+    Given a file containing the Twitter keys and tokens,
+    create and return a Tweepy API object.
     """
     consumer_key, consumer_secret, \
         access_token, access_token_secret = loadkeys(twitter_auth_filename)
