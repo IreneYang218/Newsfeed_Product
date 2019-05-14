@@ -161,4 +161,4 @@ def pre_process_data(df, filename):
 if __name__ == '__main__':
     data = api_df(token, site_lists, time_delta, news_filename)
     pre_process_data(data, news_filename)
-    write_s3(news_filename)
+    write_s3(news_folder, news_filename)

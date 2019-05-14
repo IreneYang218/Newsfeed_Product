@@ -1,7 +1,7 @@
 import datetime
 
 
-token = '48d3f6a0-4b6d-4c42-9221-71f15b7694aa'
+token = '7cf781d2-4a31-415a-afc3-9398b02c8a5c'
 site_lists = ['wsj.com', 'latimes.com', 'newsday.com'
               'cnn.com', 'bloomberg.com', 'espn.com',
               'aljazeera.com',

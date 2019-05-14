@@ -84,7 +84,7 @@ def streaming_data(ssh):
 def download_data_from_s3(ssh):
     download_data = "source activate msds603;" + \
                     " cd ~/" + git_repo_name + "/code/data/;" + \
-                    " python download.py" + \
+                    " python day" + \
                     " model_output_data/topic_name_num_sentiment.csv" + \
                     " model_output/"
     stdin, stdout, stderr = ssh.exec_command(download_data)
