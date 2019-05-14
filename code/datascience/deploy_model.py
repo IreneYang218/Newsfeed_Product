@@ -62,7 +62,7 @@ def predict(model_name, df, model_type, df_assign):
     first_para = df.text.apply(lambda x: para_filter(x))
     test_texts = df.title + ' ' + first_para
     test_texts = test_texts.dropna()
-    df = df[test_texts.isnull() is False]
+    df = df[~test_texts.isnull()]
     test_id2text, test_corpus, test_words_lemmatized = \
         text2corpus(test_texts, num_gram=3)
     predict_result = format_topics_sentences(
