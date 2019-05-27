@@ -1,2 +1,2 @@
-key_id = "AKIASSY6QXAE3R4KLWOJ"
-secret_key = "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"
+key_id = "aws_key_id"
+secret_key = "aws_secrete_key"

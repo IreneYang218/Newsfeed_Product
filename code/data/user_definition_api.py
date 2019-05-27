@@ -1,7 +1,7 @@
 import datetime
 
 
-token = '7cf781d2-4a31-415a-afc3-9398b02c8a5c'
+token = 'webhose_token'
 site_lists = ['wsj.com', 'latimes.com', 'newsday.com'
               'cnn.com', 'bloomberg.com', 'espn.com',
               'aljazeera.com',
